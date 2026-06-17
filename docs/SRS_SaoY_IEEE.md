@@ -175,7 +175,7 @@ Quy trình "Sao y siêu tốc" với sự phối hợp của các vai trò:
 ## 3. Yêu cầu Giao diện bên ngoài (External Interface Requirements)
 
 ### 3.1 Giao diện người dùng (User Interfaces)
-- Thiết kế chế độ tối (Dark mode) sang trọng, giảm mỏi mắt cho nhân viên.
+- Thiết kế chế độ tối (Light mode) sang trọng, giảm mỏi mắt cho nhân viên.
 - Bố cục màn hình tiếp nhận tối giản, hỗ trợ tự động điền (Auto-fill) giúp thời gian thao tác dưới 30 giây.
 - Hiển thị rõ ràng các cảnh báo màu đỏ khi phát sinh lỗi hoặc ngăn chặn UCHI.
 
