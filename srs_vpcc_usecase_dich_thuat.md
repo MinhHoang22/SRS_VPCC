@@ -181,35 +181,21 @@ Bắt buộc tích hợp:
 Dịch vụ Dịch thuật công chứng được sử dụng để tiếp nhận tài liệu gốc của khách hàng, thực hiện dịch thuật sang ngôn ngữ đích, kiểm duyệt bản dịch và hoàn tất hồ sơ để chuyển sang bước ký công chứng.
 
 ---
-
 ### Luồng xử lý nghiệp vụ
-
+[](#uc-031-create-appointment)
 ```mermaid
 flowchart TD
 
     START([Khách hàng yêu cầu dịch thuật công chứng])
 
-    D0{KH cần hẹn lịch tư vấn trước?}
-
-    %% ==================================================
-    %% APPOINTMENT MANAGEMENT
-    %% ==================================================
+    D0{Đã có lịch hẹn?}
 
     subgraph Appointment["Appointment Management"]
-
         A1[UC-031 Create Appointment]
-
         A2[UC-032 Assign Appointment]
-
         A3[UC-033 Send Appointment Reminder]
-
         A4[UC-034 Check In Appointment]
-
     end
-
-    %% ==================================================
-    %% CUSTOMER RECEPTION
-    %% ==================================================
 
     subgraph Receptionist["Receptionist"]
 
@@ -227,10 +213,6 @@ flowchart TD
 
     end
 
-    %% ==================================================
-    %% SECRETARY
-    %% ==================================================
-
     subgraph Secretary["Secretary"]
 
         DOC1[UC-007 Upload Document]
@@ -243,13 +225,13 @@ flowchart TD
 
         T1[UC-024 Define Translation Languages]
 
+        Q1[UC-037 Calculate Translation Fee]
+
+        Q2[UC-038 Approve Quotation]
+
         T2[UC-021 Assign Translator]
 
     end
-
-    %% ==================================================
-    %% TRANSLATOR
-    %% ==================================================
 
     subgraph Translator["Translator"]
 
@@ -259,10 +241,6 @@ flowchart TD
 
     end
 
-    %% ==================================================
-    %% REVIEWER
-    %% ==================================================
-
     subgraph Reviewer["Reviewer"]
 
         R1[UC-023 Review Translation<br/>CHK-TRN-002]
@@ -270,10 +248,6 @@ flowchart TD
         R2{Bản dịch đạt yêu cầu?}
 
     end
-
-    %% ==================================================
-    %% PRE-SIGN VALIDATION
-    %% ==================================================
 
     subgraph Secretary_Validation["Secretary"]
 
@@ -283,10 +257,6 @@ flowchart TD
 
     end
 
-    %% ==================================================
-    %% NOTARY
-    %% ==================================================
-
     subgraph Notary["Notary"]
 
         N1[UC-006 Update Case Status<br/>WAITING_SIGNATURE]
@@ -295,21 +265,17 @@ flowchart TD
 
     end
 
-    %% ==================================================
-    %% FINANCE
-    %% ==================================================
-
     subgraph Finance["Finance"]
 
         P1[UC-012 Record Payment]
 
         P2{Thanh toán đủ?}
 
-    end
+        INV1[UC-040 Generate Invoice]
 
-    %% ==================================================
-    %% SECRETARY
-    %% ==================================================
+        INV2[UC-041 Send Invoice]
+
+    end
 
     subgraph Secretary_Result["Secretary"]
 
@@ -321,19 +287,11 @@ flowchart TD
 
     end
 
-    %% ==================================================
-    %% SYSTEM
-    %% ==================================================
-
     subgraph System["System"]
 
         RP2[UC-018 Send Notification]
 
     end
-
-    %% ==================================================
-    %% RECEPTIONIST
-    %% ==================================================
 
     subgraph Receptionist_Delivery["Receptionist"]
 
@@ -345,10 +303,6 @@ flowchart TD
 
     end
 
-    %% ==================================================
-    %% ARCHIVE
-    %% ==================================================
-
     subgraph Archive["Secretary"]
 
         AR1[UC-014 Archive Case]
@@ -358,10 +312,6 @@ flowchart TD
     end
 
     END([Kết thúc])
-
-    %% ==================================================
-    %% FLOW
-    %% ==================================================
 
     START --> D0
 
@@ -394,7 +344,11 @@ flowchart TD
 
     V2 -->|Đạt| T1
 
-    T1 --> T2
+    T1 --> Q1
+
+    Q1 --> Q2
+
+    Q2 --> T2
 
     T2 --> T3
 
@@ -422,7 +376,11 @@ flowchart TD
 
     P2 -->|Chưa đủ| P1
 
-    P2 -->|Đủ| CC1
+    P2 -->|Đủ| INV1
+
+    INV1 --> INV2
+
+    INV2 --> CC1
 
     CC1 --> CC2
 
@@ -441,6 +399,48 @@ flowchart TD
     AR1 --> AR2
 
     AR2 --> END
+
+    click A1 "#uc-031-create-appointment"
+    click A2 "#uc-032-assign-appointment"
+    click A3 "#uc-033-send-appointment-reminder"
+    click A4 "#uc-034-check-in-appointment"
+
+    click C1 "#uc-002-search-customer"
+    click C3 "#uc-001-create-customer"
+    click CASE1 "#uc-004-create-case"
+    click CASE2 "#uc-005-assign-case"
+
+    click DOC1 "#uc-007-upload-document"
+
+    click V1 "#uc-009-execute-checklist"
+    click S1 "#uc-009-execute-checklist"
+
+    click T1 "#uc-024-define-translation-languages"
+
+    click Q1 "#uc-037-calculate-translation-fee"
+    click Q2 "#uc-038-approve-quotation"
+
+    click T2 "#uc-021-assign-translator"
+    click T3 "#uc-022-perform-translation"
+    click T4 "#uc-025-upload-translation-document"
+
+    click R1 "#uc-023-review-translation"
+
+    click N1 "#uc-006-update-case-status"
+    click N2 "#uc-026-sign-case"
+
+    click P1 "#uc-012-record-payment"
+
+    click INV1 "#uc-040-generate-invoice"
+    click INV2 "#uc-041-send-invoice"
+
+    click CC1 "#uc-028-complete-case"
+
+    click RP1 "#uc-035-schedule-result-pickup"
+    click RP2 "#uc-018-send-notification"
+    click RP4 "#uc-036-confirm-result-delivery"
+
+    click AR1 "#uc-014-archive-case"
 ```
 
 ---
@@ -1382,7 +1382,6 @@ Hệ thống phải cho phép gửi tin nhắn qua Zalo OA.
 Tin nhắn cảm ơn phải được gửi sau khi hồ sơ hoàn tất.
 
 #### FR-ZALO-003
-
 Hệ thống phải cho phép gửi khảo sát chất lượng.
 
 #### FR-ZALO-004
@@ -1588,6 +1587,478 @@ Hệ thống phải cập nhật trạng thái hồ sơ thành DELIVERED sau khi
 
 ---
 
+## 5.15 Pricing Management
+
+### FR-PRI-001
+
+Hệ thống phải cho phép cấu hình bảng giá dịch thuật theo cặp ngôn ngữ.
+
+### FR-PRI-002
+
+Hệ thống phải cho phép cấu hình đơn giá dịch thuật theo đơn vị tính.
+
+Ví dụ:
+
+* Theo trang
+* Theo từ
+* Theo tài liệu
+
+### FR-PRI-003
+
+Hệ thống phải tự động tính phí dịch thuật dựa trên:
+
+* Ngôn ngữ nguồn
+* Ngôn ngữ đích
+* Số trang
+* Đơn giá áp dụng
+
+### FR-PRI-004
+
+Hệ thống phải cho phép cấu hình phí chứng thực chữ ký người dịch.
+
+### FR-PRI-005
+
+Hệ thống phải tự động tính phí chứng thực dựa trên:
+
+* Số bản công chứng
+* Đơn giá chứng thực
+
+### FR-PRI-006
+
+Hệ thống phải cho phép nhập phụ phí dịch vụ.
+
+Ví dụ:
+
+* Dịch chuyên ngành
+* Dịch khẩn
+* Phí xử lý đặc biệt
+* Phí ngoài giờ
+
+### FR-PRI-007
+
+Hệ thống phải cho phép nhập chiết khấu hoặc giảm giá cho hồ sơ.
+
+### FR-PRI-008
+
+Hệ thống phải tự động tính tổng báo giá hồ sơ.
+
+Công thức:
+
+Tổng báo giá =
+Phí dịch thuật +
+Phí chứng thực +
+Phụ phí dịch vụ -
+Chiết khấu
+
+### FR-PRI-009
+
+Hệ thống phải cho phép lưu báo giá của hồ sơ.
+
+### FR-PRI-010
+
+Hệ thống phải ghi nhận người tạo báo giá và thời gian tạo báo giá.
+
+### FR-PRI-011
+
+Hệ thống phải cho phép cập nhật báo giá trước khi khách hàng chấp thuận.
+
+### FR-PRI-012
+
+Hệ thống phải lưu lịch sử thay đổi báo giá.
+
+### FR-PRI-013
+
+Hệ thống phải cho phép ghi nhận việc khách hàng chấp thuận báo giá.
+
+### FR-PRI-014
+
+Hệ thống phải lưu thời gian khách hàng chấp thuận báo giá.
+
+### FR-PRI-015
+
+Hệ thống phải ngăn việc phân công biên dịch viên nếu báo giá chưa được khách hàng chấp thuận.
+
+### FR-PRI-016
+
+Hệ thống phải hỗ trợ tính phí cho hồ sơ có nhiều ngôn ngữ đích.
+
+### FR-PRI-017
+
+Hệ thống phải tính phí riêng cho từng ngôn ngữ đích trong hồ sơ đa ngôn ngữ.
+
+### FR-PRI-018
+
+Hệ thống phải cho phép gộp phí của nhiều yêu cầu dịch thuật vào cùng một giao dịch thanh toán.
+
+### FR-PRI-019
+
+Hệ thống phải cho phép tạo báo giá doanh nghiệp (B2B).
+
+### FR-PRI-020
+
+Hệ thống phải cho phép lưu thông tin xuất hóa đơn doanh nghiệp.
+
+Bao gồm:
+
+* Tên công ty
+* Mã số thuế
+* Địa chỉ
+* Email nhận hóa đơn
+
+### FR-PRI-021
+
+Hệ thống phải hỗ trợ cấu hình hiệu lực của bảng giá.
+
+Ví dụ:
+
+* Ngày bắt đầu hiệu lực
+* Ngày kết thúc hiệu lực
+
+### FR-PRI-022
+
+Hệ thống phải lưu lịch sử thay đổi bảng giá.
+
+### FR-PRI-023
+
+Hệ thống phải cho phép tra cứu báo giá theo:
+
+* Hồ sơ
+* Khách hàng
+* Khoảng thời gian
+* Trạng thái chấp thuận
+
+### FR-PRI-024
+
+Hệ thống phải hiển thị chi tiết các thành phần cấu thành báo giá.
+
+Bao gồm:
+
+* Phí dịch thuật
+* Phí chứng thực
+* Phụ phí
+* Giảm giá
+* Tổng tiền
+
+### FR-PRI-025
+
+Hệ thống phải hỗ trợ xuất báo giá dưới dạng PDF.
+
+---
+## UC-037 Calculate Translation Fee
+
+### Use Case ID
+
+UC-037
+
+### Use Case Name
+
+Calculate Translation Fee
+
+### Description
+
+Cho phép tính toán báo giá dịch thuật dựa trên ngôn ngữ, số trang và các loại phí áp dụng.
+
+### Primary Actor
+
+Receptionist
+
+### Supporting Actors
+
+System
+
+### Trigger
+
+Receptionist tạo hồ sơ dịch thuật mới.
+
+### Preconditions
+
+* Hồ sơ đã được tạo.
+* Tài liệu đã được upload.
+* Đã xác định ngôn ngữ nguồn và ngôn ngữ đích.
+
+### Postconditions
+
+* Báo giá được tạo.
+* Tổng phí được tính toán.
+* Báo giá được lưu vào hệ thống.
+
+### Main Flow
+
+| Step | Actor        | Action                              |
+| ---- | ------------ | ----------------------------------- |
+| 1    | Receptionist | Mở hồ sơ dịch thuật                 |
+| 2    | Receptionist | Nhập số trang tài liệu              |
+| 3    | Receptionist | Chọn ngôn ngữ nguồn                 |
+| 4    | Receptionist | Chọn ngôn ngữ đích                  |
+| 5    | System       | Tra cứu bảng giá                    |
+| 6    | System       | Tính phí dịch thuật                 |
+| 7    | System       | Tính phí chứng thực                 |
+| 8    | Receptionist | Nhập phụ phí hoặc giảm giá (nếu có) |
+| 9    | System       | Tính tổng báo giá                   |
+| 10   | System       | Lưu báo giá                         |
+| 11   | System       | Hiển thị báo giá                    |
+
+### Related Functional Requirements
+
+* FR-PRI-001
+* FR-PRI-002
+* FR-PRI-003
+* FR-PRI-004
+* FR-PRI-005
+* FR-PRI-006
+* FR-PRI-007
+* FR-PRI-008
+
+### Related Business Rules
+
+* BR-036
+
+---
+
+## UC-038 Approve Quotation
+
+### Use Case ID
+
+UC-038
+
+### Use Case Name
+
+Approve Quotation
+
+### Description
+
+Cho phép ghi nhận việc khách hàng chấp thuận báo giá trước khi hồ sơ được xử lý.
+
+### Primary Actor
+
+Receptionist
+
+### Supporting Actors
+
+Customer
+System
+
+### Trigger
+
+Báo giá đã được tạo.
+
+### Preconditions
+
+* Báo giá tồn tại.
+* Hồ sơ chưa được phân công cho biên dịch viên.
+
+### Postconditions
+
+* Báo giá được đánh dấu đã chấp thuận.
+* Hồ sơ đủ điều kiện chuyển sang bước phân công biên dịch viên.
+
+### Main Flow
+
+| Step | Actor        | Action                          |
+| ---- | ------------ | ------------------------------- |
+| 1    | Receptionist | Hiển thị báo giá cho khách hàng |
+| 2    | Customer     | Xem báo giá                     |
+| 3    | Customer     | Đồng ý báo giá                  |
+| 4    | Receptionist | Xác nhận chấp thuận             |
+| 5    | System       | Cập nhật trạng thái báo giá     |
+| 6    | System       | Lưu thời gian chấp thuận        |
+| 7    | System       | Ghi Audit Log                   |
+
+### Alternative Flow A1 – Customer Rejects Quotation
+
+| Step | Actor        | Action               |
+| ---- | ------------ | -------------------- |
+| A1.1 | Customer     | Từ chối báo giá      |
+| A1.2 | Receptionist | Điều chỉnh báo giá   |
+| A1.3 | System       | Lưu lịch sử thay đổi |
+
+### Related Functional Requirements
+
+* FR-PRI-009
+* FR-PRI-010
+* FR-PRI-011
+* FR-PRI-012
+* FR-PRI-013
+* FR-PRI-014
+* FR-PRI-015
+
+### Related Business Rules
+
+* BR-037
+* BR-038
+
+---
+
+## UC-039 Manage Translation Pricing
+
+### Use Case ID
+
+UC-039
+
+### Use Case Name
+
+Manage Translation Pricing
+
+### Description
+
+Cho phép quản trị viên quản lý bảng giá dịch thuật.
+
+### Primary Actor
+
+Admin
+
+### Supporting Actors
+
+System
+
+### Trigger
+
+Admin muốn tạo hoặc cập nhật bảng giá.
+
+### Preconditions
+
+* Admin đã đăng nhập.
+
+### Postconditions
+
+* Bảng giá được tạo hoặc cập nhật.
+* Lịch sử thay đổi được lưu.
+
+### Main Flow
+
+| Step | Actor  | Action                          |
+| ---- | ------ | ------------------------------- |
+| 1    | Admin  | Mở màn hình quản lý bảng giá    |
+| 2    | System | Hiển thị danh sách bảng giá     |
+| 3    | Admin  | Tạo mới hoặc chỉnh sửa bảng giá |
+| 4    | Admin  | Nhập ngôn ngữ nguồn             |
+| 5    | Admin  | Nhập ngôn ngữ đích              |
+| 6    | Admin  | Nhập đơn giá                    |
+| 7    | Admin  | Nhập thời gian hiệu lực         |
+| 8    | Admin  | Lưu bảng giá                    |
+| 9    | System | Kiểm tra dữ liệu                |
+| 10   | System | Lưu bảng giá                    |
+| 11   | System | Lưu lịch sử thay đổi            |
+
+### Related Functional Requirements
+
+* FR-PRI-021
+* FR-PRI-022
+
+### Related Business Rules
+
+* BR-036
+
+---
+
+## UC-040 Generate Invoice
+
+### Use Case ID
+
+UC-040
+
+### Use Case Name
+
+Generate Invoice
+
+### Description
+
+Cho phép tạo hóa đơn điện tử cho hồ sơ đã thanh toán.
+
+### Primary Actor
+
+Finance
+
+### Supporting Actors
+
+System
+
+### Trigger
+
+Thanh toán được xác nhận thành công.
+
+### Preconditions
+
+* Hồ sơ đã thanh toán.
+* Thông tin hóa đơn hợp lệ.
+
+### Postconditions
+
+* Hóa đơn được tạo.
+* Hóa đơn được liên kết với hồ sơ.
+
+### Main Flow
+
+| Step | Actor   | Action                        |
+| ---- | ------- | ----------------------------- |
+| 1    | Finance | Mở hồ sơ đã thanh toán        |
+| 2    | Finance | Chọn tạo hóa đơn              |
+| 3    | System  | Hiển thị thông tin thanh toán |
+| 4    | Finance | Xác nhận thông tin hóa đơn    |
+| 5    | System  | Tạo hóa đơn                   |
+| 6    | System  | Lưu thông tin hóa đơn         |
+| 7    | System  | Liên kết hóa đơn với hồ sơ    |
+
+### Related Functional Requirements
+
+* FR-PRI-019
+* FR-PRI-020
+
+---
+
+## UC-041 Send Invoice
+
+### Use Case ID
+
+UC-041
+
+### Use Case Name
+
+Send Invoice
+
+### Description
+
+Cho phép gửi hóa đơn điện tử cho khách hàng hoặc doanh nghiệp.
+
+### Primary Actor
+
+Finance
+
+### Supporting Actors
+
+System
+
+### Trigger
+
+Hóa đơn đã được tạo.
+
+### Preconditions
+
+* Hóa đơn tồn tại.
+* Email nhận hóa đơn hợp lệ.
+
+### Postconditions
+
+* Hóa đơn được gửi thành công.
+* Lịch sử gửi hóa đơn được lưu.
+
+### Main Flow
+
+| Step | Actor   | Action                     |
+| ---- | ------- | -------------------------- |
+| 1    | Finance | Chọn hóa đơn cần gửi       |
+| 2    | System  | Hiển thị thông tin hóa đơn |
+| 3    | Finance | Xác nhận gửi               |
+| 4    | System  | Gửi email hóa đơn          |
+| 5    | System  | Ghi nhận lịch sử gửi       |
+| 6    | System  | Hiển thị kết quả gửi       |
+
+### Related Functional Requirements
+
+* FR-PRI-020
+
+---
+
 # 6. USE CASE SPECIFICATIONS
 
 ### UC-001 CREATE CUSTOMER
@@ -1663,7 +2134,7 @@ Khách hàng mới đến văn phòng và chưa tồn tại trong hệ thống.
 
 ### Related Functional Requirements
 
-* FR-CRM-001
+* [FR-CRM-001](#fr-crm-001)
 * FR-CRM-002
 * FR-CRM-003
 * FR-CRM-004
@@ -3647,95 +4118,99 @@ Backup dữ liệu hằng ngày.
 
 # 10. BUSINESS RULES
 
-BR-001
+## BR-001
 Không cho phép tạo khách hàng trùng CCCD.
 
-BR-002
+## BR-002
 Mỗi hồ sơ phải thuộc đúng một khách hàng.
 
-BR-003
+## BR-003
 Mỗi hồ sơ phải có ít nhất một người phụ trách.
 
-BR-004
+## BR-004
 Checklist phải hoàn tất trước khi chuyển sang WAITING_SIGNATURE.
 
-BR-005
+## BR-005
 Không được xóa hồ sơ COMPLETED hoặc ARCHIVED.
 
-BR-006
+## BR-006
 Mọi thay đổi trạng thái hồ sơ phải được ghi nhận vào Audit Log.
 
-BR-007
+## BR-007
 Hồ sơ chỉ được chuyển sang COMPLETED khi thanh toán đầy đủ.
 
-BR-008
+## BR-008
 Tin nhắn Zalo chỉ được gửi sau khi hồ sơ COMPLETED.
 
-BR-009
+## BR-009
 Mỗi hồ sơ phải có mã hồ sơ duy nhất.
 
-BR-010
+## BR-010
 Mỗi tài liệu phải thuộc đúng một hồ sơ.
 
-BR-011
+## BR-011
 Phiên bản tài liệu không được chỉnh sửa sau khi tạo.
 
-BR-012
+## BR-012
 Người dùng chỉ được thực hiện chức năng thuộc quyền của vai trò được gán.
 
-BR-013
+## BR-013
 Không được phân công hồ sơ cho tài khoản bị khóa.
 
-BR-014
+## BR-014
 Hồ sơ ARCHIVED không được phép chỉnh sửa.
 
-BR-015
+## BR-015
 Mọi khoản thu phải gắn với một hồ sơ.
 
-BR-016
+## BR-016
 Số tiền đã thu không được vượt quá tổng phí phải thu.
 
-BR-017
+## BR-017
 Mỗi Checklist Item phải có kết quả kiểm tra trước khi checklist được hoàn tất.
 
-BR-018
+## BR-018
 Checklist Template chỉ áp dụng cho các hồ sơ được tạo sau thời điểm kích hoạt Template.
 
-BR-019
+## BR-019
 Mọi thay đổi dữ liệu khách hàng phải được ghi nhận Audit Log.
 
-BR-020
+## BR-020
 Audit Log không được phép chỉnh sửa hoặc xóa.
 
-BR-021
+## BR-021
 Hệ thống chỉ cho phép tải lên các tài liệu có định dạng được hỗ trợ.
 
-BR-022
+## BR-022
 Các định dạng tài liệu được hỗ trợ gồm:
 - PDF
 - DOCX
 - JPG
 - PNG
 
-BR-023
+## BR-023
 Tên file gốc của tài liệu phải được lưu trong hệ thống khi tải lên.
 
-BR-024
+## BR-024
 Phiên bản tài liệu đã được tạo không được phép chỉnh sửa nội dung.
 
-BR-025
+## BR-025
 Mọi thay đổi đối với tài liệu phải được thực hiện bằng cách tạo phiên bản mới.
 
-BR-026
+## BR-026
 Hệ thống phải lưu toàn bộ lịch sử phiên bản của tài liệu.
 
-BR-027
+## BR-027
 Mỗi phiên bản tài liệu phải có mã hoặc số phiên bản duy nhất trong phạm vi tài liệu.
 
-BR-029
+## BR-028
+
+Mỗi phiên bản tài liệu phải lưu người tạo phiên bản và thời gian tạo phiên bản.
+
+## BR-029
 Mỗi Checklist Item phải có kết quả kiểm tra trước khi được đánh dấu hoàn thành.
 
-BR-030
+## BR-030
 Kết quả kiểm tra của Checklist Item chỉ được phép nhận một trong các giá trị được hệ thống hỗ trợ.
 
 Ví dụ:
@@ -3743,35 +4218,59 @@ Ví dụ:
 - FAIL
 - N/A
 
-BR-031
+## BR-031
 Mỗi Checklist Item phải ghi nhận người thực hiện kiểm tra.
 
-BR-032
+## BR-032
 Mỗi Checklist Item phải ghi nhận thời gian thực hiện kiểm tra.
 
-BR-033
+## BR-033
 Checklist chỉ được đánh dấu hoàn thành khi tất cả Checklist Item bắt buộc đã có kết quả kiểm tra.
 
-BR-034
+## BR-034
 Checklist Item có kết quả FAIL phải được phép nhập ghi chú giải thích nguyên nhân.
 
-BR-035
+## BR-035
 Checklist đã hoàn thành không được phép chỉnh sửa nếu hồ sơ đã chuyển sang trạng thái WAITING_SIGNATURE hoặc COMPLETED.
 
-BR-036
+## BR-036
 Hồ sơ dịch thuật phải xác định ngôn ngữ nguồn và ngôn ngữ đích trước khi được phân công biên dịch viên.
 
-BR-037
+## BR-037
 Chỉ biên dịch viên có năng lực đối với cặp ngôn ngữ yêu cầu mới được phép nhận phân công.
 
-BR-038
+## BR-038
 Bản dịch phải được kiểm duyệt và phê duyệt trước khi hồ sơ được chuyển sang WAITING_SIGNATURE.
 
-BR-039
+## BR-039
 Mọi thay đổi đối với bản dịch phải tạo phiên bản mới.
 
-BR-040
+## BR-040
 Kết quả kiểm duyệt phải được lưu cùng người kiểm duyệt và thời gian kiểm duyệt.
+
+## BR-041
+
+Hệ thống phải tính phí dịch thuật dựa trên ngôn ngữ đích và số trang tài liệu.
+
+## BR-042
+
+Hồ sơ dịch thuật phải có báo giá trước khi được phân công cho biên dịch viên.
+
+## BR-043
+
+Khách hàng phải chấp thuận báo giá trước khi hồ sơ được chuyển sang xử lý dịch thuật.
+
+## BR-044
+
+Phụ phí dịch vụ phải được ghi nhận riêng với phí dịch thuật.
+
+## BR-045
+
+Hồ sơ có nhiều ngôn ngữ đích phải tính phí riêng cho từng ngôn ngữ.
+
+## BR-046
+
+Mọi thay đổi báo giá phải được lưu lịch sử.
 
 ---
 
