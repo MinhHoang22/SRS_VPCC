@@ -1,316 +1,53 @@
 # Tài liệu Đặc tả Yêu cầu Phần mềm (Software Requirements Specification - SRS)
-**Dự án:** Hệ thống CRM cho Văn phòng Công chứng
-**Phiên bản:** 1.0
+## Hệ thống ERP/CRM Văn phòng Công chứng (NotaryOS)
+
+**Phiên bản:** 1.0  
+**Đơn vị phát triển:** Danish Software  
+**Người soạn thảo:** Vũ Minh Hoàng  
+**Ngày tạo:** 17 tháng 06, 2026  
 
 ---
 
 ## Mục lục
-- **[Chương 1. Giới thiệu (Introduction)](#1-introduction-giới-thiệu)**
-  - [1.1 Mục đích (Purpose)](#11-purpose-mục-đích)
-  - [1.2 Quy ước tài liệu (Document Conventions)](#12-document-conventions-quy-ước-tài-liệu)
-  - [1.3 Đối tượng độc giả (Intended Audience)](#13-intended-audience-and-reading-suggestions-đối-tượng-độc-giả)
-  - [1.4 Phạm vi sản phẩm (Product Scope)](#14-product-scope-phạm-vi-sản-phẩm)
-  - [1.5 Tài liệu tham khảo (References)](#15-references-tài-liệu-tham-khảo)
-- **[Chương 2. Mô tả tổng quan (Overall Description)](#2-overall-description-mô-tả-tổng-quan)**
-  - [2.1 Bối cảnh sản phẩm (Product Perspective)](#21-product-perspective-bối-cảnh-sản-phẩm)
-  - [2.2 Chức năng chính (Product Functions)](#22-product-functions-các-chức-năng-chính)
-  - [2.3 Đối tượng người dùng (User Classes and Characteristics)](#23-user-classes-and-characteristics-đối-tượng-người-dùng)
-  - [2.4 Môi trường vận hành (Operating Environment)](#24-operating-environment-môi-trường-vận-hành)
-  - [2.5 Ràng buộc hệ thống (Design and Implementation Constraints)](#25-design-and-implementation-constraints-ràng-buộc-hệ-thống)
-  - [2.6 Tài liệu người dùng (User Documentation)](#26-user-documentation-tài-liệu-người-dùng)
-  - [2.7 Giả định và Phụ thuộc (Assumptions and Dependencies)](#27-assumptions-and-dependencies-giả-định-và-phụ-thuộc)
-- **[Chương 3. Yêu cầu giao diện bên ngoài (External Interface Requirements)](#3-external-interface-requirements-yêu-cầu-giao-diện-bên-ngoài)**
-  - [3.1 Giao diện người dùng (User Interfaces)](#31-user-interfaces-giao-diện-người-dùng)
-  - [3.2 Giao diện phần cứng (Hardware Interfaces)](#32-hardware-interfaces-giao-diện-phần-cứng)
-  - [3.3 Giao diện phần mềm (Software Interfaces)](#33-software-interfaces-giao-diện-phần-mềm)
-  - [3.4 Giao diện truyền thông (Communications Interfaces)](#34-communications-interfaces-giao-diện-truyền-thông)
-- **[Chương 4. Các tính năng hệ thống (System Features)](#4-system-features-tính-năng-hệ-thống)**
-  - [4.1 Module CRM và Quản lý khách hàng](#41-module-crm-và-quản-lý-khách-hàng)
-  - [4.2 Module Quản lý Nhân sự & Phân quyền](#42-module-quản-lý-nhân-sự--phân-quyền)
-  - [4.3 Module Tiếp nhận, Tạo & Theo dõi hồ sơ](#43-module-tiếp-nhận-tạo--theo-dõi-hồ-sơ)
-  - [4.4 Module Kiểm tra Checklist Nghiệp vụ](#44-module-kiểm-tra-checklist-nghiệp-vụ)
-  - [4.5 Module Quản lý Hợp đồng, Văn bản, Biểu mẫu](#45-module-quản-lý-hợp-đồng-văn-bản-biểu-mẫu)
-  - [4.6 Module Quản lý Phí & Hóa đơn](#46-module-quản-lý-phí--hóa-đơn)
-  - [4.7 Module Lưu trữ Hồ sơ Điện tử](#47-module-lưu-trữ-hồ-sơ-điện-tử)
-  - [4.8 Module Chăm sóc Khách hàng (Zalo OA)](#48-module-chăm-sóc-khách-hàng-zalo-oa)
-- **[Chương 5. Các yêu cầu phi chức năng khác (Other Nonfunctional Requirements)](#5-other-nonfunctional-requirements-các-yêu-cầu-phi-chức-năng-khác)**
-  - [5.1 Hiệu năng (Performance Requirements)](#51-performance-requirements-hiệu-năng)
-  - [5.2 An toàn dữ liệu (Safety Requirements)](#52-safety-requirements-an-toàn-dữ-liệu)
-  - [5.3 Bảo mật (Security Requirements)](#53-security-requirements-bảo-mật)
-  - [5.4 Thuộc tính chất lượng (Software Quality Attributes)](#54-software-quality-attributes-thuộc-tính-chất-lượng)
-  - [5.5 Quy tắc nghiệp vụ (Business Rules)](#55-business-rules-quy-tắc-nghiệp-vụ)
-- **[Chương 6. Yêu cầu khác (Other Requirements)](#6-other-requirements-yêu-cầu-khác)**
-- **[Phụ lục A: Bảng thuật ngữ (Glossary)](#appendix-a-glossary-bảng-thuật-ngữ)**
-- **[Phụ lục B: Mô hình phân tích (Analysis Models)](#appendix-b-analysis-models-mô-hình-phân-tích)**
-- **[Phụ lục C: Các vấn đề chờ xác nhận (To Be Determined List)](#appendix-c-to-be-determined-list-các-vấn-đề-chờ-xác-nhận)**
 
----
+- **[Chương 1. Giới thiệu (Introduction)](#chương-1-giới-thiệu-introduction)**
+  - [1.1 Mục đích (Purpose)](#11-mục-đích-purpose)
+  - [1.2 Phạm vi (Scope)](#12-phạm-vi-scope)
+  - [1.3 Từ điển thuật ngữ (Glossary)](#13-từ-điển-thuật-ngữ-glossary)
+  - [1.4 Tài liệu tham khảo (References)](#14-tài-liệu-tham-khảo-references)
+  - [1.5 Tổng quát (Overview)](#15-tổng-quát-overview)
 
-## 1. Introduction (Giới thiệu)
+- **[Chương 2. Các yêu cầu chức năng (Functional Requirements)](#chương-2-các-yêu-cầu-chức-năng-functional-requirements)**
+  - [2.1 Các tác nhân (Actors)](#21-các-tác-nhân-actors)
+  - [2.2 Các chức năng của hệ thống (System Functions)](#22-các-chức-năng-của-hệ-thống-system-functions)
+  - [2.3 Biểu đồ use case tổng quan (Overall Use Case Diagram)](#23-biểu-đồ-use-case-tổng-quan-overall-use-case-diagram)
+  - [2.4 Biểu đồ use case phân rã (Decomposed Use Case Diagrams)](#24-biểu-đồ-use-case-phân-rã-decomposed-use-case-diagrams)
+    - [2.4.1 Phân rã nhóm chức năng Xác thực & Quản trị (Auth & Admin)](#241-phân-rã-nhóm-chức-năng-xác-thực--quản-trị-auth--admin)
+    - [2.4.2 Phân rã nhóm chức năng Nghiệp vụ Hồ sơ (Dossier Processing)](#242-phân-rã-nhóm-chức-năng-nghiệp-vụ-hồ-sơ-dossier-processing)
+    - [2.4.3 Phân rã nhóm chức năng Tài chính & Xuất hóa đơn (Billing & Invoice)](#243-phân-rã-nhóm-chức-năng-tài-chính--xuất-hóa-đơn-billing--invoice)
+  - [2.5 Quy trình nghiệp vụ (Business Processes)](#25-quy-trình-nghiệp-vụ-business-processes)
+    - [2.5.1 Sơ đồ luồng hoạt động nghiệp vụ tổng quát (Activity Diagram)](#251-sơ-đồ-luồng-hoạt-động-nghiệp-vụ-tổng-quát-activity-diagram)
+    - [2.5.2 Luồng xử lý chi tiết theo phân hệ (Sub-system Workflows)](#252-luồng-xử-lý-chi-tết-theo-phân-hệ-sub-system-workflows)
+  - [2.6 Đặc tả các usecase (Use Case Specifications)](#26-đặc-tả-các-usecase-use-case-specifications)
+    - [2.6.1 Nhóm Use Case Xác thực & Hệ thống (Auth & Admin)](#261-nhóm-use-case-xác-thực--hệ-thống-auth--admin)
+      - [UC001: Đăng nhập hệ thống](#uc001-đăng-nhập-hệ-thống)
+      - [UC002: Thay đổi mật khẩu](#uc002-thay-đổi-mật-khẩu)
+      - [UC003: Quản lý & Cấp tài khoản nhân sự](#uc003-quản-lý--cấp-tài-khoản-nhân-sự)
+      - [UC004: Phân quyền & Thiết lập vai trò (RBAC)](#uc004-phân-quyền--thiết-lập-vai-trò-rbac)
+    - [2.6.2 Nhóm Use Case Nghiệp vụ (Dossier & Checklist)](#262-nhóm-use-case-nghiệp-vụ-dossier--checklist)
+      - [UC005: Tiếp nhận khách hàng & Khởi tạo hồ sơ](#uc005-tiếp-nhận-khách-hàng--khởi-tạo-hồ-sơ)
+      - [UC006: Thẩm định hồ sơ & Duyệt Checklist chặn](#uc006-thẩm-định-hồ-sơ--duyệt-checklist-chặn)
+      - [UC007: Trộn dữ liệu & Soạn thảo Lời chứng tự động](#uc007-trộn-dữ-liệu--soạn-thảo-lời-chứng-tự-động)
+      - [UC008: Quét & Lưu trữ hồ sơ điện tử đã đóng dấu](#uc008-quét--lưu-trữ-hồ-sơ-điện-tử-đã-đóng-dấu)
+    - [2.6.3 Nhóm Use Case Tài chính & Chăm sóc (Billing & CRM)](#263-nhóm-use-case-tài-chính--chăm-sóc-billing--crm)
+      - [UC009: Thu phí & Đối soát dòng tiền](#uc009-thu-phí--đối-soát-dòng-tiền)
+      - [UC010: Xuất hóa đơn điện tử tự động (VNPT/Vĩnh Hy)](#uc010-xuất-hoa-đơn-điện-tử-tự-động-vnptvĩnh-hy)
+      - [UC011: Chăm sóc khách hàng tự động qua Zalo OA](#uc011-chăm-sóc-khách-hàng-tự-động-qua-zalo-oa)
 
-### 1.1 Purpose (Mục đích)
-Tài liệu SRS này đặc tả các yêu cầu phần mềm cho **Hệ thống CRM dành cho Văn phòng công chứng (VPCC)**. Mục đích của hệ thống là trở thành một "trung tâm điều hành số", hỗ trợ quản lý tổng thể hoạt động của VPCC: quản lý khách hàng, nhân sự, quy trình tiếp nhận và xử lý hồ sơ, soạn thảo văn bản, tính phí dịch vụ, lưu trữ điện tử, và chăm sóc khách hàng sau dịch vụ.
+- **[Chương 3. Các yêu cầu phi chức năng (Non-functional Requirements)](#chương-3-các-yêu-cầu-phi-chức-năng-non-functional-requirements)**
+  - [3.1 Giao diện người dùng (User Interfaces)](#31-giao-diện-người-dùng-user-interfaces)
+  - [3.2 Tính bảo mật (Security & Safety)](#32-tính-bảo-mật-security--safety)
+  - [3.3 Ràng buộc (Constraints & Business Rules)](#33-ràng-buộc-constraints--business-rules)
 
-### 1.2 Document Conventions (Quy ước tài liệu)
-- **Mức độ ưu tiên (Priority):** Cao (High), Trung bình (Medium), Thấp (Low).
-- **Mã yêu cầu:** Đánh mã theo định dạng `REQ-[Mã_Module]-[Số_thứ_tự]` (VD: `REQ-CRM-01`).
-- Các tính năng chính ở giai đoạn 1 tập trung vào quy trình mẫu: Dịch vụ sao y, chứng thực bản sao.
-
-### 1.3 Intended Audience and Reading Suggestions (Đối tượng độc giả)
-- **Quản lý / Trưởng VPCC:** Đọc phần 1 và 2 để nắm bắt mục tiêu, phạm vi và bối cảnh vận hành.
-- **Đội ngũ phát triển (Developers) & Kiểm thử (Testers):** Đọc kỹ toàn bộ tài liệu, đặc biệt chú trọng phần 3, 4, 5 để cài đặt và kiểm tra.
-- **Nghiệp vụ (Công chứng viên, Thư ký, Lễ tân):** Đọc phần 2 và phần 4 để đối chiếu với quy trình làm việc thực tế.
-
-### 1.4 Product Scope (Phạm vi sản phẩm)
-Phần mềm này giúp số hóa toàn bộ quy trình vận hành của một Văn phòng công chứng. Thay vì dữ liệu rải rác trên giấy tờ, Excel, sổ tay hay Zalo cá nhân, hệ thống gom dữ liệu về một nền tảng chung. Nó bao quát 3 lớp vận hành:
-1. Lớp khách hàng: Quản lý định danh, lịch sử, chăm sóc.
-2. Lớp nghiệp vụ: Quy trình hồ sơ, văn bản, tính phí, checklist.
-3. Lớp quản trị: Phân quyền nhân sự, báo cáo, theo dõi tiến độ.
-
-### 1.5 References (Tài liệu tham khảo)
-- Tài liệu PRD: *TỔNG QUAN HỆ THỐNG CRM CHO VĂN PHÒNG CÔNG CHỨNG* (he_thong_cong_chung_crm_tong_quan.md).
-
----
-
-## 2. Overall Description (Mô tả tổng thể)
-
-### 2.1 Product Perspective (Bối cảnh sản phẩm)
-Đây là một hệ thống phần mềm mới, hoạt động độc lập (Self-contained product) triển khai trên nền tảng Web-based. Hệ thống sẽ thay thế các phương thức làm việc thủ công và công cụ rời rạc hiện tại. Trong tương lai, hệ thống sẽ mở rộng kết nối thông qua API với các dịch vụ bên ngoài (Zalo OA, Hóa đơn điện tử, Cơ sở dữ liệu UCHI).
-
-### 2.2 Product Functions (Các chức năng chính)
-- Quản lý tập trung thông tin khách hàng (CRM).
-- Quản lý tài khoản, vai trò và phân công nhân sự.
-- Tiếp nhận, tạo mới hồ sơ công chứng/sao y.
-- Quản lý tiến độ xử lý và checklist nghiệp vụ.
-- Quản lý biểu mẫu, hợp đồng và các phiên bản văn bản.
-- Tính phí tự động, theo dõi thanh toán.
-- Lưu trữ hồ sơ điện tử thông minh.
-- Gửi thông báo/chăm sóc tự động qua Zalo OA.
-
-### 2.3 User Classes and Characteristics (Đối tượng người dùng)
-1. **Lễ tân:** Thường xuyên thao tác tạo hồ sơ, tìm kiếm khách, thu tiền. Cần giao diện nhập liệu nhanh.
-2. **Thư ký nghiệp vụ:** Soạn thảo văn bản, kiểm tra checklist giấy tờ. Cần công cụ quản lý biểu mẫu và phiên bản văn bản linh hoạt.
-3. **Công chứng viên:** Chịu trách nhiệm duyệt hồ sơ và ký chứng nhận. Cần theo dõi danh sách chờ ký rõ ràng.
-4. **Kế toán:** Theo dõi doanh thu, phí, đối soát.
-5. **Trưởng phòng/Quản lý:** Cần Dashboard tổng quan, công cụ phân công công việc và phân quyền hệ thống.
-
-### 2.4 Operating Environment (Môi trường vận hành)
-- Ứng dụng Web (Client-Server), chạy trên các trình duyệt phổ biến (Chrome, Safari, Firefox, Edge).
-- Thiết kế Responsive hỗ trợ hiển thị tốt trên máy tính bảng (Tablet) cho thao tác tại quầy.
-
-### 2.5 Design and Implementation Constraints (Ràng buộc hệ thống)
-- Bảo mật thông tin nghiêm ngặt do đặc thù dữ liệu cá nhân (CCCD, Hộ chiếu) và tài sản.
-- Tuân thủ quy định lưu trữ của ngành công chứng.
-
-### 2.6 User Documentation (Tài liệu người dùng)
-- Sẽ cung cấp Hướng dẫn sử dụng trực tuyến (Online Help) theo từng vai trò (Role-based tutorial).
-
-### 2.7 Assumptions and Dependencies (Giả định và Phụ thuộc)
-- **Tích hợp Zalo:** Phụ thuộc vào chính sách và phí của Zalo OA.
-- **Hóa đơn điện tử:** Phụ thuộc vào API của các nhà cung cấp như VNPT, Viettel, MISA.
-
----
-
-## 3. External Interface Requirements (Yêu cầu giao diện bên ngoài)
-
-### 3.1 User Interfaces (Giao diện người dùng)
-- Giao diện ngôn ngữ Tiếng Việt, sử dụng thuật ngữ chuyên ngành công chứng chính xác.
-- Bố cục gọn gàng, có màn hình Dashboard riêng cho từng vai trò.
-- Hỗ trợ phím tắt và auto-fill cho các form tạo hồ sơ sao y để tăng tốc độ tại quầy.
-
-### 3.2 Hardware Interfaces (Giao diện phần cứng)
-- Tương thích kết nối với máy in (in hóa đơn, in hợp đồng, lời chứng).
-- Tương thích thiết bị đọc/quét mã vạch, mã QR trên thẻ CCCD gắn chip (nếu có).
-
-### 3.3 Software Interfaces (Giao diện phần mềm)
-- API giao tiếp với nhà cung cấp Hóa đơn điện tử.
-- (Tương lai) API truy vấn CSDL ngăn chặn UCHI (nếu được phép kết nối).
-
-### 3.4 Communications Interfaces (Giao diện truyền thông)
-- Tích hợp HTTPS mã hóa dữ liệu đầu cuối.
-- Giao tiếp với Zalo OA API qua webhook để gửi và nhận phản hồi chăm sóc khách hàng.
-
----
-
-## 4. System Features (Tính năng hệ thống)
-
-### 4.1. Module CRM và Quản lý khách hàng
-#### 4.1.1 Description and Priority
-Quản lý tập trung định danh khách hàng (CCCD, SĐT) để tránh mất dữ liệu và hỗ trợ CSKH.
-#### 4.1.2 Functional Requirements
-- `REQ-CRM-01`: Thêm mới, cập nhật thông tin khách hàng (hỗ trợ phân loại: cá nhân, tổ chức/công ty,...).
-- `REQ-CRM-02`: Tra cứu khách hàng siêu tốc theo CCCD/Hộ chiếu hoặc Số điện thoại.
-- `REQ-CRM-03`: Lưu vết và hiển thị toàn bộ lịch sử các giao dịch, hồ sơ khách đã từng làm tại VPCC.
-
-### 4.2. Module Quản lý Nhân sự & Phân quyền
-#### 4.2.1 Description and Priority
-Bảo mật hệ thống thông qua việc xác thực người dùng, cấp quyền truy cập theo vai trò công việc (RBAC), quản lý vòng đời tài khoản nhân viên và ghi nhận nhật ký hệ thống để phục vụ kiểm toán an toàn thông tin (Audit Trail).
-- **Độ ưu tiên:** Cao (High).
-
-#### 4.2.2 Functional Requirements
-
-##### A. Xác thực & Đăng nhập (Authentication & Login)
-- `REQ-AUTH-01`: **Đăng nhập hệ thống:** Cho phép người dùng đăng nhập bằng Email/Tên tài khoản và Mật khẩu. Hỗ trợ cơ chế JWT (JSON Web Token) để quản lý phiên làm việc ở phía Client.
-- `REQ-AUTH-02`: **Chính sách mật khẩu (Password Policy):**
-  - Mật khẩu tạo mới hoặc thay đổi phải đạt độ phức tạp tối thiểu: ít nhất 8 ký tự, bao gồm chữ hoa, chữ thường, số và ít nhất một ký tự đặc biệt (ví dụ: `@`, `#`, `$`, `%`,... ).
-  - Yêu cầu bắt buộc người dùng thay đổi mật khẩu ở lần đăng nhập đầu tiên sau khi tài khoản được cấp bởi Admin.
-- `REQ-AUTH-03`: **Quản lý phiên đăng nhập (Session Management):** Tự động đăng xuất (Expire Session) sau 30 phút liên tục không có hoạt động tương tác từ phía người dùng để ngăn chặn rủi ro rò rỉ thông tin khi người dùng rời máy làm việc.
-- `REQ-AUTH-04`: **Khóa tài khoản tự động (Account Lockout):** Tự động khóa tài khoản tạm thời trong vòng 15 phút nếu đăng nhập sai mật khẩu quá 5 lần liên tiếp. Đồng thời gửi thông báo cảnh báo qua email của nhân sự đó.
-- `REQ-AUTH-05`: **Khôi phục mật khẩu (Password Recovery):** Hỗ trợ tính năng "Quên mật khẩu", hệ thống sẽ gửi một liên kết reset mật khẩu dùng một lần (One-Time Link) có thời hạn hiệu lực trong 10 phút đến email đã đăng ký của nhân viên.
-- `REQ-AUTH-06`: **Nhật ký đăng nhập (Authentication Logs):** Ghi nhận lịch sử tất cả các lượt đăng nhập thành công và thất bại (bao gồm thông tin: thời gian, IP Client, thiết bị/trình duyệt, kết quả).
-
-##### B. Tạo & Quản lý tài khoản (Account Creation & User Management)
-- `REQ-HR-01`: **Tạo tài khoản nhân sự mới:** Admin/Quản lý có quyền tạo tài khoản cho nhân viên mới trong hệ thống bằng cách điền các thông tin bắt buộc: Họ tên, Email, Số điện thoại, Vai trò mặc định ban đầu.
-- `REQ-HR-02`: **Kích hoạt tài khoản và cấp mật khẩu:**
-  - Sau khi Admin tạo tài khoản thành công, hệ thống tự động sinh một mật khẩu mặc định ngẫu nhiên đạt chuẩn an toàn.
-  - Hệ thống tự động gửi một email kích hoạt (Activation Email) chứa thông tin tài khoản và mật khẩu mặc định kèm liên kết đăng nhập.
-- `REQ-HR-03`: **Khóa và Mở khóa tài khoản:** Admin có quyền thực hiện khóa (Deactivate) tài khoản nhân sự ngay lập tức (không cho phép đăng nhập hay thao tác trên hệ thống) hoặc mở khóa (Reactivate) tài khoản đang bị khóa.
-- `REQ-HR-04`: **Cập nhật thông tin nhân viên:** Cho phép Admin cập nhật thông tin cá nhân, phòng ban/chi nhánh, hoặc đổi vai trò của nhân viên. Nhân viên tự cập nhật được thông tin cá nhân của mình (trừ Email và Vai trò).
-
-##### C. Thiết lập vai trò & Phân quyền (Role Setup & RBAC)
-- `REQ-ROLE-01`: **Cấu hình vai trò mặc định:** Hệ thống định nghĩa sẵn các vai trò tiêu chuẩn với các phân quyền cơ bản:
-  - *Quản trị viên (Admin):* Toàn quyền hệ thống, quản lý tài khoản, phân quyền, cấu hình hệ thống.
-  - *Quản lý (Manager):* Xem báo cáo, phân công hồ sơ, duyệt các cấu hình nghiệp vụ, điều phối công việc.
-  - *Lễ tân (Receptionist):* Tiếp nhận khách hàng, tạo hồ sơ mới, tính phí dự kiến, thu phí, in hóa đơn/phiếu biên nhận.
-  - *Thư ký nghiệp vụ (Secretary):* Soạn thảo hợp đồng, xử lý hồ sơ công chứng/sao y/chứng thực theo checklist, tải tài liệu đính kèm.
-  - *Công chứng viên (Notary):* Kiểm tra checklist nghiệp vụ, phê duyệt nội dung văn bản, thực hiện ký/duyệt hồ sơ.
-  - *Kế toán (Accountant):* Quản lý thu chi, đối soát hóa đơn, quản lý báo cáo tài chính của VPCC.
-- `REQ-ROLE-02`: **Ma trận phân quyền (Permissions Matrix):** Admin có thể thiết lập quyền hạn chi tiết cho từng vai trò đối với từng module/chức năng bao gồm các quyền: Xem (Read), Thêm (Create), Sửa (Update), Xóa mềm (Delete), và Phê duyệt/Ký (Approve).
-- `REQ-ROLE-03`: **Giới hạn phạm vi dữ liệu (Data Scoping):**
-  - Nhân sự thuộc vai trò Thư ký nghiệp vụ hoặc Công chứng viên chỉ có quyền xem và xử lý các hồ sơ được phân công trực tiếp cho mình (hoặc hồ sơ thuộc phòng ban/nhóm nghiệp vụ của mình - tùy cấu hình), tránh việc xem chéo thông tin khách hàng và hồ sơ nhạy cảm của nhân viên khác.
-  - Người dùng có vai trò Quản lý hoặc Admin có quyền xem và điều phối toàn bộ hồ sơ của tất cả nhân sự.
-- `REQ-ROLE-04`: **Nhật ký thay đổi phân quyền (Role Modification Logs):** Mọi hành động chỉnh sửa quyền của một vai trò, gán vai trò cho tài khoản, hoặc thay đổi thiết lập cấu hình phân quyền đều phải được ghi nhận vào nhật ký hệ thống (Audit Trail) chi tiết (ai thực hiện, sửa đổi vai trò nào, quyền cũ và quyền mới là gì, vào thời điểm nào).
-
-### 4.3. Module Tiếp nhận, Tạo & Theo dõi hồ sơ
-#### 4.3.1 Description and Priority
-Khởi tạo mã hồ sơ, ghi nhận loại dịch vụ, phân công xử lý và theo dõi trạng thái.
-#### 4.3.2 Functional Requirements
-- `REQ-HS-01`: Khởi tạo hồ sơ, tự động sinh mã hồ sơ duy nhất. Giao diện tạo hồ sơ cung cấp form nhập thông tin khách hàng tương tự `REQ-CRM-01`. Nếu người dùng nhập SĐT hoặc CCCD/Mã số thuế trùng với dữ liệu khách cũ, hệ thống tự động điền (auto-fill) các trường thông tin còn lại.
-- `REQ-HS-02`: Chọn nhóm dịch vụ (vd: Sao y CCCD, Chứng thực) và cập nhật số lượng/thông số liên quan.
-- `REQ-HS-03`: Upload/scan đính kèm các tài liệu, giấy tờ ban đầu.
-- `REQ-HS-03b`: Tự động tính phí dự kiến ngay sau khi nhập số lượng/dịch vụ. Bắt buộc nhân viên báo giá và check chọn "Khách hàng đồng ý báo phí" thì hệ thống mới cho phép chuyển sang bước Ký/Duyệt (tránh rủi ro khách từ chối trả tiền sau khi đã ký).
-- `REQ-HS-04`: Phân công hồ sơ cho thư ký/công chứng viên (Tùy chọn - Optional, không bắt buộc).
-- `REQ-HS-05`: Theo dõi và cập nhật trạng thái hồ sơ (Mới tiếp nhận, Đang xử lý, Chờ ký, Đã hoàn tất...).
-
-### 4.4. Module Kiểm tra Checklist Nghiệp vụ
-#### 4.4.1 Description and Priority
-Đảm bảo tuân thủ chặt chẽ nghiệp vụ, tránh rủi ro pháp lý. 
-#### 4.4.2 Functional Requirements
-- `REQ-CHK-01`: Quản lý có thể định nghĩa các tiêu chí checklist riêng cho từng loại dịch vụ.
-- `REQ-CHK-02`: Bắt buộc nhân viên check đủ các mục bắt buộc (vd: "Kiểm tra tình trạng ngăn chặn") mới được chuyển bước xử lý tiếp theo.
-
-### 4.5. Module Quản lý Hợp đồng, Văn bản, Biểu mẫu
-#### 4.5.1 Description and Priority
-Tự động hóa soạn thảo, quản lý phiên bản. 
-#### 4.5.2 Functional Requirements
-- `REQ-DOC-01`: Lưu trữ kho biểu mẫu động (Template).
-- `REQ-DOC-02`: Auto-fill (Merge data) thông tin hồ sơ/khách hàng vào biểu mẫu tương ứng.
-- `REQ-DOC-03`: Quản lý các phiên bản văn bản (Nháp, Đã sửa, Chờ duyệt, Đã ký).
-
-### 4.6. Module Quản lý Phí & Hóa đơn
-#### 4.6.1 Description and Priority
-Tự động tính phí và báo giá dịch vụ ngay từ khâu tiếp nhận.
-#### 4.6.2 Functional Requirements
-- `REQ-FEE-01`: Thiết lập công thức giá cho nhóm dịch vụ. Hệ thống tự động xuất báo giá để nhân viên thông báo cho khách hàng trước khi thực hiện nghiệp vụ.
-- `REQ-FEE-02`: Hỗ trợ sửa đổi phí thủ công hoặc thêm phụ phí (yêu cầu ghi chú nguyên nhân).
-- `REQ-FEE-03`: Ghi nhận thanh toán và hỗ trợ đẩy dữ liệu sang phần mềm xuất hóa đơn.
-
-### 4.7. Module Lưu trữ Hồ sơ Điện tử
-#### 4.7.1 Description and Priority
-Đóng gói tài liệu khi hồ sơ hoàn tất. 
-#### 4.7.2 Functional Requirements
-- `REQ-ARC-01`: Đóng gói hồ sơ (bao gồm: bản nháp, bản scan đã ký, ảnh chụp).
-- `REQ-ARC-02`: Gắn mã lưu trữ và tìm kiếm hồ sơ cũ với đa tiêu chí.
-
-### 4.8. Module Chăm sóc Khách hàng (Zalo OA)
-#### 4.8.1 Description and Priority
-Tự động hóa luồng tương tác sau dịch vụ. **(Priority: Low - Mở rộng sau)**
-#### 4.8.2 Functional Requirements
-- `REQ-ZAL-01`: Tự động gửi tin nhắn Zalo OA cảm ơn / Khảo sát khi trạng thái hồ sơ là "Đã hoàn tất".
-
----
-
-## 5. Other Nonfunctional Requirements (Các yêu cầu phi chức năng khác)
-
-### 5.1 Performance Requirements (Hiệu năng)
-- Hệ thống cần tải dữ liệu tra cứu khách hàng trong thời gian < 1 giây.
-- Hỗ trợ tốt hoạt động liên tục trong giờ cao điểm của văn phòng (tối thiểu 30-50 users thao tác đồng thời).
-
-### 5.2 Safety Requirements (An toàn dữ liệu)
-- Có tính năng Soft-delete (xóa mềm). Không ai (kể cả admin) được xóa vĩnh viễn dữ liệu hồ sơ liên quan đến pháp lý mà không có log.
-- Backup database mỗi 24 giờ.
-
-### 5.3 Security Requirements (Bảo mật)
-- Mật khẩu mã hóa một chiều.
-- Log lại lịch sử (Audit Trails): Ai tạo hồ sơ, ai sửa biểu mẫu, ai thu tiền, thời gian nào.
-
-### 5.4 Software Quality Attributes (Thuộc tính chất lượng)
-- **Usability (Khả năng sử dụng):** Lễ tân/nhân viên mới có thể sử dụng thành thạo luồng tạo hồ sơ sao y cơ bản trong vòng 1-2 giờ đào tạo.
-- **Reliability (Độ tin cậy):** Đảm bảo hoạt động ổn định trong giờ hành chính của văn phòng.
-
-### 5.5 Business Rules (Quy tắc nghiệp vụ)
-- **Bắt buộc Báo phí trước:** Phải có thao tác xác nhận khách hàng đồng ý với mức phí báo giá thì hệ thống mới cho phép in Lời chứng hoặc chuyển hồ sơ cho Công chứng viên duyệt/ký. (Việc thu tiền thực tế có thể linh động trước hoặc sau khi hoàn tất tùy VPCC).
-- Công chứng viên chỉ được duyệt hồ sơ khi đã đánh dấu đủ checklist bắt buộc.
-
----
-
-## 6. Other Requirements (Yêu cầu khác)
-*(Chưa có yêu cầu phát sinh thêm ngoài scope dự án hiện tại)*
-
-## Appendix A: Glossary (Bảng thuật ngữ)
-- **VPCC:** Văn phòng Công chứng.
-- **CCV:** Công chứng viên.
-- **UCHI:** Hệ thống thông tin lưu trữ dữ liệu công chứng/ngăn chặn tài sản.
-- **CRM:** Customer Relationship Management (Quản lý Quan hệ Khách hàng).
-
-## Appendix B: Analysis Models (Mô hình phân tích)
-*(Tham khảo tài liệu Use Case phân tích sâu: [UseCase_ChungThucChuKy.md](file:///Users/nguyenvantuan/Documents/Free/VPCC/UseCase_ChungThucChuKy.md))*
-
-### Sơ đồ Use Case Tổng quan Hệ thống
-> [!NOTE]
-> Chi tiết đặc tả kỹ thuật và các Use Case chi tiết cho từng phân hệ nghiệp vụ cốt lõi:
-> - Phân hệ Nghiệp vụ **Sao Y Bản Chính**: Xem [SRS_SaoY_IEEE.md](SRS_SaoY_IEEE.md)
-> - Phân hệ Nghiệp vụ **Dịch Thuật Công Chứng**: Xem [SRS_DichThuat_IEEE.md](SRS_DichThuat_IEEE.md)
-> - Phân hệ Nghiệp vụ **Chứng Thực Chữ Ký**: Xem [SRS_ChungThucChuKy_IEEE.md](SRS_ChungThucChuKy_IEEE.md)
-
-```mermaid
-flowchart LR
-    %% Định nghĩa các tác nhân (Actors)
-    LeTan(["🧑‍💼 Lễ tân"])
-    ThuKy(["📝 Thư ký nghiệp vụ"])
-    CCV(["⚖️ Công chứng viên"])
-    KeToan(["💰 Kế toán"])
-    QuanLy(["📊 Quản lý"])
-
-    %% Định nghĩa các khối chức năng (System)
-    subgraph VPCC_CRM["Hệ thống VPCC CRM"]
-        direction TB
-        UC1("Quản lý Khách hàng (CRM)")
-        UC2("Tiếp nhận & Tạo hồ sơ")
-        UC3("Báo giá & Tính phí dự kiến")
-        UC4("Soạn thảo & Quản lý văn bản")
-        UC5("Duyệt hồ sơ & Ký chứng nhận")
-        UC6("Thu tiền & Xuất hóa đơn")
-        UC7("Quản lý nhân sự & Báo cáo")
-    end
-
-    %% Gắn kết tác nhân với chức năng
-    LeTan --> UC1
-    LeTan --> UC2
-    LeTan --> UC3
-    LeTan --> UC6
-
-    ThuKy --> UC2
-    ThuKy --> UC4
-
-    CCV --> UC5
-
-    KeToan --> UC6
-    
-    QuanLy --> UC7
-    QuanLy -.->|Theo dõi toàn bộ| VPCC_CRM
-```
-
-## Appendix C: To Be Determined List (Các vấn đề chờ xác nhận)
-- [TBD] Xác nhận API nhà cung cấp phần mềm Hóa đơn điện tử để lên phương án kết nối.
-- [TBD] Xin cấp quyền cấu hình Zalo OA của VPCC.
+- **[Phụ lục A: Sơ đồ Thực thể Dữ liệu Cốt lõi (ERD Analysis Model)](#phụ-lục-a-sơ-đồ-thực-thể-dữ-liệu-cốt-lõi-erd-analysis-model)**
+- **[Phụ lục B: Danh sách các mục cần làm rõ (To Be Determined List - TBD)](#phụ-lục-b-danh-sách-các-mục-cần-làm-rõ-to-be-determined-list---tbd)**
