@@ -4,6 +4,48 @@
 
 ---
 
+## Mục lục
+- **[Chương 1. Giới thiệu (Introduction)](#1-introduction-giới-thiệu)**
+  - [1.1 Mục đích (Purpose)](#11-purpose-mục-đích)
+  - [1.2 Quy ước tài liệu (Document Conventions)](#12-document-conventions-quy-ước-tài-liệu)
+  - [1.3 Đối tượng độc giả (Intended Audience)](#13-intended-audience-and-reading-suggestions-đối-tượng-độc-giả)
+  - [1.4 Phạm vi sản phẩm (Product Scope)](#14-product-scope-phạm-vi-sản-phẩm)
+  - [1.5 Tài liệu tham khảo (References)](#15-references-tài-liệu-tham-khảo)
+- **[Chương 2. Mô tả tổng quan (Overall Description)](#2-overall-description-mô-tả-tổng-quan)**
+  - [2.1 Bối cảnh sản phẩm (Product Perspective)](#21-product-perspective-bối-cảnh-sản-phẩm)
+  - [2.2 Chức năng chính (Product Functions)](#22-product-functions-các-chức-năng-chính)
+  - [2.3 Đối tượng người dùng (User Classes and Characteristics)](#23-user-classes-and-characteristics-đối-tượng-người-dùng)
+  - [2.4 Môi trường vận hành (Operating Environment)](#24-operating-environment-môi-trường-vận-hành)
+  - [2.5 Ràng buộc hệ thống (Design and Implementation Constraints)](#25-design-and-implementation-constraints-ràng-buộc-hệ-thống)
+  - [2.6 Tài liệu người dùng (User Documentation)](#26-user-documentation-tài-liệu-người-dùng)
+  - [2.7 Giả định và Phụ thuộc (Assumptions and Dependencies)](#27-assumptions-and-dependencies-giả-định-và-phụ-thuộc)
+- **[Chương 3. Yêu cầu giao diện bên ngoài (External Interface Requirements)](#3-external-interface-requirements-yêu-cầu-giao-diện-bên-ngoài)**
+  - [3.1 Giao diện người dùng (User Interfaces)](#31-user-interfaces-giao-diện-người-dùng)
+  - [3.2 Giao diện phần cứng (Hardware Interfaces)](#32-hardware-interfaces-giao-diện-phần-cứng)
+  - [3.3 Giao diện phần mềm (Software Interfaces)](#33-software-interfaces-giao-diện-phần-mềm)
+  - [3.4 Giao diện truyền thông (Communications Interfaces)](#34-communications-interfaces-giao-diện-truyền-thông)
+- **[Chương 4. Các tính năng hệ thống (System Features)](#4-system-features-tính-năng-hệ-thống)**
+  - [4.1 Module CRM và Quản lý khách hàng](#41-module-crm-và-quản-lý-khách-hàng)
+  - [4.2 Module Quản lý Nhân sự & Phân quyền](#42-module-quản-lý-nhân-sự--phân-quyền)
+  - [4.3 Module Tiếp nhận, Tạo & Theo dõi hồ sơ](#43-module-tiếp-nhận-tạo--theo-dõi-hồ-sơ)
+  - [4.4 Module Kiểm tra Checklist Nghiệp vụ](#44-module-kiểm-tra-checklist-nghiệp-vụ)
+  - [4.5 Module Quản lý Hợp đồng, Văn bản, Biểu mẫu](#45-module-quản-lý-hợp-đồng-văn-bản-biểu-mẫu)
+  - [4.6 Module Quản lý Phí & Hóa đơn](#46-module-quản-lý-phí--hóa-đơn)
+  - [4.7 Module Lưu trữ Hồ sơ Điện tử](#47-module-lưu-trữ-hồ-sơ-điện-tử)
+  - [4.8 Module Chăm sóc Khách hàng (Zalo OA)](#48-module-chăm-sóc-khách-hàng-zalo-oa)
+- **[Chương 5. Các yêu cầu phi chức năng khác (Other Nonfunctional Requirements)](#5-other-nonfunctional-requirements-các-yêu-cầu-phi-chức-năng-khác)**
+  - [5.1 Hiệu năng (Performance Requirements)](#51-performance-requirements-hiệu-năng)
+  - [5.2 An toàn dữ liệu (Safety Requirements)](#52-safety-requirements-an-toàn-dữ-liệu)
+  - [5.3 Bảo mật (Security Requirements)](#53-security-requirements-bảo-mật)
+  - [5.4 Thuộc tính chất lượng (Software Quality Attributes)](#54-software-quality-attributes-thuộc-tính-chất-lượng)
+  - [5.5 Quy tắc nghiệp vụ (Business Rules)](#55-business-rules-quy-tắc-nghiệp-vụ)
+- **[Chương 6. Yêu cầu khác (Other Requirements)](#6-other-requirements-yêu-cầu-khác)**
+- **[Phụ lục A: Bảng thuật ngữ (Glossary)](#appendix-a-glossary-bảng-thuật-ngữ)**
+- **[Phụ lục B: Mô hình phân tích (Analysis Models)](#appendix-b-analysis-models-mô-hình-phân-tích)**
+- **[Phụ lục C: Các vấn đề chờ xác nhận (To Be Determined List)](#appendix-c-to-be-determined-list-các-vấn-đề-chờ-xác-nhận)**
+
+---
+
 ## 1. Introduction (Giới thiệu)
 
 ### 1.1 Purpose (Mục đích)
