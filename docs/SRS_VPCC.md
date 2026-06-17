@@ -194,6 +194,11 @@ Tự động hóa luồng tương tác sau dịch vụ. **(Priority: Low - Mở 
 *(Tham khảo tài liệu Use Case phân tích sâu: [UseCase_ChungThucChuKy.md](file:///Users/nguyenvantuan/Documents/Free/VPCC/UseCase_ChungThucChuKy.md))*
 
 ### Sơ đồ Use Case Tổng quan Hệ thống
+> [!NOTE]
+> Chi tiết đặc tả kỹ thuật và các Use Case chi tiết cho từng phân hệ nghiệp vụ cốt lõi:
+> - Phân hệ Nghiệp vụ **Sao Y Bản Chính**: Xem [SRS_SaoY_IEEE.md](SRS_SaoY_IEEE.md)
+> - Phân hệ Nghiệp vụ **Dịch Thuật Công Chứng**: Xem [SRS_DichThuat_IEEE.md](SRS_DichThuat_IEEE.md)
+> - Phân hệ Nghiệp vụ **Chứng Thực Chữ Ký**: Xem [SRS_ChungThucChuKy_IEEE.md](SRS_ChungThucChuKy_IEEE.md)
 
 ```mermaid
 flowchart LR
