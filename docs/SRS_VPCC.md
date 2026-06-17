@@ -102,11 +102,42 @@ Quản lý tập trung định danh khách hàng (CCCD, SĐT) để tránh mất
 
 ### 4.2. Module Quản lý Nhân sự & Phân quyền
 #### 4.2.1 Description and Priority
-Bảo mật hệ thống thông qua việc cấp quyền truy cập theo vai trò công việc.
+Bảo mật hệ thống thông qua việc xác thực người dùng, cấp quyền truy cập theo vai trò công việc (RBAC), quản lý vòng đời tài khoản nhân viên và ghi nhận nhật ký hệ thống để phục vụ kiểm toán an toàn thông tin (Audit Trail).
+- **Độ ưu tiên:** Cao (High).
+
 #### 4.2.2 Functional Requirements
-- `REQ-HR-01`: Quản trị viên có thể tạo, khóa, mở khóa tài khoản nhân sự.
-- `REQ-HR-02`: Phân quyền (Role-Based Access Control) cho Lễ tân, Thư ký, Công chứng viên, Kế toán, Quản lý.
-- `REQ-HR-03`: Giới hạn truy cập: Nhân sự chỉ xem/xử lý hồ sơ được phân công (tùy cấu hình).
+
+##### A. Xác thực & Đăng nhập (Authentication & Login)
+- `REQ-AUTH-01`: **Đăng nhập hệ thống:** Cho phép người dùng đăng nhập bằng Email/Tên tài khoản và Mật khẩu. Hỗ trợ cơ chế JWT (JSON Web Token) để quản lý phiên làm việc ở phía Client.
+- `REQ-AUTH-02`: **Chính sách mật khẩu (Password Policy):**
+  - Mật khẩu tạo mới hoặc thay đổi phải đạt độ phức tạp tối thiểu: ít nhất 8 ký tự, bao gồm chữ hoa, chữ thường, số và ít nhất một ký tự đặc biệt (ví dụ: `@`, `#`, `$`, `%`,... ).
+  - Yêu cầu bắt buộc người dùng thay đổi mật khẩu ở lần đăng nhập đầu tiên sau khi tài khoản được cấp bởi Admin.
+- `REQ-AUTH-03`: **Quản lý phiên đăng nhập (Session Management):** Tự động đăng xuất (Expire Session) sau 30 phút liên tục không có hoạt động tương tác từ phía người dùng để ngăn chặn rủi ro rò rỉ thông tin khi người dùng rời máy làm việc.
+- `REQ-AUTH-04`: **Khóa tài khoản tự động (Account Lockout):** Tự động khóa tài khoản tạm thời trong vòng 15 phút nếu đăng nhập sai mật khẩu quá 5 lần liên tiếp. Đồng thời gửi thông báo cảnh báo qua email của nhân sự đó.
+- `REQ-AUTH-05`: **Khôi phục mật khẩu (Password Recovery):** Hỗ trợ tính năng "Quên mật khẩu", hệ thống sẽ gửi một liên kết reset mật khẩu dùng một lần (One-Time Link) có thời hạn hiệu lực trong 10 phút đến email đã đăng ký của nhân viên.
+- `REQ-AUTH-06`: **Nhật ký đăng nhập (Authentication Logs):** Ghi nhận lịch sử tất cả các lượt đăng nhập thành công và thất bại (bao gồm thông tin: thời gian, IP Client, thiết bị/trình duyệt, kết quả).
+
+##### B. Tạo & Quản lý tài khoản (Account Creation & User Management)
+- `REQ-HR-01`: **Tạo tài khoản nhân sự mới:** Admin/Quản lý có quyền tạo tài khoản cho nhân viên mới trong hệ thống bằng cách điền các thông tin bắt buộc: Họ tên, Email, Số điện thoại, Vai trò mặc định ban đầu.
+- `REQ-HR-02`: **Kích hoạt tài khoản và cấp mật khẩu:**
+  - Sau khi Admin tạo tài khoản thành công, hệ thống tự động sinh một mật khẩu mặc định ngẫu nhiên đạt chuẩn an toàn.
+  - Hệ thống tự động gửi một email kích hoạt (Activation Email) chứa thông tin tài khoản và mật khẩu mặc định kèm liên kết đăng nhập.
+- `REQ-HR-03`: **Khóa và Mở khóa tài khoản:** Admin có quyền thực hiện khóa (Deactivate) tài khoản nhân sự ngay lập tức (không cho phép đăng nhập hay thao tác trên hệ thống) hoặc mở khóa (Reactivate) tài khoản đang bị khóa.
+- `REQ-HR-04`: **Cập nhật thông tin nhân viên:** Cho phép Admin cập nhật thông tin cá nhân, phòng ban/chi nhánh, hoặc đổi vai trò của nhân viên. Nhân viên tự cập nhật được thông tin cá nhân của mình (trừ Email và Vai trò).
+
+##### C. Thiết lập vai trò & Phân quyền (Role Setup & RBAC)
+- `REQ-ROLE-01`: **Cấu hình vai trò mặc định:** Hệ thống định nghĩa sẵn các vai trò tiêu chuẩn với các phân quyền cơ bản:
+  - *Quản trị viên (Admin):* Toàn quyền hệ thống, quản lý tài khoản, phân quyền, cấu hình hệ thống.
+  - *Quản lý (Manager):* Xem báo cáo, phân công hồ sơ, duyệt các cấu hình nghiệp vụ, điều phối công việc.
+  - *Lễ tân (Receptionist):* Tiếp nhận khách hàng, tạo hồ sơ mới, tính phí dự kiến, thu phí, in hóa đơn/phiếu biên nhận.
+  - *Thư ký nghiệp vụ (Secretary):* Soạn thảo hợp đồng, xử lý hồ sơ công chứng/sao y/chứng thực theo checklist, tải tài liệu đính kèm.
+  - *Công chứng viên (Notary):* Kiểm tra checklist nghiệp vụ, phê duyệt nội dung văn bản, thực hiện ký/duyệt hồ sơ.
+  - *Kế toán (Accountant):* Quản lý thu chi, đối soát hóa đơn, quản lý báo cáo tài chính của VPCC.
+- `REQ-ROLE-02`: **Ma trận phân quyền (Permissions Matrix):** Admin có thể thiết lập quyền hạn chi tiết cho từng vai trò đối với từng module/chức năng bao gồm các quyền: Xem (Read), Thêm (Create), Sửa (Update), Xóa mềm (Delete), và Phê duyệt/Ký (Approve).
+- `REQ-ROLE-03`: **Giới hạn phạm vi dữ liệu (Data Scoping):**
+  - Nhân sự thuộc vai trò Thư ký nghiệp vụ hoặc Công chứng viên chỉ có quyền xem và xử lý các hồ sơ được phân công trực tiếp cho mình (hoặc hồ sơ thuộc phòng ban/nhóm nghiệp vụ của mình - tùy cấu hình), tránh việc xem chéo thông tin khách hàng và hồ sơ nhạy cảm của nhân viên khác.
+  - Người dùng có vai trò Quản lý hoặc Admin có quyền xem và điều phối toàn bộ hồ sơ của tất cả nhân sự.
+- `REQ-ROLE-04`: **Nhật ký thay đổi phân quyền (Role Modification Logs):** Mọi hành động chỉnh sửa quyền của một vai trò, gán vai trò cho tài khoản, hoặc thay đổi thiết lập cấu hình phân quyền đều phải được ghi nhận vào nhật ký hệ thống (Audit Trail) chi tiết (ai thực hiện, sửa đổi vai trò nào, quyền cũ và quyền mới là gì, vào thời điểm nào).
 
 ### 4.3. Module Tiếp nhận, Tạo & Theo dõi hồ sơ
 #### 4.3.1 Description and Priority
@@ -194,6 +225,11 @@ Tự động hóa luồng tương tác sau dịch vụ. **(Priority: Low - Mở 
 *(Tham khảo tài liệu Use Case phân tích sâu: [UseCase_ChungThucChuKy.md](file:///Users/nguyenvantuan/Documents/Free/VPCC/UseCase_ChungThucChuKy.md))*
 
 ### Sơ đồ Use Case Tổng quan Hệ thống
+> [!NOTE]
+> Chi tiết đặc tả kỹ thuật và các Use Case chi tiết cho từng phân hệ nghiệp vụ cốt lõi:
+> - Phân hệ Nghiệp vụ **Sao Y Bản Chính**: Xem [SRS_SaoY_IEEE.md](SRS_SaoY_IEEE.md)
+> - Phân hệ Nghiệp vụ **Dịch Thuật Công Chứng**: Xem [SRS_DichThuat_IEEE.md](SRS_DichThuat_IEEE.md)
+> - Phân hệ Nghiệp vụ **Chứng Thực Chữ Ký**: Xem [SRS_ChungThucChuKy_IEEE.md](SRS_ChungThucChuKy_IEEE.md)
 
 ```mermaid
 flowchart LR

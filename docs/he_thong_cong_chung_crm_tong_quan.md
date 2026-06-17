@@ -26,6 +26,12 @@ Nhìn tổng thể, hệ thống không chỉ là nơi lưu thông tin hồ sơ.
 - **Lớp nghiệp vụ:** Hồ sơ đang ở bước nào, đang sử dụng dịch vụ gì, cần nhập thông tin gì, phí được tính như thế nào.
 - **Lớp quản trị:** Nhân sự đang xử lý bao nhiêu việc, doanh thu và phí ra sao, hồ sơ nào cần theo dõi tiếp.
 
+> [!NOTE]
+> Chi tiết đặc tả kỹ thuật và các Use Case chi tiết cho từng phân hệ nghiệp vụ cốt lõi:
+> - Phân hệ Nghiệp vụ **Sao Y Bản Chính**: Xem [SRS_SaoY_IEEE.md](SRS_SaoY_IEEE.md)
+> - Phân hệ Nghiệp vụ **Dịch Thuật Công Chứng**: Xem [SRS_DichThuat_IEEE.md](SRS_DichThuat_IEEE.md)
+> - Phân hệ Nghiệp vụ **Chứng Thực Chữ Ký**: Xem [SRS_ChungThucChuKy_IEEE.md](SRS_ChungThucChuKy_IEEE.md)
+
 ### 1.2. Giá trị vận hành cốt lõi
 
 Từ bức tranh trên, văn phòng có thể:
@@ -205,22 +211,40 @@ Giá trị mang lại:
 
 ## 4. Nhóm dịch vụ hệ thống hỗ trợ
 
-Hệ thống được thiết kế linh hoạt để phục vụ nhiều nhóm dịch vụ phổ biến tại văn phòng công chứng. Trong giai đoạn đầu, luồng ưu tiên là dịch vụ sao y, chứng thực bản sao.
+Hệ thống được thiết kế linh hoạt để phục vụ các nhóm dịch vụ phổ biến tại văn phòng công chứng. Trong giai đoạn hiện tại, hệ thống hỗ trợ đầy đủ 3 phân hệ dịch vụ cốt lõi sau:
 
-Nhóm sao y có thể được chia thành các loại dịch vụ nhỏ để nhân viên chọn nhanh khi tiếp nhận khách:
-
+### 4.1. Phân hệ Sao Y Bản Chính (Certified Copying)
+Hỗ trợ tiếp nhận nhanh và tính phí tự động cho các loại giấy tờ sao y thường gặp:
 - Sao y CCCD.
 - Sao y giấy tờ tùy thân và hộ tịch.
 - Sao y giấy tờ học vấn, bằng cấp.
-- Sao y giấy tờ sở hữu tài sản.
-- Sao y giấy tờ doanh nghiệp, tổ chức.
+- Sao y giấy tờ sở hữu tài sản (Kiểm tra UCHI).
+- Sao y giấy tờ doanh nghiệp, tổ chức (B2B, Tách hóa đơn tự động).
 
-Về sau, hệ thống có thể mở rộng thêm các nhóm dịch vụ khác như:
-- Chứng thực chữ ký
-- Hợp đồng giao dịch
-- Dịch thuật
-- Hồ sơ thừa kế
-- Hoặc các dịch vụ riêng theo nhu cầu vận hành của văn phòng
+*Chi tiết đặc tả kỹ thuật xem tại [SRS_SaoY_IEEE.md](SRS_SaoY_IEEE.md).*
+
+### 4.2. Phân hệ Chứng Thực Chữ Ký (Signature Certification)
+Hỗ trợ chứng thực chữ ký cá nhân trực tiếp hoặc chữ ký trên các văn bản cam đoan, giấy ủy quyền theo quy định:
+- Chứng thực chữ ký cá nhân thông thường.
+- Chứng thực chữ ký trên giấy ủy quyền.
+- Chứng thực chữ ký trên tờ khai, lý lịch.
+
+*Chi tiết đặc tả kỹ thuật xem tại [SRS_ChungThucChuKy_IEEE.md](SRS_ChungThucChuKy_IEEE.md).*
+
+### 4.3. Phân hệ Dịch Thuật Công Chứng & Chứng Thực Chữ Ký Người Dịch (Translation Notary)
+Hỗ trợ quy trình dịch thuật từ các CTV liên kết, tính phí thù lao và tổ chức chứng thực chữ ký người dịch (CTV):
+- Dịch thuật tài liệu cá nhân thông thường (Anh, Pháp, Trung, Nhật, Hàn...).
+- Dịch thuật chuyên ngành doanh nghiệp phức tạp (B2B, cam kết NDA bảo mật).
+- Dịch thuật đặt trước trực tuyến qua Zalo OA (Luồng O2O, đối khớp bản gốc).
+- Dịch thuật đa ngôn ngữ tách/gộp hồ sơ.
+
+*Chi tiết đặc tả kỹ thuật xem tại [SRS_DichThuat_IEEE.md](SRS_DichThuat_IEEE.md).*
+
+### 4.4. Các dịch vụ mở rộng trong tương lai (Future Scope)
+Về sau, hệ thống có thể cấu hình mở rộng thêm các nhóm dịch vụ khác như:
+- Hợp đồng giao dịch (Chuyển nhượng, mua bán, tặng cho tài sản).
+- Hồ sơ thừa kế (Khai nhận di sản, thỏa thuận phân chia di sản).
+- Các dịch vụ riêng theo nhu cầu vận hành đặc thù của từng văn phòng.
 
 Mỗi nhóm dịch vụ có thể có bộ giấy tờ, checklist, biểu mẫu và quy trình xử lý riêng. Điều này giúp hệ thống phù hợp với cách vận hành thực tế của từng văn phòng, thay vì áp một quy trình cứng cho tất cả hồ sơ.
 
@@ -242,6 +266,9 @@ Quy trình dưới đây mô tả trường hợp khách hàng đến văn phòn
 10. Sau khi dịch vụ hoàn tất, hệ thống tự động gửi tin nhắn cảm ơn hoặc khảo sát chất lượng dịch vụ qua tài khoản Zalo OA của văn phòng.
 
 Luồng này giúp văn phòng tiếp nhận nhanh các hồ sơ sao y thường gặp, đồng thời vẫn lưu được đầy đủ thông tin khách hàng, loại dịch vụ, số bản, đơn giá, thành tiền và lịch sử xử lý.
+
+> [!NOTE]
+> Chi tiết đặc tả kỹ thuật các Use Case, sơ đồ luồng dữ liệu (Sequence Diagram) và các luồng ngoại lệ cho quy trình này, xem tại [SRS_SaoY_IEEE.md](SRS_SaoY_IEEE.md).
 
 ---
 
