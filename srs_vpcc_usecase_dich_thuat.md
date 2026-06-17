@@ -188,74 +188,133 @@ flowchart TD
 
     START([Khách hàng yêu cầu dịch thuật công chứng])
 
-    D0{Đã có lịch hẹn?}
+    CH{Kênh tiếp nhận}
+
+    %% =========================
+    %% APPOINTMENT FLOW
+    %% =========================
 
     subgraph Appointment["Appointment Management"]
-        A1[UC-031 Create Appointment]
-        A2[UC-032 Assign Appointment]
-        A3[UC-033 Send Appointment Reminder]
-        A4[UC-034 Check In Appointment]
+
+        A0[UC-002 Search Customer]
+
+        A1{Customer tồn tại?}
+
+        A2[UC-001 Create Customer]
+
+        A3[UC-031 Create Appointment]
+
+        A4[UC-032 Assign Appointment]
+
+        A5[UC-033 Send Appointment Reminder]
+
+        A6[UC-034 Check In Appointment]
+
     end
+
+    %% =========================
+    %% WALK-IN FLOW
+    %% =========================
+
+    subgraph WalkIn["Walk-in"]
+
+        W1[UC-002 Search Customer]
+
+        W2{Customer tồn tại?}
+
+        W3[UC-001 Create Customer]
+
+    end
+
+    %% =========================
+    %% ONLINE FLOW
+    %% =========================
+
+    subgraph Online["Zalo / Email"]
+
+        O1[UC-002 Search Customer]
+
+        O2{Customer tồn tại?}
+
+        O3[UC-001 Create Customer]
+
+    end
+
+    %% =========================
+    %% CASE INTAKE
+    %% =========================
 
     subgraph Receptionist["Receptionist"]
 
-        W1[Tiếp nhận khách Walk-in hoặc tài liệu từ Zalo/Email]
+        C1[UC-004 Create Case]
 
-        C1[UC-002 Search Customer]
-
-        C2{Khách hàng tồn tại?}
-
-        C3[UC-001 Create Customer]
-
-        CASE1[UC-004 Create Case]
-
-        CASE2[UC-005 Assign Case]
+        C2[UC-005 Assign Case]
 
     end
+
+    %% =========================
+    %% SECRETARY
+    %% =========================
 
     subgraph Secretary["Secretary"]
 
-        DOC1[UC-007 Upload Document]
+        D1[UC-007 Upload Document]
 
-        V1[UC-009 Execute Checklist<br/>CHK-TRN-001]
+        D2[UC-009 Execute Checklist<br/>CHK-TRN-001]
 
-        V2{Checklist đạt yêu cầu?}
+        D3{Checklist đạt yêu cầu?}
 
-        V3[Yêu cầu khách bổ sung hồ sơ]
+        D4[Yêu cầu khách bổ sung hồ sơ]
 
-        T1[UC-024 Define Translation Languages]
+        D5[UC-024 Define Translation Languages]
 
-        Q1[UC-037 Calculate Translation Fee]
+        D6[UC-037 Calculate Translation Fee]
 
-        Q2[UC-038 Approve Quotation]
+        D7[UC-038 Approve Quotation]
 
-        T2[UC-021 Assign Translator]
+        D8[UC-021 Assign Translator]
 
     end
+
+    %% =========================
+    %% TRANSLATOR
+    %% =========================
 
     subgraph Translator["Translator"]
 
-        T3[UC-022 Perform Translation]
+        T1[UC-022 Perform Translation]
 
-        T4[UC-025 Upload Translation Document]
+        T2[UC-025 Upload Translation Document]
 
     end
+
+    %% =========================
+    %% REVIEWER
+    %% =========================
 
     subgraph Reviewer["Reviewer"]
 
         R1[UC-023 Review Translation<br/>CHK-TRN-002]
 
-        R2{Bản dịch đạt yêu cầu?}
+        R2{Translation Approved?}
 
     end
 
-    subgraph Secretary_Validation["Secretary"]
+    %% =========================
+    %% SECRETARY VALIDATION
+    %% =========================
 
-        S1[UC-009 Execute Checklist<br/>CHK-TRN-003]
+    subgraph SecretaryValidation["Secretary"]
 
-        S2{Đủ điều kiện trình ký?}
+        V1[UC-009 Execute Checklist<br/>CHK-TRN-003]
+
+        V2{Ready For Signature?}
 
     end
+
+    %% =========================
+    %% NOTARY
+    %% =========================
 
     subgraph Notary["Notary"]
 
@@ -265,45 +324,57 @@ flowchart TD
 
     end
 
+    %% =========================
+    %% FINANCE
+    %% =========================
+
     subgraph Finance["Finance"]
 
-        P1[UC-012 Record Payment]
+        F1[UC-012 Record Payment]
 
-        P2{Thanh toán đủ?}
+        F2{Paid In Full?}
 
-        INV1[UC-040 Generate Invoice]
+        F3[UC-040 Generate Invoice]
 
-        INV2[UC-041 Send Invoice]
-
-    end
-
-    subgraph Secretary_Result["Secretary"]
-
-        CC1[UC-028 Complete Case]
-
-        CC2[Case Status = READY_FOR_PICKUP]
-
-        RP1[UC-035 Schedule Result Pickup]
+        F4[UC-041 Send Invoice]
 
     end
 
-    subgraph System["System"]
+    %% =========================
+    %% COMPLETION
+    %% =========================
 
-        RP2[UC-018 Send Notification]
+    subgraph Completion["Case Completion"]
+
+        C3[UC-028 Complete Case]
+
+        C4[Case Status = READY_FOR_PICKUP]
+
+        C5[UC-035 Schedule Result Pickup]
+
+        C6[UC-018 Send Notification]
 
     end
 
-    subgraph Receptionist_Delivery["Receptionist"]
+    %% =========================
+    %% DELIVERY
+    %% =========================
 
-        RP3[Khách đến nhận kết quả]
+    subgraph Delivery["Result Delivery"]
 
-        RP4[UC-036 Confirm Result Delivery<br/>CHK-TRN-004]
+        DL1[Khách nhận kết quả]
 
-        RP5[Case Status = DELIVERED]
+        DL2[UC-036 Confirm Result Delivery<br/>CHK-TRN-004]
+
+        DL3[Case Status = DELIVERED]
 
     end
 
-    subgraph Archive["Secretary"]
+    %% =========================
+    %% ARCHIVE
+    %% =========================
+
+    subgraph Archive["Archive"]
 
         AR1[UC-014 Archive Case]
 
@@ -313,135 +384,169 @@ flowchart TD
 
     END([Kết thúc])
 
-    START --> D0
+    %% ===== CHANNEL SELECTION =====
 
-    D0 -->|Có| A1
-    A1 --> A2
+    START --> CH
+
+    CH -->|Appointment| A0
+    CH -->|Walk-in| W1
+    CH -->|Zalo / Email| O1
+
+    %% ===== APPOINTMENT =====
+
+    A0 --> A1
+
+    A1 -->|Không| A2
+    A1 -->|Có| A3
+
     A2 --> A3
-    A3 --> A4
-    A4 --> C1
 
-    D0 -->|Không| W1
-    W1 --> C1
+    A3 --> A4
+    A4 --> A5
+    A5 --> A6
+
+    A6 --> C1
+
+    %% ===== WALK-IN =====
+
+    W1 --> W2
+
+    W2 -->|Không| W3
+    W2 -->|Có| C1
+
+    W3 --> C1
+
+    %% ===== ONLINE =====
+
+    O1 --> O2
+
+    O2 -->|Không| O3
+    O2 -->|Có| C1
+
+    O3 --> C1
+
+    %% ===== COMMON FLOW =====
 
     C1 --> C2
 
-    C2 -->|Không| C3
-    C3 --> CASE1
+    C2 --> D1
 
-    C2 -->|Có| CASE1
+    D1 --> D2
 
-    CASE1 --> CASE2
+    D2 --> D3
 
-    CASE2 --> DOC1
+    D3 -->|Không đạt| D4
+    D4 --> D1
 
-    DOC1 --> V1
+    D3 -->|Đạt| D5
 
-    V1 --> V2
+    D5 --> D6
 
-    V2 -->|Không đạt| V3
-    V3 --> DOC1
+    D6 --> D7
 
-    V2 -->|Đạt| T1
+    D7 --> D8
 
-    T1 --> Q1
+    D8 --> T1
 
-    Q1 --> Q2
+    T1 --> T2
 
-    Q2 --> T2
-
-    T2 --> T3
-
-    T3 --> T4
-
-    T4 --> R1
+    T2 --> R1
 
     R1 --> R2
 
-    R2 -->|Không đạt| T3
+    R2 -->|Không đạt| T1
 
-    R2 -->|Đạt| S1
+    R2 -->|Đạt| V1
 
-    S1 --> S2
+    V1 --> V2
 
-    S2 -->|Không đạt| T3
+    V2 -->|Không đạt| T1
 
-    S2 -->|Đạt| N1
+    V2 -->|Đạt| N1
 
     N1 --> N2
 
-    N2 --> P1
+    N2 --> F1
 
-    P1 --> P2
+    F1 --> F2
 
-    P2 -->|Chưa đủ| P1
+    F2 -->|Chưa đủ| F1
 
-    P2 -->|Đủ| INV1
+    F2 -->|Đủ| F3
 
-    INV1 --> INV2
+    F3 --> F4
 
-    INV2 --> CC1
+    F4 --> C3
 
-    CC1 --> CC2
+    C3 --> C4
 
-    CC2 --> RP1
+    C4 --> C5
 
-    RP1 --> RP2
+    C5 --> C6
 
-    RP2 --> RP3
+    C6 --> DL1
 
-    RP3 --> RP4
+    DL1 --> DL2
 
-    RP4 --> RP5
+    DL2 --> DL3
 
-    RP5 --> AR1
+    DL3 --> AR1
 
     AR1 --> AR2
 
     AR2 --> END
 
-    click A1 "#uc-031-create-appointment"
-    click A2 "#uc-032-assign-appointment"
-    click A3 "#uc-033-send-appointment-reminder"
-    click A4 "#uc-034-check-in-appointment"
+    %% ===== USE CASE LINKS =====
 
-    click C1 "#uc-002-search-customer"
-    click C3 "#uc-001-create-customer"
-    click CASE1 "#uc-004-create-case"
-    click CASE2 "#uc-005-assign-case"
+    click A0 "#uc-002-search-customer"
+    click A2 "#uc-001-create-customer"
+    click A3 "#uc-031-create-appointment"
+    click A4 "#uc-032-assign-appointment"
+    click A5 "#uc-033-send-appointment-reminder"
+    click A6 "#uc-034-check-in-appointment"
 
-    click DOC1 "#uc-007-upload-document"
+    click W1 "#uc-002-search-customer"
+    click W3 "#uc-001-create-customer"
 
+    click O1 "#uc-002-search-customer"
+    click O3 "#uc-001-create-customer"
+
+    click C1 "#uc-004-create-case"
+    click C2 "#uc-005-assign-case"
+
+    click D1 "#uc-007-upload-document"
+    click D2 "#uc-009-execute-checklist"
     click V1 "#uc-009-execute-checklist"
-    click S1 "#uc-009-execute-checklist"
 
-    click T1 "#uc-024-define-translation-languages"
+    click D5 "#uc-024-define-translation-languages"
 
-    click Q1 "#uc-037-calculate-translation-fee"
-    click Q2 "#uc-038-approve-quotation"
+    click D6 "#uc-037-calculate-translation-fee"
+    click D7 "#uc-038-approve-quotation"
 
-    click T2 "#uc-021-assign-translator"
-    click T3 "#uc-022-perform-translation"
-    click T4 "#uc-025-upload-translation-document"
+    click D8 "#uc-021-assign-translator"
+
+    click T1 "#uc-022-perform-translation"
+    click T2 "#uc-025-upload-translation-document"
 
     click R1 "#uc-023-review-translation"
 
     click N1 "#uc-006-update-case-status"
     click N2 "#uc-026-sign-case"
 
-    click P1 "#uc-012-record-payment"
+    click F1 "#uc-012-record-payment"
+    click F3 "#uc-040-generate-invoice"
+    click F4 "#uc-041-send-invoice"
 
-    click INV1 "#uc-040-generate-invoice"
-    click INV2 "#uc-041-send-invoice"
+    click C3 "#uc-028-complete-case"
 
-    click CC1 "#uc-028-complete-case"
+    click C5 "#uc-035-schedule-result-pickup"
+    click C6 "#uc-018-send-notification"
 
-    click RP1 "#uc-035-schedule-result-pickup"
-    click RP2 "#uc-018-send-notification"
-    click RP4 "#uc-036-confirm-result-delivery"
+    click DL2 "#uc-036-confirm-result-delivery"
 
     click AR1 "#uc-014-archive-case"
 ```
+
 
 ---
 
@@ -1744,45 +1849,46 @@ Bao gồm:
 Hệ thống phải hỗ trợ xuất báo giá dưới dạng PDF.
 
 ---
-## UC-037 Calculate Translation Fee
 
-### Use Case ID
+### UC-037 Calculate Translation Fee
+
+#### Use Case ID
 
 UC-037
 
-### Use Case Name
+#### Use Case Name
 
 Calculate Translation Fee
 
-### Description
+#### Description
 
 Cho phép tính toán báo giá dịch thuật dựa trên ngôn ngữ, số trang và các loại phí áp dụng.
 
-### Primary Actor
+#### Primary Actor
 
 Receptionist
 
-### Supporting Actors
+#### Supporting Actors
 
 System
 
-### Trigger
+#### Trigger
 
 Receptionist tạo hồ sơ dịch thuật mới.
 
-### Preconditions
+#### Preconditions
 
 * Hồ sơ đã được tạo.
 * Tài liệu đã được upload.
 * Đã xác định ngôn ngữ nguồn và ngôn ngữ đích.
 
-### Postconditions
+#### Postconditions
 
 * Báo giá được tạo.
 * Tổng phí được tính toán.
 * Báo giá được lưu vào hệ thống.
 
-### Main Flow
+#### Main Flow
 
 | Step | Actor        | Action                              |
 | ---- | ------------ | ----------------------------------- |
@@ -1798,7 +1904,7 @@ Receptionist tạo hồ sơ dịch thuật mới.
 | 10   | System       | Lưu báo giá                         |
 | 11   | System       | Hiển thị báo giá                    |
 
-### Related Functional Requirements
+#### Related Functional Requirements
 
 * FR-PRI-001
 * FR-PRI-002
@@ -1809,50 +1915,50 @@ Receptionist tạo hồ sơ dịch thuật mới.
 * FR-PRI-007
 * FR-PRI-008
 
-### Related Business Rules
+#### Related Business Rules
 
 * BR-036
 
 ---
 
-## UC-038 Approve Quotation
+### UC-038 Approve Quotation
 
-### Use Case ID
+#### Use Case ID
 
 UC-038
 
-### Use Case Name
+#### Use Case Name
 
 Approve Quotation
 
-### Description
+#### Description
 
 Cho phép ghi nhận việc khách hàng chấp thuận báo giá trước khi hồ sơ được xử lý.
 
-### Primary Actor
+#### Primary Actor
 
 Receptionist
 
-### Supporting Actors
+#### Supporting Actors
 
 Customer
 System
 
-### Trigger
+#### Trigger
 
 Báo giá đã được tạo.
 
-### Preconditions
+#### Preconditions
 
 * Báo giá tồn tại.
 * Hồ sơ chưa được phân công cho biên dịch viên.
 
-### Postconditions
+#### Postconditions
 
 * Báo giá được đánh dấu đã chấp thuận.
 * Hồ sơ đủ điều kiện chuyển sang bước phân công biên dịch viên.
 
-### Main Flow
+#### Main Flow
 
 | Step | Actor        | Action                          |
 | ---- | ------------ | ------------------------------- |
@@ -1864,7 +1970,7 @@ Báo giá đã được tạo.
 | 6    | System       | Lưu thời gian chấp thuận        |
 | 7    | System       | Ghi Audit Log                   |
 
-### Alternative Flow A1 – Customer Rejects Quotation
+#### Alternative Flow A1 – Customer Rejects Quotation
 
 | Step | Actor        | Action               |
 | ---- | ------------ | -------------------- |
@@ -1872,7 +1978,7 @@ Báo giá đã được tạo.
 | A1.2 | Receptionist | Điều chỉnh báo giá   |
 | A1.3 | System       | Lưu lịch sử thay đổi |
 
-### Related Functional Requirements
+#### Related Functional Requirements
 
 * FR-PRI-009
 * FR-PRI-010
@@ -1882,49 +1988,49 @@ Báo giá đã được tạo.
 * FR-PRI-014
 * FR-PRI-015
 
-### Related Business Rules
+#### Related Business Rules
 
 * BR-037
 * BR-038
 
 ---
 
-## UC-039 Manage Translation Pricing
+### UC-039 Manage Translation Pricing
 
-### Use Case ID
+#### Use Case ID
 
 UC-039
 
-### Use Case Name
+#### Use Case Name
 
 Manage Translation Pricing
 
-### Description
+#### Description
 
 Cho phép quản trị viên quản lý bảng giá dịch thuật.
 
-### Primary Actor
+#### Primary Actor
 
 Admin
 
-### Supporting Actors
+#### Supporting Actors
 
 System
 
-### Trigger
+#### Trigger
 
 Admin muốn tạo hoặc cập nhật bảng giá.
 
-### Preconditions
+#### Preconditions
 
 * Admin đã đăng nhập.
 
-### Postconditions
+#### Postconditions
 
 * Bảng giá được tạo hoặc cập nhật.
 * Lịch sử thay đổi được lưu.
 
-### Main Flow
+#### Main Flow
 
 | Step | Actor  | Action                          |
 | ---- | ------ | ------------------------------- |
@@ -1940,54 +2046,54 @@ Admin muốn tạo hoặc cập nhật bảng giá.
 | 10   | System | Lưu bảng giá                    |
 | 11   | System | Lưu lịch sử thay đổi            |
 
-### Related Functional Requirements
+#### Related Functional Requirements
 
 * FR-PRI-021
 * FR-PRI-022
 
-### Related Business Rules
+#### Related Business Rules
 
 * BR-036
 
 ---
 
-## UC-040 Generate Invoice
+### UC-040 Generate Invoice
 
-### Use Case ID
+#### Use Case ID
 
 UC-040
 
-### Use Case Name
+#### Use Case Name
 
 Generate Invoice
 
-### Description
+#### Description
 
 Cho phép tạo hóa đơn điện tử cho hồ sơ đã thanh toán.
 
-### Primary Actor
+#### Primary Actor
 
 Finance
 
-### Supporting Actors
+#### Supporting Actors
 
 System
 
-### Trigger
+#### Trigger
 
 Thanh toán được xác nhận thành công.
 
-### Preconditions
+#### Preconditions
 
 * Hồ sơ đã thanh toán.
 * Thông tin hóa đơn hợp lệ.
 
-### Postconditions
+#### Postconditions
 
 * Hóa đơn được tạo.
 * Hóa đơn được liên kết với hồ sơ.
 
-### Main Flow
+#### Main Flow
 
 | Step | Actor   | Action                        |
 | ---- | ------- | ----------------------------- |
@@ -1999,50 +2105,50 @@ Thanh toán được xác nhận thành công.
 | 6    | System  | Lưu thông tin hóa đơn         |
 | 7    | System  | Liên kết hóa đơn với hồ sơ    |
 
-### Related Functional Requirements
+#### Related Functional Requirements
 
 * FR-PRI-019
 * FR-PRI-020
 
 ---
 
-## UC-041 Send Invoice
+### UC-041 Send Invoice
 
-### Use Case ID
+#### Use Case ID
 
 UC-041
 
-### Use Case Name
+#### Use Case Name
 
 Send Invoice
 
-### Description
+#### Description
 
 Cho phép gửi hóa đơn điện tử cho khách hàng hoặc doanh nghiệp.
 
-### Primary Actor
+#### Primary Actor
 
 Finance
 
-### Supporting Actors
+#### Supporting Actors
 
 System
 
-### Trigger
+#### Trigger
 
 Hóa đơn đã được tạo.
 
-### Preconditions
+#### Preconditions
 
 * Hóa đơn tồn tại.
 * Email nhận hóa đơn hợp lệ.
 
-### Postconditions
+#### Postconditions
 
 * Hóa đơn được gửi thành công.
 * Lịch sử gửi hóa đơn được lưu.
 
-### Main Flow
+#### Main Flow
 
 | Step | Actor   | Action                     |
 | ---- | ------- | -------------------------- |
@@ -2053,7 +2159,7 @@ Hóa đơn đã được tạo.
 | 5    | System  | Ghi nhận lịch sử gửi       |
 | 6    | System  | Hiển thị kết quả gửi       |
 
-### Related Functional Requirements
+#### Related Functional Requirements
 
 * FR-PRI-020
 
@@ -2061,7 +2167,7 @@ Hóa đơn đã được tạo.
 
 # 6. USE CASE SPECIFICATIONS
 
-### UC-001 CREATE CUSTOMER
+## UC-001 CREATE CUSTOMER
 
 #### Use Case ID
 
