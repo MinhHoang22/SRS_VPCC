@@ -584,23 +584,62 @@ flowchart TD
 Quy trình có sự tham gia của bên thứ ba (Cộng tác viên dịch thuật) và yêu cầu luồng tương tác: Giao việc -> Dịch thuật -> Kiểm tra -> Người dịch ký mẫu -> CCV chứng thực chữ ký người dịch.
 ```mermaid
 flowchart TD
-    A([Bắt đầu]) --> B[Thư ký: Tiếp nhận tài liệu gốc cần dịch thuật từ Khách hàng]
-    B --> C[Hệ thống: Tạo hồ sơ, chọn ngôn ngữ nguồn/đích & Báo phí tạm ứng]
-    C --> D[Hệ thống: Giao việc tự động cho Cộng tác viên CTV dịch thuật phù hợp]
-    
-    D --> E[Hệ thống: CTV nhận việc, dịch thuật tài liệu & Upload bản dịch lên hệ thống]
-    E --> F[Thư ký: Kiểm tra sơ bộ định dạng và nội dung bản dịch trên hệ thống]
-    
-    F --> G[Hệ thống: In bản dịch kèm Lời chứng chữ ký người dịch]
-    G --> H[CTV/Người dịch: Đến văn phòng ký trực tiếp vào bản dịch theo chữ ký mẫu]
-    
-    H --> I[CCV: Kiểm tra tư cách người dịch & Ký duyệt Lời chứng tư pháp]
-    I --> J[Văn phòng: Đóng dấu giáp lai đóng dấu tròn văn phòng]
-    
-    J --> K[Hệ thống: Thư ký Thu nốt phần phí còn lại & Tải file scan hoàn chỉnh lên Cloud]
-    K --> L[Hệ thống: Kế toán đối soát & Hệ thống gọi API VNPT/Vĩnh Hy xuất hóa đơn]
-    L --> M[Hệ thống: Tự động gửi thông báo nhận kết quả qua Zalo OA]
-    M --> N([Kết thúc thành công])
+  A([Bắt đầu]) --> B[Thư ký/Lễ tân: Tiếp nhận yêu cầu dịch thuật]
+
+%% Phân loại nguồn tiếp nhận (Case 3)
+  B --> C{Phương thức<br>tiếp nhận?}
+  C -- Qua Zalo OA (O2O) --> C1[Hệ thống: Tạo Hồ sơ nháp Pending<br>Tải file ảnh/scan khách gửi]
+C1 --> C2[Thư ký: Giao CTV dịch trước bản nháp]
+C2 --> C3[Khách đến mang theo Bản gốc vật lý]
+C3 --> C4[Thư ký: Nhập SĐT lấy hồ sơ nháp &<br>Đối chiếu Bản gốc vật lý với file ảnh]
+C4 --> F
+
+C -- Tại quầy (Offline) --> D[Lễ tân: Nhập SĐT khách hàng<br>Hệ thống tự động Auto-fill CRM]
+D --> E[Lễ tân: Chọn ngôn ngữ nguồn/đích & Số trang]
+E --> F{Kiểm tra<br>Số lượng ngôn ngữ?<br>}
+
+%% Nhánh Đa ngôn ngữ
+F -- Đa ngôn ngữ --> F1[Hệ thống: Tự động tách thành các hồ sơ con độc lập<br>để giao cho nhiều CTV dịch song song]
+F1 --> F2[Hệ thống: Gom chung dữ liệu tài chính<br>dưới 1 Mã thanh toán/Mã hóa đơn duy nhất]
+F2 --> G
+
+F -- Đơn ngôn ngữ --> G[Hệ thống: Tự động áp đơn giá biểu phí chuẩn]
+
+%% Phân loại Khách hàng cá nhân / Doanh nghiệp (Case 1 & Case 2)
+G --> H{Loại hình<br>Khách hàng?}
+
+H -- Doanh nghiệp (B2B) --> H1[Lễ tân: Bật toggle Xuất hóa đơn DN<br>Nhập MST để auto-fill thông tin doanh nghiệp]
+H1 --> H2[Lễ tân: Nhập Phụ phí thù lao dịch vụ tăng thêm nếu có<br>Hệ thống tự động hạch toán vào 'Phí dịch vụ khác']
+H2 --> I[Thư ký: Chỉ định CTV phù hợp từ danh sách liên kết]
+I --> I1[Hệ thống: Khóa tài liệu, bắt buộc CTV<br>ký cam kết bảo mật NDA trước khi tải file gốc]
+I1 --> J
+
+H -- Cá nhân (B2C) --> G1[Hệ thống: Tính Tổng phí = Phí dịch + Phí chứng thực chữ ký]
+G1 --> G2[Lễ tân: Báo phí trọn gói & Tích chọn Khách đồng ý báo phí]
+G2 --> G3[Thư ký: Chỉ định CTV in-house hoặc CTV liên kết]
+G3 --> J
+
+%% Giai đoạn dịch thuật và kiểm tra
+J[CTV: Tiến hành dịch thuật & Upload file dịch nháp Word lên hệ thống] --> K[Thư ký: Tải file nháp về kiểm tra nội dung]
+K --> L[Hệ thống: Tự động điền & In Lời chứng bản dịch]
+
+%% Giai đoạn ký đóng dấu và tài chính
+L --> M[Offline: CTV ký tên trực tiếp vào bản dịch<br>CCV ký duyệt & Văn phòng đóng dấu xác nhận]
+M --> N[Thư ký: Quét/Scan bản cứng có dấu đỏ tải lên hệ thống<br>Hệ thống tự động mở chặn thanh toán]
+
+N --> O{Hình thức<br>thanh toán?}
+O -- Tiền mặt --> O1[Kế toán: Thu tiền mặt tại quầy<br>Xác nhận Đã thu phí]
+O -- Chuyển khoản --> O2[Kế toán: Kiểm tra tài khoản ngân hàng<br>Xác nhận Nhận chuyển khoản thành công]
+
+O1 --> P[Hệ thống: Tự động gọi API phát hành hóa đơn điện tử VAT]
+O2 --> P
+
+P --> Q{Đối tượng<br>nhận hóa đơn?}
+Q -- Khách doanh nghiệp --> Q1[Hệ thống: Gửi thẳng hóa đơn điện tử VAT vào email công ty]
+Q -- Khách cá nhân --> Q2[Hệ thống: Tự động gửi link Hóa đơn & Mã tra cứu qua Zalo OA]
+
+Q1 --> R([Kết thúc thành công])
+Q2 --> R
 ```
 
 ### 2.6 Đặc tả các usecase (Use Case Specifications)
