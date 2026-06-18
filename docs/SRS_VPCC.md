@@ -42,6 +42,14 @@
       - [UC009: Thu phí & Đối soát dòng tiền](#uc009-thu-phí--đối-soát-dòng-tiền)
       - [UC010: Xuất hóa đơn điện tử tự động (VNPT/Vĩnh Hy)](#uc010-xuất-hoa-đơn-điện-tử-tự-động-vnptvĩnh-hy)
       - [UC011: Chăm sóc khách hàng tự động qua Zalo OA](#uc011-chăm-sóc-khách-hàng-tự-động-qua-zalo-oa)
+- **[Chương 3. Các kịch bản nghiệp vụ thực tế (Real-world Cases)](#chương-3-các-kịch-bản-nghiệp-vụ-thực-tế-real-world-cases)**
+  - [3.1 Nghiệp vụ Sao y bản chính](#31-nghiệp-vụ-sao-y-bản-chính)
+    - [3.1.1 Case 1: Sao y CCCD / Giấy tờ tùy thân của cá nhân tại quầy (Siêu tốc)](#311-case-1-sao-y-cccd-giấy-tờ-tùy-thân-của-cá-nhân-tại-quầy-siêu-tốc)
+    - [3.1.2 Case 2: Sao y Sổ đỏ / Giấy tờ sở hữu tài sản có kiểm tra ngăn chặn (UCHI)](#312-case-2-sao-y-sổ-đỏ-giấy-tờ-sở-hữu-tài-sản-có-kiểm-tra-ngăn-chặn-uchi)
+    - [3.1.3 Case 3: Sao y số lượng lớn (Vượt trần quy định) & Tự động tách hóa đơn](#313-case-3-sao-y-số-lượng-lớn-vượt-trần-quy-định-tự-động-tách-hóa-đơn)
+    - [3.1.4 Case 4: Doanh nghiệp sao y giấy phép & Yêu cầu hóa đơn VAT (B2B)](#314-case-4-doanh-nghiệp-sao-y-giấy-phép-yêu-cầu-hóa-đơn-vat-b2b)
+    - [3.1.5 Case 5: Sao y giấy tờ có yếu tố nước ngoài (Yêu cầu Hợp pháp hóa lãnh sự)](#315-case-5-sao-y-giấy-tờ-có-yếu-tố-nước-ngoài-yêu-cầu-hợp-pháp-hóa-lãnh-sự)
+    - [3.1.6 Case 6: Từ chối sao y các giấy tờ bị cấm chứng thực (Tẩy xóa, đóng dấu MẬT, rách nát)](#316-case-6-từ-chối-sao-y-các-giấy-tờ-bị-cấm-chứng-thực-tẩy-xóa-đóng-dấu-mật-rách-nát)
 
 ---
 
@@ -711,3 +719,82 @@ flowchart LR
 | STT | Trường dữ liệu | Mô tả | Bắt buộc? | Điều kiện hợp lệ | Ví dụ |
 | :--- | :--- | :--- | :--- | :--- | :--- |
 | 1 | Zalo API Response | Phản hồi kết quả gửi tin từ Zalo | Có (Tự động) | JSON phản hồi thành công | `{ "status": "success", "msgId": "msg-091" }` |
+
+---
+
+## Chương 3. Các kịch bản nghiệp vụ thực tế (Real-world Cases)
+
+### 3.1 Nghiệp vụ Sao y bản chính
+
+Dưới đây là các kịch bản nghiệp vụ thực tế của phân hệ **Sao y bản chính** thường gặp trong vận hành hàng ngày của Văn phòng công chứng, nhằm cụ thể hóa các Use Case chung đã nêu trên:
+
+#### 3.1.1 Case 1: Sao y CCCD / Giấy tờ tùy thân của cá nhân tại quầy (Siêu tốc)
+- **Bối cảnh:** Anh A đến văn phòng yêu cầu sao y 3 bản CCCD lấy ngay.
+- **Hành vi thực tế:** Anh A đưa bản gốc CCCD. Lễ tân quét nhanh SĐT của anh A.
+- **Luồng xử lý trên hệ thống:**
+  - Lễ tân nhập SĐT -> Hệ thống tìm thấy thông tin anh A và tự động điền (Auto-fill) Họ tên, CCCD, Địa chỉ.
+  - Lễ tân chọn loại giấy tờ: **CCCD (Chip-based)**, hệ thống ghi nhận số trang gốc mặc định là 2 (tương ứng với 2 mặt trước và sau của thẻ). Số bản sao y mặc định ban đầu là 1, lễ tân điều chỉnh lại thành 3 bản theo yêu cầu của khách.
+  - Lễ tân điền số bản cần sao y: 3 bản.
+  - Hệ thống tính Phí Gốc nhà nước: $2 \text{ trang} \times 3 \text{ bản} \times 2.000đ = 12.000đ$.
+  - Lễ tân báo phí trọn gói dịch vụ cho khách là $20.000đ$ và nhập số tiền này vào ô "Tổng thực thu".
+  - Hệ thống tự động hạch toán phần chênh lệch $8.000đ$ vào mục "Thù lao dịch vụ khác" (phí photo, bìa hồ sơ).
+  - Lễ tân tích chọn `Khách hàng đồng ý báo phí` và nhấn "Lưu & Chuyển xử lý".
+  - Thư ký nhận tài liệu, photo bản sao, thực hiện đối khớp ảnh chân dung, kiểm tra hạn dùng CCCD và khớp mặt trước/sau. Thư ký in lời chứng tự động, trình CCV ký đóng dấu bản cứng offline.
+  - Thư ký scan bản cứng đã ký đóng dấu tải lên hệ thống. Hệ thống tự động chuyển hồ sơ sang trạng thái Chờ thanh toán.
+  - Kế toán thu tiền mặt $20.000đ$, bấm xuất hóa đơn. Hệ thống gọi API VNPT xuất hóa đơn điện tử tự động gửi Zalo OA cho anh A.
+
+#### 3.1.2 Case 2: Sao y Sổ đỏ / Giấy tờ sở hữu tài sản có kiểm tra ngăn chặn (UCHI)
+- **Bối cảnh:** Chị B mang bản gốc Sổ đỏ đến sao y 2 bản để làm hồ sơ vay vốn thế chấp ngân hàng.
+- **Hành vi thực tế:** Tài sản liên quan đến đất đai có rủi ro giả mạo và ngăn chặn giao dịch cao.
+- **Luồng xử lý trên hệ thống:**
+  - Lễ tân tiếp nhận, nhập SĐT chị B, chọn loại giấy tờ: **Sổ đỏ / Giấy chứng nhận quyền sử dụng đất** (4 trang, 2 bản).
+  - Phí Gốc: $4 \text{ trang} \times 2 \text{ bản} \times 2.000đ = 16.000đ$. Thực thu thỏa thuận: $50.000đ$ (chênh lệch $34.000đ$ phí thù lao dịch vụ và phí tra cứu ngăn chặn).
+  - Chuyển hồ sơ sang bước Thẩm định. **Thư ký bắt buộc phải click vào liên kết "UCHI Search" trên màn hình** để gọi API tra cứu trạng thái ngăn chặn của thửa đất trên CSDL UCHI của Sở Tư pháp.
+  - *Nhánh rẽ 1 (Hợp lệ):* CSDL trả về trạng thái "Bình thường". Thư ký tích chọn checklist (UCHI kiểm tra sạch, đối khớp chủ sở hữu, không tẩy xóa), in Lời chứng trình CCV ký đóng dấu vật lý. Thư ký scan bản cứng có dấu đỏ tải lên hệ thống để mở chặn thanh toán.
+  - *Nhánh rẽ 2 (Ngăn chặn):* CSDL trả về trạng thái "Đang bị ngăn chặn giao dịch" (do tranh chấp hoặc kê biên). Hệ thống lập tức khóa nút in lời chứng, hiển thị cảnh báo đỏ nổi bật, tự động ghi nhận lỗi ngăn chặn vào log và Thư ký thực hiện trả lại hồ sơ cho khách.
+
+#### 3.1.3 Case 3: Sao y số lượng lớn (Vượt trần quy định) & Tự động tách hóa đơn
+- **Bối cảnh:** Công ty X mang 5 bộ hồ sơ thầu (mỗi bộ 250 trang) đến sao y bản chính. Tổng số trang sao y: 1250 trang.
+- **Hành vi thực tế:** Theo luật Phí và Lệ phí, phí sao y/chứng thực bản sao tối đa không quá $200.000đ/\text{lần yêu cầu}$ (hoặc theo mức trần quy định của địa phương). Nếu xuất một hóa đơn phí gốc 1250 trang x 2.000đ = 2.500.000đ sẽ vi phạm quy định pháp lý về phí lệ phí.
+- **Luồng xử lý trên hệ thống:**
+  - Lễ tân nhập số trang 250, số bản 5. Phí tính toán ban đầu là $2.500.000đ$.
+  - Hệ thống phát hiện số tiền vượt mức trần $200.000đ$ cho một giao dịch độc lập.
+  - Khi Lễ tân nhấn "Lưu", hệ thống tự động tách hồ sơ thầu thành 13 bản ghi giao dịch (transaction records) con độc lập trên hệ thống (mỗi bản ghi tối đa 100 trang sao y trị giá $200.000đ$ hoặc tương đương) để khi kế toán xuất hóa đơn điện tử, hóa đơn sẽ tự động được phân tách thành 13 hóa đơn hợp lệ có giá trị mỗi hóa đơn $\le 200.000đ$, đảm bảo tuân thủ 100% quy định pháp luật thuế và phí lệ phí.
+
+#### 3.1.4 Case 4: Doanh nghiệp sao y giấy phép & Yêu cầu hóa đơn VAT (B2B)
+- **Bối cảnh:** Đại diện Công ty X đến sao y Giấy đăng ký kinh doanh và Giấy phép môi trường, yêu cầu xuất hóa đơn điện tử B2B gửi về email doanh nghiệp để làm báo cáo thuế.
+- **Hành vi thực tế:** Cần thông tin chính xác của doanh nghiệp (Mã số thuế, Tên doanh nghiệp, Địa chỉ trụ sở chính) và đối chiếu tính hiệu lực hoạt động của pháp nhân.
+- **Luồng xử lý trên hệ thống:**
+  - Lễ tân tạo hồ sơ, tích chọn toggle `Xuất hóa đơn doanh nghiệp (B2B)`.
+  - Lễ tân nhập Mã số thuế: `0314456789`. Hệ thống gọi API Tổng cục Thuế, tự động điền Tên công ty: "Công ty Cổ phần Đầu tư X" và địa chỉ trụ sở chính vào hóa đơn.
+  - Thư ký nhận việc, thực hiện checklist nghiệp vụ doanh nghiệp: Truy vấn nhanh trên Cổng thông tin Quốc gia về Đăng ký Doanh nghiệp xem Công ty X có đang hoạt động bình thường hay đã giải thể/ngừng hoạt động.
+  - Thư ký đối khớp con dấu doanh nghiệp trên bản chính, in Lời chứng trình CCV ký offline. Scan tải lên hệ thống.
+  - Kế toán chọn thanh toán bằng "Chuyển khoản ngân hàng", đối soát tiền về tài khoản VPCC, bấm "Xác nhận & Phát hành".
+  - Hệ thống gọi API VNPT xuất hóa đơn điện tử, đồng thời tự động gửi email chứa hóa đơn XML/PDF và tin nhắn Zalo OA cảm ơn đến số điện thoại của người đại diện công ty.
+
+#### 3.1.5 Case 5: Sao y giấy tờ có yếu tố nước ngoài (Yêu cầu Hợp pháp hóa lãnh sự)
+- **Bối cảnh:** Ông C mang bằng đại học do trường nước ngoài cấp bằng tiếng Anh đến sao y.
+- **Hành vi thực tế:** Giấy tờ do cơ quan/tổ chức nước ngoài cấp phải được hợp pháp hóa lãnh sự trước khi chứng thực sao y bản chính tại Việt Nam (trừ trường hợp được miễn trừ theo điều ước quốc tế).
+- **Luồng xử lý trên hệ thống:**
+  - Lễ tân tạo hồ sơ, chọn loại giấy tờ: **Giấy tờ nước ngoài / Song ngữ**.
+  - Hệ thống tự động kích hoạt checklist động dành riêng cho tài liệu nước ngoài, bao gồm mục kiểm tra bắt buộc: `Đã kiểm tra tem và con dấu Hợp pháp hóa lãnh sự của Bộ Ngoại giao Việt Nam`.
+  - Thư ký tiếp nhận tài liệu, đối chiếu bản chính. Nếu bản chính chưa có tem hợp pháp hóa lãnh sự và không thuộc diện miễn trừ:
+    - Thư ký tích chọn "Không đủ điều kiện" -> Hệ thống tự động khóa tính năng in Lời chứng.
+    - Thư ký bấm "Từ chối tiếp nhận" -> Hệ thống hiển thị popup cho phép chọn in "Phiếu hướng dẫn hoàn thiện hồ sơ" (trong đó ghi rõ yêu cầu hợp pháp hóa lãnh sự trước khi sao y) để gửi cho khách hàng.
+  - Nếu bản chính đã được hợp pháp hóa lãnh sự hợp lệ: Thư ký tích chọn hoàn thành checklist, in Lời chứng trình CCV ký, chụp/scan tài liệu tải lên hệ thống để chuyển thanh toán bình thường.
+
+#### 3.1.6 Case 6: Từ chối sao y các giấy tờ bị cấm chứng thực (Tẩy xóa, đóng dấu MẬT, rách nát)
+- **Bối cảnh:** Bà D mang một quyết định hành chính có đóng dấu "MẬT" hoặc một học bạ bị tẩy xóa điểm số, rách nát mất chữ đến yêu cầu sao y.
+- **Hành vi thực tế:** Tuân thủ Điều 22 Nghị định 23/2015/NĐ-CP, cấm chứng thực bản sao từ bản chính đối với giấy tờ bị tẩy xóa, sửa chữa, rách nát hư hỏng không xác định được nội dung, hoặc có đóng dấu mật/cấm sao chụp.
+- **Luồng xử lý trên hệ thống:**
+  - Thư ký tiếp nhận và kiểm tra bản gốc tài liệu của bà D, phát hiện tài liệu bị tẩy xóa hoặc đóng dấu "MẬT".
+  - Thư ký truy cập hồ sơ trên hệ thống, bấm nút **Từ chối hồ sơ**.
+  - Hệ thống hiển thị form yêu cầu chọn lý do từ chối luật định:
+    1. Bản chính bị tẩy xóa, sửa chữa, thêm, bớt nội dung không hợp lệ.
+    2. Bản chính bị hư hỏng, rách nát, không xác định được nội dung.
+    3. Bản chính đóng dấu mật hoặc ghi rõ không được sao chụp.
+    4. Bản chính có nội dung trái pháp luật, đạo đức xã hội.
+    5. Lý do khác (cho phép nhập tay).
+  - Thư ký chọn lý do tương ứng (ví dụ: "Bản chính đóng dấu mật").
+  - Hệ thống ghi nhận trạng thái hồ sơ là **Đã hủy (Từ chối nghiệp vụ)**, tự động lưu nhật ký hệ thống (Audit Log) chứa thông tin Thư ký từ chối, lý do từ chối và timestamp.
+  - Hệ thống hỗ trợ in **Phiếu từ chối chứng thực** tự động chứa căn cứ pháp lý của Điều 22 Nghị định 23/2015/NĐ-CP để gửi cho khách hàng.
