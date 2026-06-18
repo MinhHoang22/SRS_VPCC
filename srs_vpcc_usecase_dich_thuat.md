@@ -2,187 +2,773 @@
 
 ## HỆ THỐNG CRM CHO VĂN PHÒNG CÔNG CHỨNG
 
-Version: 1.0
+Version: 1.0  
 
 ---
 
-# 1. GIỚI THIỆU
+# 1. GIỚI THIỆU (INTRODUCTION)
 
-## 1.1 Mục đích
+## 1.1 Mục đích (Purpose)
+Tài liệu này mô tả chi tiết các yêu cầu chức năng và phi chức năng của hệ thống CRM dành riêng cho Văn phòng Công chứng (VPCC). Hệ thống tập trung tối ưu hóa các quy trình nghiệp vụ nội bộ, quản lý thông tin khách hàng, số hóa hồ sơ giao dịch, và tự động hóa quy trình quản lý tài chính nhằm nâng cao hiệu suất vận hành của văn phòng.
 
-Tài liệu này mô tả các yêu cầu chức năng và phi chức năng của hệ thống CRM cho Văn phòng Công chứng (VPCC).
+Tài liệu này đóng vai trò là căn cứ kỹ thuật chính thức được sử dụng bởi các bên liên quan bao gồm: Product Owner (PO), Business Analyst (BA), Đội ngũ Phát triển Phần mềm (Developers), Đội ngũ Kiểm thử (Testers) và Ban lãnh đạo VPCC để nghiệm thu sản phẩm.
 
-Mục tiêu của hệ thống là:
+## 1.2 Phạm vi (Scope)
+Hệ thống hỗ trợ quản lý toàn trình các nhóm nghiệp vụ đặc thù sau trong phiên bản đầu tiên:
+* **Chứng thực sao y bản chính:** Tiếp nhận, đếm số trang, tính phí và lưu trữ dữ liệu bản sao.
+* **Chứng thực chữ ký:** Quản lý thông tin cá nhân của người yêu cầu chứng thực chữ ký, lưu vết biểu mẫu chứng thực chữ ký.
+* **Dịch thuật công chứng:** Tiếp nhận tài liệu, tính phí dịch thuật và chứng thực, phân phối tài liệu cho Biên dịch viên, kiểm soát tiến độ, quản lý phê duyệt của Công chứng viên.
 
-* Quản lý tập trung dữ liệu khách hàng.
-* Quản lý hồ sơ công chứng.
-* Quản lý quy trình nghiệp vụ.
-* Quản lý phí và thanh toán.
-* Lưu trữ hồ sơ điện tử.
-* Hỗ trợ chăm sóc khách hàng sau dịch vụ.
+**Các tính năng nằm ngoài phạm vi phiên bản MVP (Out of Scope):**
+* Tích hợp Ký số / Chữ ký điện tử (Digital Signature).
+* Tự động nhận diện và trích xuất dữ liệu tài liệu (OCR).
+* Ứng dụng trên thiết bị di động độc lập (Mobile App).
+* Tích hợp cổng thanh toán trực tuyến (Online Payment Gateway).
 
-Tài liệu được sử dụng bởi:
+## 1.3 Thuật ngữ và Từ viết tắt (Definitions and Acronyms)
 
-* Product Owner
-* Business Analyst
-* Developer
-* Tester
-* Ban lãnh đạo VPCC
+| Thuật ngữ / Viết tắt | Ý nghĩa / Định nghĩa |
+| :--- | :--- |
+| **KH** | Khách hàng - Người cá nhân hoặc đại diện tổ chức đến yêu cầu dịch vụ. |
+| **CCCD / Hộ chiếu** | Căn cước công dân hoặc Hộ chiếu của người tham gia giao dịch. |
+| **Legal Secretary** | Thư ký nghiệp vụ / Chuyên viên pháp lý - Người trực tiếp tiếp nhận hồ sơ, làm việc với khách hàng, soạn thảo văn bản và chuyển duyệt. |
+| **Translator** | Biên dịch viên - Nhân viên thuộc phòng dịch thuật hoặc Cộng tác viên bên ngoài được giao trách nhiệm dịch thuật tài liệu. |
+| **Notary** | Công chứng viên (CCV) - Người có thẩm quyền thẩm định, phê duyệt và ký xác nhận tính hợp pháp của hồ sơ theo quy định pháp luật. |
+| **Accountant** | Kế toán / Thu ngân - Người kiểm soát dòng tiền, hóa đơn, thu chi tài chính và đối soát thù lao dịch thuật. |
+| **CRM** | Customer Relationship Management - Hệ thống quản lý quan hệ khách hàng và điều hành tác nghiệp nội bộ. |
+| **CTV** | Cộng tác viên - Các biên dịch viên tự do bên ngoài hợp tác với VPCC theo từng vụ việc. |
+| **Case** | Hồ sơ nghiệp vụ - Một đơn vị quản lý trên hệ thống bao gồm thông tin khách hàng, tài liệu đính kèm, các tác vụ xử lý và thông tin tài chính đi kèm. |
+| **Master Data** | Dữ liệu danh mục cốt lõi - Các dữ liệu nền tảng như bảng ngôn ngữ, danh mục biểu mẫu, cấu hình hệ thống. |
+| **Manual Override** | Ghi đè thủ công - Cơ chế cho phép người dùng có thẩm quyền tự nhập giá trị (ví dụ: đơn giá) thay vì sử dụng giá trị tự động tính từ hệ thống. |
+
+---
+# 2. MÔ TẢ TỔNG QUAN (OVERALL DESCRIPTION)
+
+## 2.1 Bối cảnh hệ thống (Product Perspective)
+Hệ thống CRM cho Văn phòng Công chứng là một nền tảng quản lý quy trình tác nghiệp nội bộ (Workflow Management) và quản lý quan hệ khách hàng độc lập. Hệ thống kết nối tập trung các bộ phận nghiệp vụ trong văn phòng nhằm số hóa toàn bộ vòng đời của một hồ sơ dịch vụ từ khâu tiếp nhận, xử lý chuyên môn, thu phí, phê duyệt cho đến lưu trữ điện tử.
+
+## 2.2 Chức năng sản phẩm tổng quan (Product Functions)
+Hệ thống CRM cung cấp giải pháp quản lý tập trung cho 3 luồng dịch vụ cốt lõi tại văn phòng công chứng:
+
+1. **Phân hệ Quản lý Hồ sơ Sao y bản chính:**
+   * Tiếp nhận và đếm số lượng văn bản gốc, số bản cần nhân bản.
+   * Tính toán chi phí tự động theo quy định và in phiếu thu.
+   * Quản lý trạng thái đóng dấu và trả kết quả.
+
+2. **Phân hệ Quản lý Hồ sơ Chứng thực chữ ký:**
+    * Ghi nhận thông tin nhân thân (CCCD/Hộ chiếu) của người yêu cầu chứng thực.
+    * Lưu trữ và quản lý các biểu mẫu chứng thực chữ ký chuẩn (Chữ ký trên tờ khai, lý lịch, văn bản cam đoan, giấy ủy quyền đơn giản).
+    * Cấp số chứng thực chữ ký theo thời gian thực.
+
+3. **Phân hệ Quản lý Hồ sơ Dịch thuật công chứng:**
+   * Tiếp nhận hồ sơ tài liệu, xác định ngôn ngữ nguồn và ngôn ngữ đích.
+   * Tính phí dịch thuật linh hoạt theo hai phương thức: Theo số trang (đối với tài liệu dài, hợp đồng, văn bản thương mại) HOẶC Theo gói/Bộ văn bản (đối với giấy tờ cá nhân định hình sẵn như CCCD, Hộ chiếu, Giấy khai sinh, Bằng cấp).
+   * Tích hợp cơ chế cho phép nhập giá thủ công hoặc ghi đè giá trực tiếp trên từng hồ sơ đối với các trường hợp đặc thù.
+   * Điều phối, giao việc và giám sát tiến độ của Biên dịch viên/Cộng tác viên (CTV).
+   * Trình ký Công chứng viên phê duyệt chứng thực chữ ký người dịch.
+
+4. **Phân hệ Quản lý Tài chính (Áp dụng chung):**
+    * Thu tiền tạm ứng (cọc tiền) và quyết toán thu đủ trước khi trả kết quả.
+    * Xuất phiếu thu, biên lai và theo dõi công nợ khách hàng doanh nghiệp.
+    * Đối soát thù lao chi trả cho Cộng tác viên dịch thuật.
+
+5. **Phân hệ Quản lý Lưu trữ và Báo cáo:**
+    * Số hóa tài liệu đầu vào/đầu ra (Scan/Upload đính kèm hồ sơ).
+    * Định vị vị trí hồ sơ gốc trong kho lưu trữ vật lý.
+    * Xuất báo cáo thống kê hồ sơ, doanh thu, báo cáo định kỳ nộp Sở Tư pháp.
+
+## 2.3 Vai trò người dùng (Roles & Actors)
+
+Hệ thống phân quyền dựa trên 5 vai trò cốt lõi tham gia vào các luồng nghiệp vụ. Vai trò Lễ tân được gộp hoàn toàn vào vai trò Thư ký nghiệp vụ để tối ưu nhân sự toàn trình.
+
+| Tên vai trò (Hệ thống) | Tên tiếng Việt | Mô tả trách nhiệm trong hệ thống |
+| :--- | :--- | :--- |
+| **Admin** | Quản trị viên | Quản lý tài khoản, phân quyền nhân viên, cấu hình bảng giá gốc, quản lý danh mục biểu mẫu, cấu hình hệ thống và giám sát nhật ký hệ thống (Audit Log). |
+| **Legal Secretary** | Thư ký nghiệp vụ | Tiếp nhận yêu cầu ban đầu của khách hàng; tạo mới hồ sơ (Case) cho cả 3 luồng dịch vụ; phân loại tài liệu; tính phí/báo giá; thu tiền cọc và quyết toán; thực hiện sao y; chuyển duyệt hồ sơ chứng thực; chỉ định người dịch; kiểm tra chất lượng bản dịch và trực tiếp trả kết quả cho khách hàng. |
+| **Translator** | Biên dịch viên (Internal/CTV) | Nhận tài liệu dịch được phân công; cập nhật tiến độ xử lý; tải lên bản dịch dự thảo (Draft); trực tiếp ký tên cam đoan vào bản dịch giấy trước khi trình Công chứng viên. |
+| **Notary** | Công chứng viên (CCV) | Thẩm định tính pháp lý của hồ sơ gốc, hồ sơ chứng thực chữ ký và bản dịch; thực hiện ký chứng thực; phê duyệt cấp số chứng thực/số quyển trên hệ thống. |
+| **Accountant** | Kế toán / Thu ngân | Giám sát dòng tiền thu chi của Thư ký; quản lý hóa đơn tài chính; đối soát doanh thu tổng của văn phòng; thực hiện đối soát và duyệt chi thù lao cho Cộng tác viên (CTV). |
+
+## 2.4 Giả định và Phụ thuộc (Assumptions and Dependencies)
+* **Giả định:** Tất cả nhân viên sử dụng hệ thống đều được trang bị máy tính có kết nối mạng nội bộ ổn định và máy quét tài liệu (Scanner) để số hóa hồ sơ trực tiếp tại bàn làm việc.
+* **Phụ thuộc:** Luồng in ấn và xuất bản kết quả phụ thuộc vào tính sẵn sàng của hạ tầng phần cứng vật lý (Máy in, máy photocoppy) tại văn phòng. Các chức năng xuất hóa đơn điện tử phụ thuộc vào độ ổn định kết nối API của bên thứ ba (như Viettel, VNPT hoặc BKAV).
+---
+# 3. YÊU CẦU VỀ LUỒNG NGHIỆP VỤ & TRẠNG THÁI HỒ SƠ (CASE WORKFLOW STATUS)
+## 3.1 Sơ đồ luồng trạng thái hồ sơ tổng thể (Case Status Lifecycle)
+
+Mọi hồ sơ (Case) thuộc 3 phân hệ dịch vụ (Sao y, Chứng thực chữ ký, Dịch thuật công chứng) khi được khởi tạo trên hệ thống sẽ dịch chuyển qua các trạng thái tuần tự dưới sự vận hành của Thư ký nghiệp vụ, Công chứng viên và Kế toán:
+```mermaid
+graph TD
+NEW[1. DRAFT / NEW] -->|Legal Secretary tiếp nhận & nhập liệu| QUOTED[2. QUOTED / WAITING_DEPOSIT]
+QUOTED -->|Khách duyệt giá & Thu cọc nếu có| PROCESSING[3. IN_PROGRESS / PROCESSING]
+PROCESSING -->|Xử lý chuyên môn hoàn thành| WAITING_SIGNATURE[4. WAITING_SIGNATURE]
+WAITING_SIGNATURE -->|CCV phê duyệt & Cấp số chứng thực| READY_FOR_PICKUP[5. READY_FOR_PICKUP]
+READY_FOR_PICKUP -->|Khách quyết toán đủ & Nhận kết quả| DELIVERED[6. DELIVERED / COMPLETED]
+DELIVERED -->|Thư ký đóng tập, cập nhật vị trí kho| ARCHIVED[7. ARCHIVED]
+
+    %% Các luồng hủy hồ sơ
+    NEW -->|Hủy yêu cầu| CANCELLED[8. CANCELLED]
+    QUOTED -->|Khách không đồng ý giá| CANCELLED
+    PROCESSING -->|Phát sinh lỗi pháp lý/Hủy dịch vụ| CANCELLED
+```
+## 3.2 Quy tắc chuyển trạng thái chi tiết (Status Transition Rules)
+Hệ thống bắt buộc phải kiểm tra các điều kiện ràng buộc dưới đây trước khi cho phép hồ sơ chuyển dịch sang trạng thái kế tiếp.
+
+| Trạng thái gốc | Trạng thái đích | Điều kiện kích hoạt (Trigger/Condition) | Tác nhân thực hiện |
+| :--- | :--- | :--- | :--- |
+| **N/A** | **DRAFT / NEW** | Khách hàng mang hồ sơ đến văn phòng. Thư ký tạo ID hồ sơ mới, hệ thống tự động ghi nhận thời gian khởi tạo và thông tin định danh ban đầu. | Legal Secretary |
+| **DRAFT / NEW** | **QUOTED** | Thư ký hoàn thành việc nhập thông số tính phí (Đếm số trang sao y, chọn loại biểu mẫu chứng thực chữ ký, hoặc nhập đơn giá dịch thuật theo trang/theo bộ). Hệ thống xuất phiếu báo giá tạm tính. | Legal Secretary |
+| **QUOTED** | **IN_PROGRESS** | Khách hàng đồng ý với báo giá. Thư ký ghi nhận trạng thái: Đã thu cọc (nếu có) hoặc Đã xác nhận triển khai. Hệ thống kích hoạt quyền xử lý hồ sơ cho bộ phận chuyên môn (Sao chép tài liệu, chỉ định Translator). | Legal Secretary |
+| **IN_PROGRESS** | **WAITING_SIGNATURE**| **Đối với Sao y/Chứng thực:** Thư ký hoàn thành in bản sao hoặc điền thông tin vào biểu mẫu.<br><br>**Đối với Dịch thuật:** Translator tải file dịch lên và Thư ký nghiệp vụ xác nhận đạt chất lượng.<br><br>Hồ sơ được đóng gói, tích chọn checklist và chuyển lên hàng đợi trình ký. | Legal Secretary |
+| **WAITING_SIGNATURE**| **READY_FOR_PICKUP** | Công chứng viên (Notary) kiểm tra hồ sơ gốc và bản in giấy, nhấn "Phê duyệt" trên hệ thống để cấp Số chứng thực (Số quyển) theo thời gian thực. Văn phòng tiến hành đóng dấu vật lý. | Notary |
+| **READY_FOR_PICKUP** | **DELIVERED** | Khách hàng đến nhận kết quả. Thư ký quét mã hồ sơ hoặc tìm kiếm ID, hệ thống kiểm tra trạng thái tài chính. Kế toán thu nốt phần tiền còn lại (nếu có) và xuất hóa đơn điện tử. Thư ký bàn giao tài liệu gốc và kết quả. | Legal Secretary / Accountant |
+| **DELIVERED** | **ARCHIVED** | Thư ký nghiệp vụ quét/đính kèm bản lưu điện tử cuối cùng (nếu có), cập nhật chính xác vị trí lưu trữ của hồ sơ giấy (Tủ số, Kệ số, Ngăn số) vào hệ thống và đóng hồ sơ vĩnh viễn. | Legal Secretary |
+| **Bất kỳ trạng thái nào trước SIGNATURE** | **CANCELLED** | Khách hàng hủy dịch vụ hoặc Công chứng viên phát hiện văn bản gốc bị giả mạo, tẩy xóa, không đủ điều kiện pháp lý để thực hiện dịch vụ. Tác nhân phải nhập lý do hủy bắt buộc vào hệ thống. | Legal Secretary / Notary / Ban Quản lý |
+---
+# 4. CÁC YÊU CẦU CHỨC NĂNG CHI TIẾT (DETAILED FUNCTIONAL REQUIREMENTS)
+---
+
+## 4.1 QUẢN LÝ KHÁCH HÀNG (CRM MANAGEMENT)
+### 4.1.1 Tiếp nhận & Đăng ký Khách hàng (Customer Registration)
+* **FR-CRM-001:** Hệ thống phải cho phép khởi tạo hồ sơ khách hàng mới vào cơ sở dữ liệu tập trung.
+* **FR-CRM-002:** Thông tin khách hàng bắt buộc phải bao gồm các trường dữ liệu sau:
+    * Họ và tên khách hàng (Cá nhân hoặc tên Doanh nghiệp).
+    * Số điện thoại liên hệ chính.
+    * Số CCCD / Hộ chiếu / Mã số thuế (đối với Doanh nghiệp B2B).
+    * Địa chỉ thường trú / Địa chỉ trụ sở.
+* **FR-CRM-003:** **[Quy tắc chặn trùng]:** Hệ thống phải tự động kiểm tra tính duy nhất của Số CCCD/Hộ chiếu/Mã số thuế trên toàn hệ thống trước khi cho phép bấm nút "Lưu".
+* **FR-CRM-004:** Nếu Số CCCD/Hộ chiếu/Mã số thuế đã tồn tại, hệ thống phải tự động ngăn chặn hành vi tạo mới, đồng thời hiển thị ngay lập tức hồ sơ chi tiết của khách hàng hiện có lên màn hình để Thư ký tiếp tục xử lý.
+* **FR-CRM-005:** Hệ thống phải tự động ghi nhận chính xác thời gian (Timestamp) tạo lập hồ sơ khách hàng.
+* **FR-CRM-006:** Hệ thống phải tự động ghi vết ID tài khoản của nhân viên (`Legal Secretary`) trực tiếp thao tác tạo khách hàng.
+
+### 4.1.2 Tra cứu & Hồ sơ điện tử (Customer Search & Profile)
+* **FR-CRM-007:** Hệ thống phải cung cấp thanh tìm kiếm nhanh hỗ trợ Thư ký nghiệp vụ lọc khách hàng theo: Họ tên, Số điện thoại, hoặc Số CCCD/Mã số thuế.
+* **FR-CRM-008:** Hệ thống phải tích hợp thuật toán tìm kiếm gần đúng (Fuzzy Search) theo Họ tên tiếng Việt (có dấu hoặc không dấu) để tăng tốc độ trả kết quả tại bàn tiếp nhận.
+* **FR-CRM-009:** Kết quả tìm kiếm hiển thị dưới dạng lưới (Grid View) gồm: Mã khách hàng, Họ tên, Số điện thoại, Số CCCD/MST và Trạng thái công nợ hiện tại.
+* **FR-CRM-010:** Hệ thống phải cho phép click chọn để xem chi tiết Hồ sơ điện tử (360-degree Profile) của khách hàng.
+* **FR-CRM-011:** Giao diện hồ sơ khách hàng phải hiển thị danh sách lịch sử toàn bộ các hồ sơ nghiệp vụ (`Case ID`) mà khách hàng này đã từng thực hiện tại văn phòng.
+* **FR-CRM-012:** Hệ thống phải tự động tính toán và hiển thị tổng số lượng hồ sơ đã thực hiện thành công của khách hàng.
+* **FR-CRM-013:** Hệ thống phải tự động tính tổng lũy kế giá trị giao dịch tài chính (Tổng số tiền khách đã chi trả cho văn phòng) ngay trong trang cá nhân của khách hàng.
+* **FR-CRM-014:** Cho phép sửa đổi thông tin hành chính của khách hàng (SĐT, Địa chỉ, Email nhận hóa đơn).
+* **FR-CRM-015:** **[Ràng buộc Bảo mật]:** Mọi hành vi sửa đổi thông tin khách hàng bắt buộc phải bị hệ thống ép ghi nhận vào `Audit Log` (Gồm giá trị cũ và giá trị mới).
+
+---
+## 4.2 QUẢN LÝ HỒ SƠ NGHIỆP VỤ (CASE MANAGEMENT)
+
+### 4.2.1 Khởi tạo Hồ sơ (Create Case)
+* **FR-CASE-001:** Hệ thống phải cho phép tạo mới một hồ sơ vụ việc (`Case`).
+* **FR-CASE-002:** Ràng buộc toàn vẹn: Mỗi hồ sơ khi khởi tạo bắt buộc phải được gắn kết duy nhất với một mã khách hàng (`Customer ID`) cụ thể.
+* **FR-CASE-003:** Mỗi hồ sơ phải sở hữu một mã số định danh duy nhất (`Case ID`) trên toàn hệ thống để quản lý.
+* **FR-CASE-004:** **[Quy tắc sinh mã]:** Mã hồ sơ phải được hệ thống tự động sinh ra theo cấu trúc quy chuẩn thời gian thực. Cấu trúc cấu thành: `HS-[NĂM HIỆN TẠI]-[MÃ SỐ TỰ TĂNG 6 CHỮ SỐ]`.
+    * *Ví dụ:* `HS-2026-000001`
+* **FR-CASE-005:** Hệ thống phải ghi nhận tự động ID của `Legal Secretary` tạo hồ sơ và thời gian khởi tạo hồ sơ vào thuộc tính của Case.
+
+### 4.2.2 Phân loại Dịch vụ & Điều phối (Service Type & Assignment)
+* **FR-CASE-006:** Hệ thống phải cho phép Thư ký nghiệp vụ chọn một hoặc kết hợp nhiều loại dịch vụ trong cùng một hồ sơ (`Case`). Các dịch vụ mặc định bao gồm:
+    * Sao y bản chính.
+    * Chứng thực chữ ký cá nhân (Tờ khai, ủy quyền đơn giản...).
+    * Dịch thuật công chứng.
+* **FR-CASE-007:** Hệ thống cung cấp chức năng phân công/chỉ định tài khoản xử lý hồ sơ:
+    * Cho phép chỉ định một `Legal Secretary` phụ trách chính toàn trình.
+    * Đối với dịch vụ Dịch thuật: Cho phép chỉ định một hoặc nhiều Biên dịch viên (`Translator` nội bộ hoặc Cộng tác viên bên ngoài) tham gia xử lý các file dịch khác nhau trong cùng một hồ sơ.
+* **FR-CASE-008:** Hệ thống phải ghi nhận chính xác thời gian phân công việc và người thực hiện thao tác điều phối công việc đó.
+
+### 4.2.3 Kiểm soát Trạng thái Hồ sơ (Workflow Status Control)
+* **FR-CASE-009:** Hệ thống quản lý vòng đời hồ sơ qua 8 trạng thái nghiêm ngặt được định nghĩa sẵn bao gồm: `DRAFT / NEW`, `QUOTED`, `IN_PROGRESS`, `WAITING_SIGNATURE`, `READY_FOR_PICKUP`, `DELIVERED`, `ARCHIVED`, `CANCELLED`.
+* **FR-CASE-010:** Hệ thống phải áp dụng cấu hình máy trạng thái (State Machine), chỉ cho phép hồ sơ chuyển dịch trạng thái theo đúng sơ đồ Workflow quy định (được mô tả chi tiết tại Chương 3). Nghiêm cấm việc nhảy cóc trạng thái khi chưa thỏa mãn điều kiện.
+* **FR-CASE-011:** Mọi hành động kích hoạt chuyển trạng thái hồ sơ phải được hệ thống ghi nhận vào lịch sử tiến độ hồ sơ, bao gồm: Mã trạng thái cũ, Mã trạng thái mới, ID tài khoản kích hoạt và mốc thời gian chi tiết.
 
 ---
 
-## 1.2 Phạm vi
+## 4.3 QUẢN LÝ TÀI LIỆU SỐ & BIỂU MẪU (DOCUMENT & TEMPLATE MANAGEMENT)
 
-Hệ thống hỗ trợ các nhóm nghiệp vụ:
+### 4.3.1 Số hóa Tài liệu (Upload Document)
+* **FR-DOC-001:** Hệ thống cung cấp tính năng tải tệp tin đính kèm trực tiếp vào từng danh mục tài liệu con nằm trong hồ sơ nghiệp vụ (`Case`).
+* **FR-DOC-002:** Hệ thống chỉ cho phép tải lên các định dạng tệp tin quy chuẩn sau: `PDF`, `JPG`, `PNG`, `DOCX`.
+* **FR-DOC-003:** **[Quy tắc kiểm tra file]:** Hệ thống phải thực hiện kiểm tra định dạng đuôi file và quét dung lượng file (Mức trần 50MB) trước khi lưu file vào máy chủ. Nếu file không đúng định dạng hoặc vượt dung lượng, phải hiển thị thông báo từ chối rõ ràng.
+* **FR-DOC-004:** Hệ thống phải giữ nguyên tên file gốc của khách hàng khi hiển thị trên giao diện và ghi nhận thông tin: Người tải lên, thời gian tải lên của từng tệp tin.
 
-* Sao y bản chính
-* Chứng thực chữ ký
-* Dịch thuật công chứng
+### 4.3.2 Quản lý Phiên bản dịch thuật (Document Version Control)
+* **FR-DOC-005:** Riêng đối với phân hệ dịch thuật, hệ thống phải hỗ trợ cơ chế lưu trữ đa phiên bản (Version Control) cho tệp tin dự thảo bản dịch (`.docx`).
+* **FR-DOC-006:** Mỗi lần `Translator` tải lên một tệp bản dịch mới thay thế cho bản cũ, hệ thống phải tự động tăng số hiệu phiên bản (Ví dụ: `V1.0`, `V1.1`, `V2.0`) chứ không được ghi đè mất file cũ.
+* **FR-DOC-007:** Hệ thống cung cấp giao diện cho phép `Legal Secretary` hoặc `Notary` xem lại và tải về các phiên bản lịch sử cũ để đối chiếu khi cần thiết.
 
-Phiên bản MVP chưa bao gồm:
+### 4.3.3 Quản lý Biểu mẫu Lời chứng (Template Management)
+* **FR-DOC-008:** Hệ thống cung cấp phân hệ cho phép tài khoản `Admin` tạo lập và quản lý kho các mẫu văn bản/Lời chứng thực chữ ký chuẩn (Template) theo quy định của pháp luật.
+* **FR-DOC-009:** Hỗ trợ tính năng chỉnh sửa nội dung template hoặc cấu hình Vô hiệu hóa (Deactivate) một mẫu lời chứng khi văn bản pháp luật hết hiệu lực.
+* **FR-DOC-010:** **[Tự động sinh văn bản]:** Khi hồ sơ dịch thuật hoặc chứng thực chữ ký đạt điều kiện, hệ thống phải hỗ trợ tính năng tự động đổ dữ liệu (Token Mapping) từ hồ sơ (Họ tên khách, Số CCCD, Ngày phê duyệt) vào phôi mẫu để sinh ra file văn bản Lời chứng hoàn chỉnh, sẵn sàng cho việc in ấn.
 
-* Ký số
-* OCR nhận diện giấy tờ
-* Mobile App
-* Tích hợp thanh toán trực tuyến
-
----
-
-## 1.3 Thuật ngữ
-
-| Thuật ngữ | Ý nghĩa                    |
-| --------- | -------------------------- |
-| KH        | Khách hàng                 |
-| CCCD      | Căn cước công dân          |
-| OA        | Official Account           |
-| UCHI      | Hệ thống tra cứu ngăn chặn |
-| CTV       | Cộng tác viên              |
-| VPCC      | Văn phòng công chứng       |
 
 ---
 
-## 1.4 Tài liệu tham khảo
+## 4.4 QUẢN LÝ BIỂU PHÍ, BÁO GIÁ & TÀI CHÍNH (PRICING & FINANCIAL MANAGEMENT)
 
-* PRD CRM cho VPCC
-* IEEE 830 SRS Template
-* Quy trình nghiệp vụ VPCC
+### 4.4.1 Cấu hình Bảng giá gốc (Fee Configuration)
+* **FR-PRI-001:** Hệ thống cấp màn hình cho `Admin` để cấu hình Bảng đơn giá gốc cho dịch vụ Sao y (tính theo trang) và dịch vụ Chứng thực chữ ký (tính theo biểu mẫu).
+* **FR-PRI-002:** Cho phép cấu hình Bảng đơn giá gốc cho phân hệ Dịch thuật đa ngôn ngữ dựa trên: Cặp ngôn ngữ (Ngôn ngữ nguồn - Ngôn ngữ đích) kết hợp với Đơn vị tính (Theo trang văn bản dài HOẶC Theo bộ giấy tờ hộ tịch cá nhân định hình sẵn).
+* **FR-PRI-003:** Hệ thống phải hỗ trợ thiết lập thời gian hiệu lực của bảng giá gốc (Ngày bắt đầu có hiệu lực và Ngày hết hiệu lực).
+* **FR-PRI-004:** Mọi hành vi sửa đổi bảng giá gốc phải được lưu vết lịch sử phiên bản giá để phục vụ công tác kiểm toán tài chính sau này.
 
----
+### 4.4.2 Cơ chế Tính toán chi phí & Báo giá chi tiết (Fee Calculation & Quoting)
+* **FR-PRI-005:** **[Tính phí Sao y tự động]:** Thành tiền dịch vụ Sao y bản chính bắt buộc phải áp dụng công thức tự động:
+  $$\text{Thành tiền} = \text{Số lượng bản sao cần in} \times \text{Số lượng trang của tài liệu gốc} \times \text{Đơn giá sao y tương ứng}$$
+* **FR-PRI-006:** **[Cơ chế Tính phí Dịch thuật Linh hoạt - Ý đồ PO]:** Đối với tài liệu dịch thuật, hệ thống phải hiển thị form cấu hình cho phép Thư ký nghiệp vụ linh động tick chọn phương thức tính phí thích hợp cho từng loại văn bản trong cùng một hồ sơ:
+    * Nếu chọn `Tính theo trang`: Thành tiền dịch thuật = Số trang dịch thực tế $\times$ Đơn giá trang theo ngôn ngữ.
+    * Nếu chọn `Tính trọn gói theo bộ/văn bản` (Áp dụng cho CCCD, Hộ chiếu, Khai sinh, Bằng cấp...): Thành tiền dịch thuật = Số lượng bộ văn bản $\times$ Đơn giá gói quy định cho loại giấy tờ đó.
+* **FR-PRI-007:** **[Manual Override - Ghi đè giá thủ công]:** Hệ thống phải cung cấp một ô nhập liệu trống "Đơn giá tùy chỉnh" tại từng dòng tài liệu dịch thuật. Nhân sự có thẩm quyền (`Legal Secretary`) có quyền nhập đè một mức giá thỏa thuận trực tiếp bằng tay đối với các trường hợp hồ sơ đặc thù, hệ thống sẽ ưu tiên lấy mức giá nhập tay này để tính toán thay vì lấy đơn giá tự động từ bảng giá gốc.
+* **FR-PRI-008:** Hệ thống phải hỗ trợ cấu hình Phí chứng thực chữ ký người dịch (Phí bản dịch công chứng) bằng cách tự động tính:
+  $$\text{Phí chứng thực bản dịch} = \text{Số lượng bản in công chứng cần xuất} \times \text{Đơn giá lời chứng quy định}$$
+* **FR-PRI-009:** Hệ thống cho phép Thư ký nghiệp vụ nhập thêm các mục Phụ phí dịch vụ (Ví dụ: Phí dịch khẩn/lấy ngay, Phí ngoài giờ, Phí đi lại ký ngoài trụ sở) và nhập số tiền Chiết khấu / Giảm giá trực tiếp (bằng số tiền tuyệt đối hoặc theo tỷ lệ %) cho hồ sơ.
+* **FR-PRI-010:** Hệ thống tự động tính toán và hiển thị Tổng báo giá cuối cùng của hồ sơ theo công thức bắt buộc sau:
+  $$\text{Tổng báo giá hồ sơ} = \text{Phí dịch thuật} + \text{Phí sao y} + \text{Phí chứng thực} + \text{Phụ phí dịch vụ} - \text{Chiết khấu}$$
+* **FR-PRI-011:** Hệ thống cho phép Thư ký nghiệp vụ lưu báo giá, ghi nhận mốc thời gian và ID tài khoản tạo báo giá. Hồ sơ chỉ được phép cập nhật báo giá khi đang ở trạng thái `DRAFT / NEW` hoặc `QUOTED`. Một khi khách hàng đã chấp thuận báo giá, hệ thống sẽ thực hiện khóa tính năng sửa giá để bảo vệ dữ liệu.
+* **FR-PRI-012:** **[Chặn điều phối]:** Hệ thống phải thiết lập điều kiện chặn: Tuyệt đối không cho phép Thư ký thực hiện gán việc (Assign) cho Biên dịch viên xử lý tài liệu nếu hồ sơ chưa được cập nhật trạng thái "Khách hàng đồng ý báo giá" (Trạng thái hồ sơ chuyển sang `IN_PROGRESS`).
 
-# 2. MÔ TẢ TỔNG QUAN
-
-## 2.1 Bối cảnh
-
-Hiện nay dữ liệu khách hàng và hồ sơ được lưu rải rác trên:
-
-* Excel
-* Hồ sơ giấy
-* Zalo cá nhân
-* Máy tính nhân viên
-
-Hệ thống CRM đóng vai trò trung tâm quản lý dữ liệu tập trung.
-
----
-
-## 2.2 Các chức năng chính
-
-### CRM & Khách hàng
-
-* Quản lý thông tin khách hàng
-* Quản lý lịch sử giao dịch
-
-### Tiếp nhận hồ sơ
-
-* Tạo hồ sơ
-* Upload tài liệu
-* Theo dõi trạng thái
-
-### Checklist nghiệp vụ
-
-* Kiểm tra hồ sơ
-* Kiểm tra UCHI
-* Kiểm tra CCCD
-
-### Hợp đồng & Biểu mẫu
-
-* Quản lý template
-* Sinh văn bản
-
-### Phí & Thanh toán
-
-* Tính phí
-* Quản lý thanh toán
-* Xuất hóa đơn
-
-### Lưu trữ điện tử
-
-* Lưu hồ sơ
-* Tra cứu hồ sơ
-
-### Chăm sóc khách hàng
-
-* Gửi Zalo OA
-* Khảo sát
+### 4.4.3 Ghi nhận Thanh toán & Quản lý Hóa đơn (Payment & Invoicing)
+* **FR-PAY-001:** Hệ thống phải hỗ trợ tính năng thanh toán
+* **FR-FIN-004:** Hệ thống phải tự động kết nối API với nền tảng hóa đơn điện tử (e-Invoice) để khởi tạo và phát hành hóa đơn hợp pháp ngay khi trạng thái thanh toán chuyển sang `PAID`.
 
 ---
 
-## 2.3 Vai trò người dùng
+## 4.5 PHÂN HỆ ĐIỀU PHỐI VÀ THỰC HIỆN DỊCH THUẬT (TRANSLATION MANAGEMENT)
 
-### Receptionist
+### 4.5.1 Phân công biên dịch (Translator Assignment)
+* **FR-TRN-001:** Hệ thống phải cung cấp bộ lọc danh sách Biên dịch viên và Cộng tác viên (CTV) dựa trên tiêu chí Cặp ngôn ngữ nghiệp vụ và Chuyên ngành tài liệu.
+* **FR-TRN-002:** Hệ thống phải hiển thị số lượng công việc hiện tại (Workload) của từng Biên dịch viên để Thư ký điều phối đánh giá năng lực tiếp nhận.
+* **FR-TRN-003:** Hệ thống phải bắt buộc thiết lập Hạn chót hoàn thành bản dịch (Translation Deadline) khi giao việc và tự động chặn nếu thời gian này muộn hơn hoặc bằng giờ hẹn trả khách hàng trừ đi 4 tiếng.
 
-Quản lý tiếp nhận khách hàng.
+### 4.5.2 Thực hiện dịch thuật (Translation Execution)
+* **FR-TRN-004:** Hệ thống phải cung cấp cổng thông tin (Portal) riêng cho Biên dịch viên/CTV để theo dõi danh sách nhiệm vụ được giao và tải xuống file gốc số hóa (`file_raw_url`).
+* **FR-TRN-005:** Hệ thống phải hỗ trợ tính năng tải lên bản dịch dự thảo và bắt buộc tệp tin tuân thủ định dạng văn bản có thể chỉnh sửa (`.doc`, `.docx`).
+* **FR-TRN-006:** Hệ thống phải tự động chuyển trạng thái hồ sơ sang `PENDING_REVIEW` và phát thông báo nhắc việc đến Thư ký nghiệp vụ ngay khi Translator bấm xác nhận hoàn thành nộp bài.
 
-### Legal Secretary
-
-Xử lý hồ sơ nghiệp vụ.
-
-### Notary Public
-
-Kiểm tra và phê duyệt hồ sơ.
-
-### Accountant
-
-Quản lý phí và thanh toán.
-
-### Manager
-
-Theo dõi báo cáo và vận hành.
-
-### System Administrator
-
-Quản trị hệ thống.
+### 4.5.3 Kiểm duyệt bản dịch (Translation Review)
+* **FR-TRN-007:** Hệ thống phải cho phép Thư ký nghiệp vụ ghi nhận biên bản lỗi, nhập lý do chi tiết và vị trí dòng/trang cần sửa đổi khi thực hiện lệnh Từ chối phê duyệt (`Reject`).
+* **FR-TRN-008:** Hệ thống phải tự động đóng băng phiên bản bản dịch đạt chuẩn (`Freeze Documents`) sau khi Thư ký bấm nút Phê duyệt (`Approve`), ngăn chặn mọi hành vi sửa đổi dữ liệu trước khi chuyển sang khâu công chứng.
 
 ---
 
-## 2.4 Môi trường vận hành
+## 4.6 PHÂN HỆ THẨM ĐỊNH & KÝ CHỨNG THỰC (NOTARIZATION MANAGEMENT)
 
-* Web Application
-* Chrome
-* Edge
+### 4.6.1 Thẩm định hồ sơ & Ký chứng thực (Case Notarization)
+* **FR-NOT-001:** Hệ thống phải cung cấp giao diện Thẩm định tập trung cho Công chứng viên, hiển thị toàn bộ hồ sơ điện tử gồm: Tài liệu gốc số hóa, Bản dịch đã duyệt và Lịch sử thực thi checklist của các khâu trước.
+* **FR-NOT-002:** Hệ thống phải cho phép Công chứng viên thực hiện lệnh phê duyệt ký số điện tử hoặc từ chối chứng thực kèm biên bản lý do pháp lý.
 
----
-
-## 2.5 Ràng buộc
-
-Bắt buộc tích hợp:
-
-* UCHI
-* Zalo OA
-* Hóa đơn điện tử
+### 4.6.2 Quản lý sổ chứng thực & Cấp số tự động (Notary Book & Numbering)
+* **FR-NOT-003:** Hệ thống phải tự động quản lý cấu hình các Sổ chứng thực tư pháp điện tử đang mở theo từng loại dịch vụ.
+* **FR-NOT-004:** Hệ thống phải tự động truy vấn và cấp số chứng thực tự tăng liên tục (`notary_number`) từ sổ cái tư pháp tương ứng ngay khi Công chứng viên bấm nút Ký xác nhận thành công.
 
 ---
 
-# 3. SERVICE PROCESSING FLOWS
+## 4.7 PHÂN HỆ KIỂM SOÁT CHECKLIST ĐIỆN TỬ (CHECKLIST GATEKEEPING)
 
-## 3.1 Dịch thuật công chứng
+### 4.7.1 Thực thi checklist điện tử (Checklist Execution)
+* **FR-CHK-001:** Hệ thống phải hiển thị động bộ mã checklist quy định (Ví dụ: `CHK-TRN-001` cho khâu tiếp nhận, `CHK-TRN-002` cho khâu kiểm duyệt bản dịch) tùy thuộc vào trạng thái hiện tại của hồ sơ vụ việc.
+* **FR-CHK-002:** Hệ thống phải ghi nhận chi tiết kết quả tích chọn (`Đạt` / `Không đạt`) của từng hạng mục tiêu chuẩn, kèm theo ID tài khoản nhân sự thực hiện và mốc thời gian thực thực hiện.
+* **FR-CHK-003:** Hệ thống phải tự động tính toán trạng thái tổng của bộ Checklist: Chỉ xác nhận là `PASSED` khi và chỉ khi 100% các hạng mục thành phần đều được tích chọn đạt tiêu chuẩn.
 
-### Mô tả
-
-Dịch vụ Dịch thuật công chứng được sử dụng để tiếp nhận tài liệu gốc của khách hàng, thực hiện dịch thuật sang ngôn ngữ đích, kiểm duyệt bản dịch và hoàn tất hồ sơ để chuyển sang bước ký công chứng.
+### 4.7.2 Chốt chặn quy trình vòng đời hồ sơ (Workflow Gatekeeping)
+* **FR-CHK-004:** Hệ thống phải thiết lập các chốt chặn kỹ thuật nghiêm ngặt (`Gatekeeper`), đóng băng hoàn toàn nút chuyển trạng thái tiếp theo của hồ sơ nếu bộ Checklist tương ứng ở khâu hiện tại đang có trạng thái `FAILED` hoặc chưa hoàn thành.
 
 ---
-### Luồng xử lý nghiệp vụ
-[](#uc-031-create-appointment)
+
+## 4.8 PHÂN HỆ ĐỐI SOÁT TÀI CHÍNH TỰ ĐỘNG (FINANCIAL RECONCILIATION)
+
+### 4.8.1 Đối soát quyết toán tự động (Automated Financial Reconciliation)
+* **FR-FIN-001:** Hệ thống phải tích hợp cơ chế Webhook để nhận tín hiệu biến động số dư tức thời từ ngân hàng liên kết hoặc cổng thanh toán trực tuyến.
+* **FR-FIN-002:** Hệ thống phải tự động phân tích cú pháp nội dung chuyển khoản để bóc tách Mã hồ sơ vụ việc (`case_id`), tiến hành đối soát khớp số tiền thực nhận với tổng tiền cần thanh toán trong CRM.
+* **FR-FIN-003:** Hệ thống phải tự động cập nhật trạng thái thanh toán của Case sang `PAID` ngay khi luồng đối soát tự động xác nhận khớp dòng tiền thành công.
+
+---
+
+## 4.9 PHÂN HỆ THÔNG BÁO TỰ ĐỘNG QUA ZALO OA (ZALO NOTIFICATION DISPATCH)
+
+### 4.9.1 Gửi thông báo tự động qua Zalo OA (Zalo Notification Dispatch)
+* **FR-ZALO-001:** Hệ thống phải tự động kích hoạt tiến trình gửi tin nhắn thông báo kèm mã QR thanh toán động tới số điện thoại khách hàng qua Zalo OA ngay khi báo giá được phê duyệt.
+* **FR-ZALO-002:** Hệ thống phải hỗ trợ gửi tin nhắn tự động thông báo hồ sơ đã xử lý xong và đính kèm liên kết truy cập bảo mật để khách hàng tải về file mềm kết quả dạng PDF có chữ ký số.
+* **FR-ZALO-003:** Hệ thống phải ghi nhận nhật ký trạng thái gửi tin nhắn Zalo OA (`Thành công` / `Thất bại` kèm mã lỗi từ Zalo API) vào cơ sở dữ liệu để phục vụ công tác giám sát kỹ thuật.
+# 5. CÁC YÊU CẦU PHI CHỨC NĂNG (NON-FUNCTIONAL REQUIREMENTS)
+
+## 5.1 Bảo mật và Phân quyền (Security & Authorization)
+
+### 5.1.1 Yêu cầu chi tiết
+
+| Mã Yêu Cầu | Tên Yêu Cầu | Mô Tả Chi Tiết |
+| :--- | :--- | :--- |
+| **NFR-SEC-001** | Kiểm soát truy cập (RBAC) | Hệ thống phải phân quyền nghiêm ngặt dựa trên vai trò (Role-Based Access Control). Người dùng ở vai trò này không được phép truy cập hoặc thao tác trên các màn hình chức năng của vai trò khác nếu không được cấp quyền đặc biệt. |
+| **NFR-SEC-002** | Khóa dữ liệu tự động | Ngay sau khi hồ sơ chuyển sang trạng thái `READY_FOR_PICKUP` (đã cấp số chứng thực), hệ thống phải thực hiện đóng băng (Read-only) toàn bộ thông tin nghiệp vụ, file scan gốc và file dịch. Không một vai trò nào (kể cả Legal Secretary hay Notary) được sửa đổi, trừ tài khoản Admin hệ thống. |
+| **NFR-SEC-003** | Nhật ký hệ thống (Audit Trail) | Mọi hành động Xem (View), Tải về (Download), Sửa đổi (Update), Xóa (Delete) thông tin khách hàng, file tài liệu hoặc cấu hình đơn giá thủ công bắt buộc phải được hệ thống ghi log tự động: Ai thực hiện, Vào lúc nào, IP nào, Giá trị trước và sau khi thay đổi. |
+| **NFR-SEC-004** | Bảo mật dữ liệu khách hàng | Mật khẩu người dùng phải được mã hóa một chiều (bằng bcrypt hoặc PBKDF2) trước khi lưu vào cơ sở dữ liệu. Toàn bộ đường truyền dữ liệu giữa client và server phải được mã hóa qua giao thức HTTPS (TLS 1.3). |
+
+---
+
+## 5.2 Hiệu năng và Khả năng mở rộng (Performance & Scalability)
+
+### 5.2.1 Yêu cầu chi tiết
+
+| Mã Yêu Cầu | Tên Yêu Cầu | Mô Tả Chi Tiết |
+| :--- | :--- | :--- |
+| **NFR-PER-001** | Thời gian phản hồi (Response Time) | Thời gian phản hồi cho các thao tác tìm kiếm hồ sơ, tra cứu danh mục, lọc dữ liệu khách hàng không được vượt quá 1.5 giây trong điều kiện mạng nội bộ ổn định. |
+| **NFR-PER-002** | Thời gian cấp số chứng thực | Thao tác nhấn "Phê duyệt và Cấp số tự động" của Công chứng viên phải được xử lý cô lập (Atomic Transaction) để tránh trùng số và thời gian xử lý không quá 2 giây. |
+| **NFR-PER-003** | Xử lý file dung lượng lớn | Hệ thống phải hỗ trợ tải lên và xử lý đồng thời các tệp tài liệu scan/ảnh dạng PDF, ZIP, JPEG có dung lượng tối đa 50MB/file mà không làm treo hàng đợi xử lý của các người dùng khác. |
+
+---
+
+## 5.3 Độ tin cậy và Khả năng bảo trì (Reliability & Maintainability)
+
+### 5.3.1 Yêu cầu chi tiết
+
+| Mã Yêu Cầu | Tên Yêu Cầu | Mô Tả Chi Tiết |
+| :--- | :--- | :--- |
+| **NFR-REL-001** | Tần suất hoạt động (Availability) | Hệ thống phải đảm bảo hoạt động liên tục 24/7 phục vụ công tác tác nghiệp và tra cứu, thời gian hoạt động ổn định tối thiểu đạt 99.5% mỗi năm (Uptime). |
+| **NFR-REL-002** | Sao lưu dữ liệu (Backup) | Cơ sở dữ liệu và kho tệp tin lưu trữ (tài liệu scan, bản dịch) phải được hệ thống tự động sao lưu định kỳ (Auto-backup) vào lúc 23:00 hàng ngày sang một máy chủ lưu trữ độc lập hoặc Cloud Storage. |
+| **NFR-REL-003** | Khôi phục sau sự cố (Disaster Recovery) | Trong trường hợp xảy ra sự cố phần cứng hoặc sập nguồn điện tại văn phòng, hệ thống phải đảm bảo khả năng toàn vẹn dữ liệu, không làm mất các phiên làm việc đã được bấm "Lưu". Thời gian khôi phục hệ thống (RTO) dưới 2 giờ. |
+
+---
+
+## 5.4 Giao diện và Trải nghiệm người dùng (Usability)
+
+### 5.4.1 Yêu cầu chi tiết
+
+| Mã Yêu Cầu | Tên Yêu Cầu | Mô Tả Chi Tiết |
+| :--- | :--- | :--- |
+| **NFR-USA-001** | Ngôn ngữ giao diện | Toàn bộ giao diện hiển thị, thông báo lỗi, nhãn nhập liệu, phiếu thu và các văn bản xuất bản từ hệ thống phải sử dụng 100% tiếng Việt chuẩn, không lỗi phông chữ. |
+| **NFR-USA-002** | Thiết kế trực quan | Giao diện phải được thiết kế rõ ràng, độ tương phản cao, cỡ chữ tối thiểu 14px để hỗ trợ các Công chứng viên hoặc nhân sự lớn tuổi thao tác chính xác, không mỏi mắt. |
+| **NFR-USA-003** | Hỗ trợ nhập liệu nhanh | Hệ thống phải hỗ trợ tối đa việc sử dụng phím tắt (Hotkeys) trên bàn phím (ví dụ: `Enter` để lưu, `F2` để tạo mới) để Thư ký nghiệp vụ nhập thông số hồ sơ và số trang mà không cần lạm dụng chuột. |
+---
+# 6. ĐẶC TẢ CHI TIẾT USE CASE (USE CASE SPECIFICATIONS)
+
+## 6.1 PHÂN HỆ QUẢN LÝ KHÁCH HÀNG & KHỞI TẠO VỤ VIỆC
+
+### USE CASE: KHỞI TẠO HỒ SƠ KHÁCH HÀNG (CREATE CUSTOMER)
+
+* **Mã hiệu:** UC-CRM-01
+* **Tên Use Case:** Khởi tạo hồ sơ khách hàng
+* **Mô tả:** Cho phép Thư ký nghiệp vụ nhập mới dữ liệu định danh của cá nhân hoặc tổ chức doanh nghiệp vào hệ thống CRM tập trung nhằm phục vụ các giao dịch nghiệp vụ.
+* **Tác nhân chính (Primary Actor):** Legal Secretary (Thư ký nghiệp vụ)
+* **Sự kiện kích hoạt (Trigger):** Khách hàng liên hệ giao dịch trực tiếp tại quầy hoặc gửi thông tin qua kênh từ xa (Zalo/Email) nhưng hệ thống kiểm tra chưa có dữ liệu.
+
+#### Điều kiện tiên quyết & Sau điều kiện
+* **Điều kiện tiên quyết (Preconditions):** Thư ký nghiệp vụ đã đăng nhập vào hệ thống CRM thành công và được cấp quyền khởi tạo.
+* **Sau điều kiện (Postconditions):** Bản ghi khách hàng được lưu trữ thành công vào cơ sở dữ liệu và hệ thống sẵn sàng cho việc tạo lập hồ sơ vụ việc (`Case`).
+
+#### Luồng sự kiện chính (Main Flow)
+
+| Bước | Hành động của Tác nhân (Actor Action) | Phản hồi của Hệ thống (System Response) |
+| :--- | :--- | :--- |
+| **1** | Tại màn hình quản trị CRM, chọn tính năng **"Tạo khách hàng mới"**. | Hiển thị biểu mẫu nhập liệu (Form) bao gồm các trường trống: Họ tên, Số điện thoại, Số CCCD/Hộ chiếu/MST, Địa chỉ liên hệ. |
+| **2** | Tiến hành nhập các thông tin hành chính bắt buộc của khách hàng. | Hệ thống kiểm tra định dạng dữ liệu theo thời gian thực (Real-time Validation) đối với số điện thoại và định dạng số định danh. |
+| **3** | Nhấn nút **"Lưu dữ liệu"**. | Hệ thống thực hiện câu lệnh truy vấn quét toàn bộ CSDL để kiểm tra tính duy nhất của Số CCCD/Hộ chiếu/MST. |
+| **4** | | Khởi tạo một bản ghi khách hàng mới với mã ID (`customer_id`) tự động tăng. |
+| **5** | | Tự động ghi nhận mốc thời gian hệ thống và ID tài khoản của Thư ký thực hiện vào thuộc tính bản ghi. |
+| **6** | | Tự động cập nhật nhật ký hệ thống (`Audit Log`) cho hành động tạo mới dữ liệu. |
+| **7** | | Hiển thị thông báo: **"Khởi tạo hồ sơ khách hàng thành công"** và điều hướng về giao diện quản lý khách hàng. |
+
+#### Luồng thay thế (Alternative Flows)
+* **A1: Phát hiện trùng lặp Số định danh (CCCD / Hộ chiếu / Mã số thuế)**
+    * **A1.1.** Tại bước 3 của Luồng chính, nếu hệ thống tìm thấy dữ liệu trùng lặp, lập tức chặn hành động lưu mới bản ghi để tránh rác dữ liệu.
+    * **A1.2.** Hiển thị thông báo cảnh báo: *"Dữ liệu số định danh này đã tồn tại trên hệ thống. Vui lòng kiểm tra lại!"*.
+    * **A1.3.** Tự động tải và hiển thị toàn bộ trang chi tiết Hồ sơ điện tử của khách hàng hiện có lên màn hình để nhân viên tiếp tục tác nghiệp.
+
+#### Luồng ngoại lệ (Exception Flows)
+* **E1: Lỗi xác thực dữ liệu đầu vào (Validation Error)**
+    * **E1.1.** Nhân viên bỏ trống trường bắt buộc hoặc nhập sai cấu trúc dữ liệu quy định, nhấn nút "Lưu dữ liệu".
+    * **E1.2.** Hệ thống ngăn chặn hành động gửi request lên Server, bôi đỏ các trường nhập lỗi và hiển thị nhãn cảnh báo chi tiết để Thư ký chỉnh sửa.
+
+#### Yêu cầu chức năng liên quan
+* [FR-CRM-001](#411-tiếp-nhận--đăng-ký-khách-hàng-customer-registration), [FR-CRM-002](#411-tiếp-nhận--đăng-ký-khách-hàng-customer-registration), [FR-CRM-003](#411-tiếp-nhận--đăng-ký-khách-hàng-customer-registration), [FR-CRM-004](#411-tiếp-nhận--đăng-ký-khách-hàng-customer-registration), [FR-CRM-005](#411-tiếp-nhận--đăng-ký-khách-hàng-customer-registration), [FR-CRM-006](#411-tiếp-nhận--đăng-ký-khách-hàng-customer-registration)
+
+---
+
+### USE CASE: TRA CỨU HỒ SƠ KHÁCH HÀNG (SEARCH CUSTOMER)
+
+* **Mã hiệu:** UC-CRM-02
+* **Tên Use Case:** Tra cứu khách hàng
+* **Mô tả:** Cho phép nhân viên văn phòng tìm kiếm nhanh thông tin hành chính, theo dõi lịch sử giao dịch và kiểm tra trạng thái công nợ lũy kế của một khách hàng bất kỳ.
+* **Tác nhân chính (Primary Actor):** Legal Secretary (Thư ký nghiệp vụ)
+
+#### Luồng sự kiện chính (Main Flow)
+
+| Bước | Hành động của Tác nhân (Actor Action) | Phản hồi của Hệ thống (System Response) |
+| :--- | :--- | :--- |
+| **1** | Truy cập vào phân hệ **"Quản lý khách hàng"**. | Hiển thị thanh tìm kiếm tổng hợp và danh sách khách hàng được cập nhật mới nhất. |
+| **2** | Nhập từ khóa tìm kiếm (Một phần của Họ tên, Số điện thoại hoặc CCCD/MST) vào ô tra cứu. | Hệ thống kích hoạt bộ lọc tìm kiếm gần đúng (Fuzzy Search) hoặc tìm kiếm chính xác tùy theo định dạng ký tự đầu vào. |
+| **3** | | Hiển thị bảng lưới kết quả (Grid View) chứa các thông tin tổng quan: Mã khách hàng, Họ tên, Số điện thoại, CCCD/MST. |
+| **4** | Click chọn vào dòng khách hàng muốn kiểm tra. | Hệ thống truy xuất dữ liệu để hiển thị trang Hồ sơ điện tử chi tiết (360 Profile) bao gồm: Thông tin hành chính, danh sách các Case vụ việc lịch sử, tổng số Case đã làm và tổng giá trị giao dịch tài chính tích lũy. |
+
+#### Luồng ngoại lệ (Exception Flows)
+* **E1: Không tồn tại kết quả tra cứu phù hợp**
+    * **E1.1.** Hệ thống kiểm tra toàn bộ CSDL và trả về kết quả rỗng (0 bản ghi).
+    * **E1.2.** Hiển thị thông báo trên màn hình: *"Không tìm thấy thông tin khách hàng nào khớp với từ khóa tra cứu"*. Đồng thời tự động hiển thị một nút hành động nhanh **"Thêm mới khách hàng"** ngay bên dưới.
+
+#### Yêu cầu chức năng liên quan
+* [FR-CRM-007](#412-tra-cứu--hồ-sơ-điện-tử-customer-search--profile), [FR-CRM-008](#412-tra-cứu--hồ-sơ-điện-tử-customer-search--profile), [FR-CRM-009](#412-tra-cứu--hồ-sơ-điện-tử-customer-search--profile), [FR-CRM-010](#412-tra-cứu--hồ-sơ-điện-tử-customer-search--profile), [FR-CRM-011](#412-tra-cứu--hồ-sơ-điện-tử-customer-search--profile)
+
+---
+
+### USE CASE: KHỞI TẠO HỒ SƠ NGHIỆP VỤ (CREATE CASE)
+
+* **Mã hiệu:** UC-CAS-01
+* **Tên Use Case:** Khởi tạo hồ sơ nghiệp vụ
+* **Mô tả:** Cho phép Thư ký nghiệp vụ mở một hồ sơ vụ việc mới cho khách hàng, lựa chọn tổ hợp các dịch vụ yêu cầu để hệ thống sinh mã theo dõi trực tuyến.
+* **Tác nhân chính (Primary Actor):** Legal Secretary (Thư ký nghiệp vụ)
+
+#### Điều kiện tiên quyết & Sau điều kiện
+* **Điều kiện tiên quyết (Preconditions):** Thư ký nghiệp vụ đã chọn được một tài khoản khách hàng xác định thông qua việc tra cứu (`UC-CRM-02`) hoặc tạo mới thành công (`UC-CRM-01`).
+* **Sau điều kiện (Postconditions):** Hồ sơ vụ việc (`Case`) được khởi tạo thành công với trạng thái ban đầu là `DRAFT / NEW`.
+
+#### Luồng sự kiện chính (Main Flow)
+
+| Bước | Hành động của Tác nhân (Actor Action) | Phản hồi của Hệ thống (System Response) |
+| :--- | :--- | :--- |
+| **1** | Tại trang Hồ sơ điện tử của khách hàng, bấm nút **"Mở hồ sơ mới"**. | Hiển thị giao diện thiết lập hồ sơ. Hệ thống tự động sinh và hiển thị Mã số hồ sơ duy nhất theo cấu trúc: `HS-2026-[6 SỐ TỰ TĂNG]`. |
+| **2** | Tích chọn loại dịch vụ yêu cầu cho hồ sơ (Cho phép chọn một hoặc nhiều mục đồng thời: *Sao y bản chính*, *Chứng thực chữ ký*, *Dịch thuật công chứng*). | Hệ thống ghi nhận loại dịch vụ và tự động mở ra các tab cấu hình động tương ứng với đặc thù dịch vụ đó. |
+| **3** | Nhập các thông tin bổ sung nếu có (Hạn chót mong muốn của khách, Ghi chú đặc biệt). | Hệ thống kiểm tra tính hợp lệ của ngày hẹn trả kết quả (không được nhỏ hơn thời gian hiện tại). |
+| **4** | Nhấn nút **"Tạo hồ sơ"**. | *(Hệ thống thực hiện ngầm)* Tạo mới một bản ghi trong `Bảng CASE`, liên kết với `customer_id` hiện tại, lưu vết ID tài khoản Thư ký tạo và mốc thời gian thực. |
+| **5** | | Chuyển trạng thái hồ sơ về `DRAFT / NEW`. |
+| **6** | | Hiển thị thông báo thành công và tự động điều hướng Thư ký đến màn hình Quản lý chi tiết tài liệu bên trong Case để tiến hành số hóa. |
+
+#### Luồng thay thế (Alternative Flows)
+
+* **A1: Khách hàng có lịch hẹn đặt trước trên hệ thống (Appointment Check-in)**
+    * **A1.1.** Tại bước 1, nếu khách hàng này đã được xác nhận đến văn phòng thông qua luồng Check-in lịch hẹn trước đó, hệ thống tự động kế thừa toàn bộ thông tin yêu cầu dịch vụ đã ghi nhận lúc đặt lịch.
+    * **A1.2.** Thư ký nghiệp vụ chỉ cần kiểm tra lại các mục dịch vụ tích chọn sẵn mà không cần thao tác chọn lại từ đầu, sau đó tiếp tục từ Bước 3 của Luồng chính.
+
+#### Luồng ngoại lệ (Exception Flows)
+
+* **E1: Không lựa chọn loại dịch vụ nào cho hồ sơ**
+    * **E1.1.** Tại bước 4, Thư ký nghiệp vụ để trống toàn bộ các ô tích chọn dịch vụ và nhấn nút "Tạo hồ sơ".
+    * **E1.2.** Hệ thống ngăn chặn hành động lưu, hiển thị cảnh báo đỏ trên màn hình: *"Vui lòng lựa chọn ít nhất một loại dịch vụ để khởi tạo hồ sơ!"*.
+* **E2: Ngày hẹn trả kết quả không hợp lệ**
+    * **E2.1.** Thư ký nhập ngày hẹn trả nằm trong quá khứ hoặc trước thời gian xử lý tối thiểu quy định.
+    * **E2.2.** Hệ thống bôi đỏ trường ngày tháng, hiển thị thông báo lỗi: *"Ngày hẹn trả kết quả không được nhỏ hơn ngày hiện tại"*.
+
+#### Yêu cầu chức năng liên quan
+* [FR-CASE-001](#421-khởi-tạo-hồ-sơ-create-case), [FR-CASE-002](#421-khởi-tạo-hồ-sơ-create-case), [FR-CASE-003](#421-khởi-tạo-hồ-sơ-create-case), [FR-CASE-004](#421-khởi-tạo-hồ-sơ-create-case), [FR-CASE-006](#422-phân-loại-dịch-vụ--điều-phối-service-type--assignment)
+
+## 6.2 PHÂN HỆ SỐ HÓA TÀI LIỆU & CẤU HÌNH BIỂU PHÍ LINH HOẠT
+
+### USE CASE: ĐÍNH KÈM & SỐ HÓA TÀI LIỆU GỐC (UPLOAD DOCUMENT)
+
+* **Mã hiệu:** UC-DOC-01
+* **Tên Use Case:** Đính kèm và số hóa tài liệu gốc
+* **Mô tả:** Thư ký nghiệp vụ tải lên các tệp tin quét (Scan) hoặc hình ảnh độ phân giải cao của tài liệu gốc do khách hàng cung cấp nhằm lưu trữ và làm căn cứ xử lý chuyên môn từ xa.
+* **Tác nhân chính (Primary Actor):** Legal Secretary (Thư ký nghiệp vụ)
+* **Sự kiện kích hoạt (Trigger):** Thư ký tiếp nhận tài liệu giấy của khách hàng tại quầy hoặc nhận file mềm qua cổng tiếp nhận trực tuyến.
+
+#### Điều kiện tiên quyết & Sau điều kiện
+* **Điều kiện tiên quyết (Preconditions):** Hồ sơ vụ việc (`Case`) đã được khởi tạo và đang ở trạng thái cho phép cập nhật dữ liệu (`DRAFT / NEW`).
+* **Sau điều kiện (Postconditions):** Tệp tin được lưu trữ an toàn trên kho dữ liệu đám mây, thông tin tài liệu xuất hiện trong danh mục quản lý của Case.
+
+#### Luồng sự kiện chính (Main Flow)
+
+| Bước | Hành động của Tác nhân (Actor Action) | Phản hồi của Hệ thống (System Response) |
+| :--- | :--- | :--- |
+| **1** | Tại tab "Danh mục tài liệu" của hồ sơ, nhấn nút **"Thêm tài liệu"**. | Hiển thị bảng điều khiển tải lên (Upload Panel) kèm các trường nhập liệu tên tài liệu, loại tài liệu. |
+| **2** | Kéo thả tệp tin hoặc chọn file từ thiết bị cục bộ, sau đó nhập tên gọi phân biệt của tài liệu. | Hệ thống tự động kiểm tra định dạng đuôi file (`PDF`, `JPG`, `PNG`, `DOCX`) và kiểm tra dung lượng file (tối đa 50MB). |
+| **3** | Nhấn nút **"Tải lên"**. | Hệ thống truyền tải dữ liệu mã hóa lên Server, lưu trữ đường dẫn vào thuộc tính `file_raw_url` của `Bảng CASE_DOCUMENT`. |
+| **4** | | Hệ thống ghi vết mốc thời gian tải lên, ID tài khoản nhân sự thực hiện và liên kết trực tiếp với `case_id`. |
+| **5** | | Cập nhật danh sách tài liệu hiển thị trên giao diện theo thời gian thực và kích hoạt trạng thái "Chờ cấu hình dịch vụ". |
+
+#### Luồng ngoại lệ (Exception Flows)
+
+* **E1: Tệp tin sai định dạng hoặc vượt quá dung lượng cho phép**
+    * **E1.1.** Tại bước 2, Thư ký chọn file không nằm trong danh mục hỗ trợ (ví dụ file `.zip`, `.exe`) hoặc file vượt quá 50MB.
+    * **E1.2.** Hệ thống lập tức chặn hành động, hiển thị cảnh báo đỏ: *"Định dạng tệp tin hoặc dung lượng không được hỗ trợ (Tối đa 50MB, định dạng: PDF, JPG, PNG, DOCX)"* và khóa nút gửi dữ liệu lên server.
+
+#### Yêu cầu chức năng liên quan
+* [FR-DOC-001](#431-số-hóa-tài-liệu-upload-document), [FR-DOC-002](#431-số-hóa-tài-liệu-upload-document), [FR-DOC-003](#431-số-hóa-tài-liệu-upload-document), [FR-DOC-004](#431-số-hóa-tài-liệu-upload-document)
+
+---
+
+### USE CASE: CẤU HÌNH NGÔN NGỮ & BIỂU PHÍ TÍNH PHÍ (CONFIGURE CASE DETAILS)
+
+* **Mã hiệu:** UC-PRI-01
+* **Tên Use Case:** Cấu hình ngôn ngữ và biểu phí tính phí
+* **Mô tả:** Thư ký nghiệp vụ định nghĩa các thuộc tính chuyên môn dịch thuật cho từng tài liệu và lựa chọn cơ chế tính phí linh hoạt (theo trang hoặc trọn gói theo bộ) theo đúng cấu trúc quản lý.
+* **Tác nhân chính (Primary Actor):** Legal Secretary (Thư ký nghiệp vụ)
+
+#### Điều kiện tiên quyết & Sau điều kiện
+* **Điều kiện tiên quyết (Preconditions):** Hồ sơ vụ việc đã có ít nhất một bản ghi tài liệu gốc được số hóa lên hệ thống thành công (`UC-DOC-01`).
+* **Sau điều kiện (Postconditions):** Cấu hình tính phí của từng tài liệu được ghi nhận, làm tiền đề để hệ thống tự động tổng hợp bảng báo giá.
+
+#### Luồng sự kiện chính (Main Flow)
+
+| Bước | Hành động của Tác nhân (Actor Action) | Phản hồi của Hệ thống (System Response) |
+| :--- | :--- | :--- |
+| **1** | Tại dòng tài liệu cần xử lý, Thư ký lựa chọn **Ngôn ngữ nguồn** và **Ngôn ngữ đích** từ danh sách thả xuống. | Hệ thống ghi nhận cặp ngôn ngữ dịch thuật tương ứng. |
+| **2** | Tại cột "Phương thức tính phí", chọn một trong hai tùy chọn: **"Tính theo trang"** HOẶC **"Tính trọn gói theo bộ"**. | Hệ thống thay đổi nhãn đơn vị tính hiển thị ở cột số lượng tương ứng với lựa chọn (`Trang` hoặc `Bộ`). |
+| **3** | Nhập số lượng thực tế vào ô Số lượng và nhập số bản in cần xuất bản vào ô **"Số bản chứng thực"**. | Hệ thống tự động truy vấn Bảng giá gốc tương ứng với cặp ngôn ngữ và phương thức tính để hiển thị đơn giá gợi ý. |
+| **4** | Nhấn nút **"Áp dụng cấu hình"**. | Hệ thống chạy ngầm công thức tính toán: Tổng tiền tài liệu = (Số lượng $\times$ Đơn giá dịch) + (Số bản chứng thực $\times$ Đơn giá chứng thực). |
+| **5** | | Lưu toàn bộ thông tin vào cấu hình tài liệu của Case, đồng thời cập nhật tổng tiền tạm tính của toàn bộ hồ sơ lên thanh trạng thái. |
+
+#### Luồng thay thế (Alternative Flows)
+
+* **A1: Áp dụng đơn giá thỏa thuận riêng (Manual Price Override)**
+    * **A1.1.** Tại bước 3, đối với các khách hàng doanh nghiệp thân thiết hoặc có thỏa thuận đặc biệt, Thư ký nhập trực tiếp một mức giá khác vào ô **"Đơn giá tùy chỉnh"**.
+    * **A1.2.** Hệ thống ghi nhận giá trị nhập tay, kích hoạt thuộc tính ghi đè (`Manual Override`) để ưu tiên dùng mức giá này tính toán tổng tiền thay cho đơn giá tự động của hệ thống và đánh dấu nhãn `Custom Price` trên giao diện.
+
+#### Yêu cầu chức năng liên quan
+* [FR-PRI-002](#441-cấu-hình-bảng-giá-gốc-fee-configuration), [FR-PRI-006](#442-cơ-chế-tính-toán-chi-phí-báo-giá-chi-tiết-fee-calculation--quoting), [FR-PRI-007](#442-cơ-chế-tính-toán-chi-phí-báo-giá-chi-tiết-fee-calculation--quoting), [FR-PRI-008](#442-cơ-chế-tính-toán-chi-phí-báo-giá-chi-tiết-fee-calculation--quoting)
+
+## 6.3 PHÂN HỆ KIỂM SOÁT CHECKLIST ĐIỆN TỬ & PHÊ DUYỆT BÁO GIÁ
+
+### USE CASE: THỰC THI CHECKLIST NGHIỆP VỤ (EXECUTE CHECKLIST)
+
+* **Mã hiệu:** UC-CHK-01
+* **Tên Use Case:** Thực thi checklist nghiệp vụ
+* **Mô tả:** Cho phép Thư ký nghiệp vụ tích chọn kiểm tra từng hạng mục tiêu chuẩn pháp lý/kỹ thuật của hồ sơ theo các bộ mã checklist quy định, nhằm chốt chặn sai sót trước khi chuyển bước quy trình.
+* **Tác nhân chính (Primary Actor):** Legal Secretary (Thư ký nghiệp vụ)
+* **Sự kiện kích hoạt (Trigger):** Hồ sơ chuyển sang các cột mốc quan trọng (Tiếp nhận ban đầu, Kiểm duyệt bản dịch, Trước khi trình ký).
+
+#### Điều kiện tiên quyết & Sau điều kiện
+* **Điều kiện tiên quyết (Preconditions):** Thư ký nghiệp vụ đang mở một hồ sơ vụ việc cụ thể và hệ thống yêu cầu xác nhận bộ Checklist tương ứng với trạng thái hiện tại.
+* **Sau điều kiện (Postconditions):** Bộ checklist được ghi nhận kết quả (`PASSED` hoặc `FAILED`), hệ thống mở khóa hoặc đóng băng luồng đi tùy thuộc vào kết quả này.
+
+#### Luồng sự kiện chính (Main Flow)
+
+| Bước | Hành động của Tác nhân (Actor Action) | Phản hồi của Hệ thống (System Response) |
+| :--- | :--- | :--- |
+| **1** | Tại màn hình quản lý tiến độ Case, bấm vào tab **"Kiểm soát Checklist"**. | Hiển thị danh sách các điều kiện kiểm tra của mã checklist tương ứng (Ví dụ: `CHK-TRN-001` cho khâu tiếp nhận). |
+| **2** | Tiến hành đối chiếu hồ sơ thực tế và tích chọn `Đạt` vào từng đầu mục tiêu chuẩn hiển thị trên màn hình. | Hệ thống ghi nhận trạng thái tích chọn của từng item theo thời gian thực. |
+| **3** | Sau khi tích đủ tất cả các mục, nhấn nút **"Xác nhận hoàn thành Checklist"**. | Hệ thống kiểm tra: Nếu 100% các mục đều đạt, hệ thống tự động ghi nhận trạng thái chung của bộ Checklist đó là `PASSED / APPROVED`. |
+| **4** | | Ghi vết ID nhân sự thực hiện, mốc thời gian thực hiện chấm checklist để phục vụ hậu kiểm. |
+| **5** | | Mở khóa trạng thái tiếp theo của hồ sơ, cho phép thực hiện bước xử lý chuyên môn tiếp theo. |
+
+#### Luồng thay thế (Alternative Flows)
+
+* **A1: Phát hiện hạng mục không đạt tiêu chuẩn (Checklist Failed)**
+    * **A1.1.** Tại bước 2, Thư ký phát hiện một hoặc nhiều hạng mục bị lỗi (Ví dụ: Tài liệu gốc bị mờ, rách) và tích chọn `Không đạt` hoặc bỏ trống mục đó.
+    * **A1.2.** Khi nhấn "Xác nhận hoàn thành Checklist", hệ thống lập tức đánh dấu trạng thái bộ Checklist là `FAILED / REJECTED`.
+    * **A1.3.** Hệ thống đóng băng nút chuyển bước của hồ sơ, hiển thị cảnh báo đỏ: *"Hồ sơ chưa đạt tiêu chuẩn kiểm soát. Vui lòng yêu cầu bổ sung hoặc xử lý lại!"* và tự động chuyển hồ sơ về trạng thái chờ bổ sung thông tin.
+
+#### Yêu cầu chức năng liên quan
+* [FR-CHK-001](#471-thực-thi-checklist-điện-tử-checklist-execution), [FR-CHK-002](#471-thực-thi-checklist-điện-tử-checklist-execution), [FR-CHK-003](#471-thực-thi-checklist-điện-tử-checklist-execution), [FR-CHK-004](#472-chốt-chặn-quy-trình-vòng-đời-hồ-sơ-workflow-gatekeeping)
+
+---
+
+### USE CASE: PHÊ DUYỆT BÁO GIÁ & GỬI THÔNG TIN THANH TOÁN (APPROVE QUOTATION & SEND PAYMENT)
+
+* **Mã hiệu:** UC-PRI-02
+* **Tên Use Case:** Phê duyệt báo giá và gửi thông tin thanh toán
+* **Mô tả:** Thư ký nghiệp vụ xác nhận bảng tổng hợp chi phí cuối cùng của hồ sơ và thực hiện lệnh gửi báo giá tự động cho khách hàng qua kênh Zalo/Email.
+* **Tác nhân chính (Primary Actor):** Legal Secretary (Thư ký nghiệp vụ)
+
+#### Điều kiện tiên quyết & Sau điều kiện
+* **Điều kiện tiên quyết (Preconditions):** Toàn bộ tài liệu trong hồ sơ đã được cấu hình ngôn ngữ và tính phí hoàn tất (`UC-PRI-01`), đồng thời đạt checklist tiếp nhận `CHK-TRN-001`.
+* **Sau điều kiện (Postconditions):** Trạng thái hồ sơ chuyển từ `DRAFT / NEW` sang `QUOTED`, một thông báo chứa liên kết báo giá/thanh toán được gửi tới khách hàng.
+
+#### Luồng sự kiện chính (Main Flow)
+
+| Bước | Hành động của Tác nhân (Actor Action) | Phản hồi của Hệ thống (System Response) |
+| :--- | :--- | :--- |
+| **1** | Ấn nút **"Xem tổng hợp báo giá"** tại màn hình chi tiết hồ sơ vụ việc. | Hiển thị bảng tổng hợp chi tiết tất cả các khoản phí (Phí dịch, phí in ấn, phí chứng thực, thuế VAT nếu có). |
+| **2** | Kiểm tra thông tin và nhấn nút **"Phê duyệt báo giá"**. | Hệ thống khóa toàn bộ các trường cấu hình tính phí trước đó để đảm bảo tính toàn vẹn dữ liệu tài chính. |
+| **3** | | Chuyển trạng thái hồ sơ trên hệ thống sang `QUOTED`. |
+| **4** | Nhấn nút **"Gửi báo giá cho khách hàng"**. | Hệ thống tự động biên dịch dữ liệu sang mẫu tin nhắn thông báo, đính kèm mã QR thanh toán động định dạng VietQR (chứa sẵn số tiền cọc/thanh toán và nội dung chuyển khoản là Mã hồ sơ). |
+| **5** | | Gọi API hệ thống gửi tin nhắn qua Zalo OA hoặc Email của khách hàng theo thời gian thực. |
+
+#### Yêu cầu chức năng liên quan
+* [FR-PRI-009](#442-cơ-chế-tính-toán-chi-phí-báo-giá-chi-tiết-fee-calculation--quoting), [FR-PRI-011](#442-cơ-chế-tính-toán-chi-phí-báo-giá-chi-tiết-fee-calculation--quoting), [FR-ZALO-001](#491-gửi-thông-báo-tự-động-qua-zalo-oa-zalo-notification-dispatch)
+
+## 6.4 PHÂN HỆ CHỈ ĐỊNH & THỰC HIỆN DỊCH THUẬT CHUYÊN MÔN
+
+### USE CASE: CHỈ ĐỊNH BIÊN DỊCH VIÊN (ASSIGN TRANSLATOR)
+
+* **Mã hiệu:** UC-TRN-01
+* **Tên Use Case:** Chỉ định biên dịch viên
+* **Mô tả:** Thư ký nghiệp vụ lựa chọn và gán trách nhiệm xử lý dịch thuật tài liệu cho một Biên dịch viên nội bộ hoặc Cộng tác viên (CTV) phù hợp với cặp ngôn ngữ và chuyên ngành của hồ sơ.
+* **Tác nhân chính (Primary Actor):** Legal Secretary (Thư ký nghiệp vụ)
+* **Sự kiện kích hoạt (Trigger):** Hồ sơ đã được khách hàng xác nhận báo giá/đóng cọc thành công và chuyển sang trạng thái chờ xử lý dịch thuật.
+
+#### Điều kiện tiên quyết & Sau điều kiện
+* **Điều kiện tiên quyết (Preconditions):** Hồ sơ vụ việc (`Case`) đang ở trạng thái `READY_FOR_TRANSLATION` và đã vượt qua chốt chặn tài chính.
+* **Sau điều kiện (Postconditions):** Bản ghi hồ sơ được liên kết với ID của Translator, hệ thống kích hoạt quyền truy cập tài liệu tương ứng cho nhân sự đó.
+
+#### Luồng sự kiện chính (Main Flow)
+
+| Bước | Hành động của Tác nhân (Actor Action) | Phản hồi của Hệ thống (System Response) |
+| :--- | :--- | :--- |
+| **1** | Tại màn hình điều phối hồ sơ dịch thuật, nhấn nút **"Chỉ định người dịch"**. | Hiển thị danh sách bộ lọc các Biên dịch viên/CTV đang hoạt động trên hệ thống. |
+| **2** | Chọn bộ lọc theo Cặp ngôn ngữ nghiệp vụ (Ví dụ: Anh - Việt) và Chuyên ngành (Kinh tế, Pháp lý...). | Hệ thống tự động lọc và xếp hạng các Translator thỏa mãn tiêu chí, hiển thị kèm số lượng đầu việc họ đang đảm nhận (Workload). |
+| **3** | Tích chọn tên Translator phù hợp, thiết lập "Hạn chót hoàn thành bản dịch" (Translation Deadline). | Hệ thống kiểm tra: Đảm bảo thời gian deadline của người dịch phải nhỏ hơn thời gian hẹn trả khách hàng ít nhất 4 tiếng. |
+| **4** | Nhấn nút **"Xác nhận giao việc"**. | Hệ thống lưu thông tin phân công, chuyển trạng thái hồ sơ sang `PROCESSING_TRANSLATION`. |
+| **5** | | Gửi một thông báo đẩy (Push Notification) và email tự động tới tài khoản của Translator được chỉ định để thông báo nhận việc. |
+
+#### Luồng ngoại lệ (Exception Flows)
+
+* **E1: Thiết lập thời gian hoàn thành bản dịch (Deadline) không hợp lệ**
+    * **E1.1.** Thư ký nghiệp vụ thiết lập giờ hoàn thành của Translator trùng hoặc muộn hơn giờ hẹn trả kết quả vật lý cho khách hàng.
+    * **E1.2.** Hệ thống ngăn chặn hành động lưu, bôi đỏ trường nhập liệu và hiển thị cảnh báo: *"Hạn chót của biên dịch viên phải trước thời gian hẹn trả kết quả tối thiểu 4 tiếng để phục vụ khâu kiểm duyệt và chứng thực!"*.
+
+#### Yêu cầu chức năng liên quan
+* [FR-TRN-001](#451-phân-công-biên-dịch-translator-assignment), [FR-TRN-002](#451-phân-công-biên-dịch-translator-assignment), [FR-TRN-003](#451-phân-công-biên-dịch-translator-assignment)
+
+---
+
+### USE CASE: THỰC HIỆN DỊCH THUẬT & TẢI LÊN BẢN DỊCH (PERFORM TRANSLATION & UPLOAD)
+
+* **Mã hiệu:** UC-TRN-02
+* **Tên Use Case:** Thực hiện dịch thuật và tải lên bản dịch
+* **Mô tả:** Biên dịch viên truy cập hệ thống để tải tài liệu gốc số hóa, tiến hành dịch chuyên môn và tải lên tệp tin dịch thuật hoàn chỉnh (.docx) để trình duyệt.
+* **Tác nhân chính (Primary Actor):** Translator (Biên dịch viên / Cộng tác viên)
+
+#### Điều kiện tiên quyết & Sau điều kiện
+* **Điều kiện tiên quyết (Preconditions):** Translator đã đăng nhập vào Hệ thống/Cổng thông tin CTV thành công và được giao phụ trách hồ sơ tương ứng.
+* **Sau điều kiện (Postconditions):** Tệp tin kết quả dịch thuật được ghi nhận trên hệ thống, sẵn sàng chuyển sang khâu kiểm duyệt chất lượng kỹ thuật.
+
+#### Luồng sự kiện chính (Main Flow)
+
+| Bước | Hành động của Tác nhân (Actor Action) | Phản hồi của Hệ thống (System Response) |
+| :--- | :--- | :--- |
+| **1** | Truy cập phân hệ "Nhiệm vụ được giao", bấm vào mã hồ sơ cần xử lý. | Hiển thị thông tin chi tiết yêu cầu, cặp ngôn ngữ, deadline và nút tải xuống tài liệu gốc số hóa. |
+| **2** | Nhấn tải file gốc, thực hiện dịch thuật chuyên môn trên máy tính cá nhân. | *(Hệ thống ghi nhận trạng thái làm việc ngoại tuyến của người dùng)*. |
+| **3** | Sau khi hoàn thành bản dịch, quay lại giao diện hệ thống và nhấn nút **"Tải lên bản dịch"**. | Hiển thị pop-up yêu cầu chọn tệp tin kết quả. |
+| **4** | Chọn tệp tin bản dịch dạng định dạng Word (`.doc` hoặc `.docx`) từ máy tính và nhấn nút **"Xác nhận hoàn thành"**. | Hệ thống kiểm tra định dạng tệp tin và tiến hành quét virus/bảo mật ngầm. |
+| **5** | | Lưu trữ file dịch vào thuộc tính `file_translated_url` của hồ sơ, ghi nhận thời gian nộp bài thực tế của Translator. |
+| **6** | | Tự động chuyển trạng thái hồ sơ sang `PENDING_REVIEW` và bắn thông báo nhắc việc đến Thư ký nghiệp vụ phụ trách khâu hậu kiểm. |
+
+#### Luồng ngoại lệ (Exception Flows)
+
+* **E1: Tải lên tệp tin sai định dạng quy định**
+    * **E1.1.** Translator chọn tệp tin định dạng không cho phép sửa đổi (Ví dụ: tệp tin ảnh `.jpg`, `.png` hoặc file nén `.zip`) để tải lên làm bản dịch.
+    * **E1.2.** Hệ thống từ chối nhận file, hiển thị lỗi: *"Bản dịch dự thảo bắt buộc phải tuân thủ định dạng tài liệu văn bản chỉnh sửa (.doc, .docx) để phục vụ công tác rà soát lỗi kỹ thuật!"*.
+
+#### Yêu cầu chức năng liên quan
+* [FR-TRN-004](#452-thực-hiện-dịch-thuật-translation-execution), [FR-TRN-005](#452-thực-hiện-dịch-thuật-translation-execution), [FR-TRN-006](#452-thực-hiện-dịch-thuật-translation-execution)
+
+## 6.5 PHÂN HỆ KIỂM DUYỆT CHẤT LƯỢNG BẢN DỊCH & TRÌNH KÝ CÔNG CHỨNG
+
+### USE CASE: KIỂM DUYỆT CHẤT LƯỢNG BẢN DỊCH (REVIEW TRANSLATION)
+
+* **Mã hiệu:** UC-TRN-03
+* **Tên Use Case:** Kiểm duyệt chất lượng bản dịch
+* **Mô tả:** Thư ký nghiệp vụ rà soát lỗi kỹ thuật, định dạng, chính tả của bản dịch dự thảo do Translator nộp lên theo tiêu chuẩn kiểm duyệt nhằm quyết định phê duyệt hoặc từ chối sửa lại.
+* **Tác nhân chính (Primary Actor):** Legal Secretary (Thư ký nghiệp vụ)
+* **Sự kiện kích hoạt (Trigger):** Translator hoàn thành việc tải lên bản dịch và hệ thống phát thông báo yêu cầu kiểm duyệt.
+
+#### Điều kiện tiên quyết & Sau điều kiện
+* **Điều kiện tiên quyết (Preconditions):** Hồ sơ vụ việc (`Case`) đang ở trạng thái `PENDING_REVIEW` và tệp tin `.docx` sản phẩm đã được ghi nhận.
+* **Sau điều kiện (Postconditions):** Bản dịch được xác nhận đạt chất lượng chuyên môn hoặc bị trả về yêu cầu sửa đổi/hiệu đính.
+
+#### Luồng sự kiện chính (Main Flow)
+
+| Bước | Hành động của Tác nhân (Actor Action) | Phản hồi của Hệ thống (System Response) |
+| :--- | :--- | :--- |
+| **1** | Tại màn hình duyệt hồ sơ, Thư ký nhấn mở tệp tin `.docx` bản dịch để rà soát đối chiếu với tài liệu gốc. | Hệ thống hiển thị tài liệu song song hoặc cho phép tải file về kiểm tra. |
+| **2** | Kích hoạt và thực thi bộ Checklist đánh giá chất lượng kỹ thuật bản dịch (`CHK-TRN-002`). | Hệ thống ghi nhận kết quả tích chọn từng tiêu chí rà soát (lỗi chính tả, định dạng, nội dung cốt lõi). |
+| **3** | Toàn bộ tiêu chí đạt yêu cầu, Thư ký nhấn nút **"Phê duyệt bản dịch (Approve)"**. | Hệ thống chuyển trạng thái tài liệu sang `TRANSLATION_APPROVED`. |
+| **4** | | Khóa phiên bản bản dịch đạt chuẩn để chuẩn bị cho công tác in ấn, đóng tập niêm phong. |
+| **5** | | Kích hoạt lệnh chờ thực thi bộ checklist điều kiện ký duyệt cuối cùng (`CHK-TRN-003`). |
+
+#### Luồng thay thế (Alternative Flows)
+
+* **A1: Bản dịch không đạt chất lượng kỹ thuật hoặc sai sót chuyên môn (Reject & Rework)**
+    * **A1.1.** Tại bước 3, Thư ký phát hiện bản dịch lỗi định dạng hoặc dịch sai nghĩa, nhấn nút **"Từ chối phê duyệt (Reject)"**.
+    * **A1.2.** Hệ thống mở biểu mẫu nhập liệu yêu cầu, bắt buộc Thư ký điền lý do từ chối và vị trí dòng/trang cần sửa đổi.
+    * **A1.3.** Nhấn "Xác nhận trả về", hệ thống tự động đổi trạng thái hồ sơ về `TRANSLATION_REJECTED`, đồng thời đóng băng luồng công chứng và bắn thông báo hỏa tốc yêu cầu sửa đổi (Rework) kèm nội dung biên bản lỗi sang màn hình làm việc của Translator phụ trách.
+
+#### Yêu cầu chức năng liên quan
+* [FR-TRN-007](#453-kiểm-duyệt-bản-dịch-translation-review), [FR-TRN-008](#453-kiểm-duyệt-bản-dịch-translation-review), [FR-CHK-002](#471-thực-thi-checklist-điện-tử-checklist-execution)
+
+---
+
+### USE CASE: PHÊ DUYỆT CẤP SỐ & KÝ CHỨNG THỰC (SIGN & APPROVE CASE)
+
+* **Mã hiệu:** UC-NOT-01
+* **Tên Use Case:** Phê duyệt cấp số và ký chứng thực
+* **Mô tả:** Công chứng viên kiểm tra tính pháp lý tổng thể của toàn bộ Case vụ việc, tiến hành bấm phê duyệt điện tử để hệ thống tự động cấp số chứng thực tự động từ sổ cái tư pháp.
+* **Tác nhân chính (Primary Actor):** Notary (Công chứng viên)
+
+#### Điều kiện tiên quyết & Sau điều kiện
+* **Điều kiện tiên quyết (Preconditions):** Hồ sơ đã vượt qua kiểm duyệt bản dịch (`UC-TRN-03`), hoàn thành kiểm tra checklist điều kiện sẵn sàng ký duyệt `CHK-TRN-003` đạt 100% `PASSED`.
+* **Sau điều kiện (Postconditions):** Hồ sơ được cấp số chứng thực pháp lý duy nhất, văn bản sẵn sàng in ấn đóng dấu vật lý và chuyển trạng thái sang chờ quyết toán/bàn giao.
+
+#### Luồng sự kiện chính (Main Flow)
+
+| Bước | Hành động của Tác nhân (Actor Action) | Phản hồi của Hệ thống (System Response) |
+| :--- | :--- | :--- |
+| **1** | Công chứng viên truy cập phân hệ "Phê duyệt hồ sơ tư pháp", chọn Case đang xếp hàng chờ ký. | Hệ thống hiển thị toàn bộ hồ sơ điện tử (Tài liệu gốc số hóa, Bản dịch đã phê duyệt, Nhật ký thực thi 3 tầng checklist trước đó). |
+| **2** | Thẩm định tính pháp lý của hồ sơ, nhấn nút **"Ký xác nhận & Cấp số"**. | Hệ thống tự động gọi lệnh truy vấn tới cấu hình Sổ chứng thực tư pháp điện tử trực tuyến đang mở. |
+| **3** | | Tự động lấy ra số thứ tự tiếp theo của Sổ chứng thực, gán mã số đó vào trường thuộc tính `notary_number` của hồ sơ. |
+| **4** | | Đóng băng vĩnh viễn toàn bộ file gốc và file dịch thuật trong Case (`Freeze Documents`), không cho phép bất kỳ vai trò nào chỉnh sửa hay xóa bỏ để đảm bảo tính an toàn tư pháp. |
+| **5** | | Chuyển trạng thái hồ sơ vụ việc sang `WAITING_FOR_FINANCE` (Chờ đối soát tài chính) và bắn thông báo hỏa tốc đến bộ phận kế toán. |
+
+#### Luồng ngoại lệ (Exception Flows)
+
+* **E1: Công chứng viên phát hiện sai sót pháp lý nghiêm trọng của hồ sơ gốc**
+    * **E1.1.** Công chứng viên phát hiện tài liệu gốc có dấu hiệu tẩy xóa hoặc không đủ tư cách pháp lý để chứng thực, nhấn nút **"Từ chối chứng thực (Notary Reject)"**.
+    * **E1.2.** Hệ thống yêu cầu nhập lý do pháp lý. Sau khi ấn xác nhận, hệ thống hủy bỏ lệnh cấp số, chuyển trạng thái Case về `CASE_REJECTED`, đóng luồng vụ việc và gửi thông báo khẩn cấp cho Thư ký nghiệp vụ tiếp nhận để hoàn trả hồ sơ hoặc xử lý khủng hoảng với khách hàng.
+
+#### Yêu cầu chức năng liên quan
+* [FR-NOT-001](#461-thẩm-định-hồ-sơ--ký-chứng-thực-case-notarization), [FR-NOT-002](#461-thẩm-định-hồ-sơ--ký-chứng-thực-case-notarization), [FR-NOT-003](#462-quản-lý-sổ-chứng-thực--cấp-số-tự-động-notary-book--numbering)
+
+
+## 6.6 PHÂN HỆ QUYẾT TOÁN TÀI CHÍNH, BÀN GIAO KẾT QUẢ & ĐÓNG LƯU TRỮ
+
+### USE CASE: GHI NHẬN THANH TOÁN & XUẤT HÓA ĐƠN (RECORD PAYMENT & INVOICE)
+
+* **Mã hiệu:** UC-FIN-01
+* **Tên Use Case:** Ghi nhận thanh toán và xuất hóa đơn
+* **Mô tả:** Hệ thống tự động ghi nhận dữ liệu dòng tiền thanh toán hoặc Thư ký nghiệp vụ nhập tay phiếu thu đối soát, sau đó hệ thống tự động xuất hóa đơn điện tử gửi khách hàng.
+* **Tác nhân chính (Primary Actor):** Hệ thống tự động (Automated System) hoặc Kế toán / Thư ký nghiệp vụ
+
+#### Điều kiện tiên quyết & Sau điều kiện
+* **Điều kiện tiên quyết (Preconditions):** Hồ sơ vụ việc đã được Công chứng viên phê duyệt cấp số chứng thực (`UC-NOT-01`) và đang ở trạng thái `WAITING_FOR_FINANCE`.
+* **Sau điều kiện (Postconditions):** Trạng thái thanh toán của hồ sơ được cập nhật thành `PAID`, hệ thống ghi nhận doanh thu và kích hoạt quyền bàn giao tài liệu.
+
+#### Luồng sự kiện chính (Main Flow)
+
+| Bước | Hành động của Tác nhân (Actor Action) | Phản hồi của Hệ thống (System Response) |
+| :--- | :--- | :--- |
+| **1** | Khách hàng quét mã VietQR động để thanh toán nốt phần tiền còn lại của hồ sơ qua ứng dụng ngân hàng. | Hệ thống nhận tín hiệu (Webhook) thông báo biến động số dư từ cổng thanh toán/ngân hàng liên kết. |
+| **2** | | Tự động phân tích nội dung chuyển khoản chứa Mã hồ sơ để đối chiếu khớp dữ liệu tài chính với tổng tiền trong Case. |
+| **3** | | Cập nhật thuộc tính trạng thái thanh toán của Case sang `PAID` (Đã thanh toán đầy đủ). |
+| **4** | | Tự động gọi API tới hệ thống Hóa đơn điện tử (e-Invoice) để khởi tạo và phát hành hóa đơn theo thông tin mã số thuế/email đã lưu trong CRM. |
+| **5** | | Gửi hóa đơn điện tử bản mềm dạng PDF trực tiếp về Email hoặc Zalo của khách hàng. |
+
+#### Luồng thay thế (Alternative Flows)
+
+* **A1: Khách hàng thanh toán bằng tiền mặt trực tiếp tại quầy**
+    * **A1.1.** Khách hàng nộp tiền mặt trực tiếp, Thư ký nghiệp vụ hoặc Kế toán truy cập vào phân hệ "Quản lý công nợ", chọn mã hồ sơ tương ứng.
+    * **A1.2.** Bấm nút **"Lập phiếu thu tiền mặt"**, nhập số tiền thực thu và ấn "Xác nhận quyết toán".
+    * **A1.3.** Hệ thống cập nhật trạng thái Case thành `PAID` và in phiếu thu vật lý ra máy in tại quầy, sau đó tiếp tục từ Bước 4 của Luồng chính.
+
+#### Yêu cầu chức năng liên quan
+* [FR-FIN-001](#481-đối-soát-quyết-toán-tự-động-automated-financial-reconciliation), [FR-FIN-003](#481-đối-soát-quyết-toán-tự-động-automated-financial-reconciliation), [FR-FIN-004](#482-xuất-hóa-đơn--ghi-nhận-doanh-thu-invoice-issuance--revenue-logging)
+
+---
+
+### USE CASE: BÀN GIAO KẾT QUẢ VÀ ĐÓNG LƯU TRỮ HỒ SƠ (DELIVER & CLOSE CASE)
+
+* **Mã hiệu:** UC-CAS-02
+* **Tên Use Case:** Bàn giao kết quả và đóng lưu trữ hồ sơ
+* **Mô tả:** Thư ký nghiệp vụ thực hiện bàn giao hồ sơ giấy vật lý cho khách hàng, hệ thống tự động gửi bản mềm sao lưu qua Zalo OA và đóng khóa vĩnh viễn hồ sơ vụ việc vào kho lưu trữ điện tử.
+* **Tác nhân chính (Primary Actor):** Legal Secretary (Thư ký nghiệp vụ)
+
+#### Điều kiện tiên quyết & Sau điều kiện
+* **Điều kiện tiên quyết (Preconditions):** Hồ sơ đã được quyết toán tài chính thành công (`UC-FIN-01`) với trạng thái `PAID`.
+* **Sau điều kiện (Postconditions):** Hồ sơ chuyển sang trạng thái cuối cùng là `CLOSED`, đóng lại toàn bộ vòng đời xử lý dịch vụ.
+
+#### Luồng sự kiện chính (Main Flow)
+
+| Bước | Hành động của Tác nhân (Actor Action) | Phản hồi của Hệ thống (System Response) |
+| :--- | :--- | :--- |
+| **1** | Khách hàng đến nhận kết quả vật lý tại quầy, Thư ký nghiệp vụ nhấn nút **"Bàn giao hồ sơ"** trên màn hình CRM. | Hiển thị bảng checklist điều kiện đóng hồ sơ (`CHK-TRN-004`). |
+| **2** | Tích chọn xác nhận các đầu mục: Đã ký biên bản giao nhận, Đã trả đủ tài liệu gốc cho khách. | Hệ thống kiểm tra tính đầy đủ của checklist bàn giao. |
+| **3** | Nhấn nút **"Xác nhận đóng hồ sơ"**. | Hệ thống chuyển trạng thái của toàn bộ Case sang `CLOSED`. |
+| **4** | | Tự động kích hoạt luồng gửi thông báo chăm sóc khách hàng qua Zalo OA, đính kèm đường link bảo mật để khách có thể tải file mềm bản dịch đã công chứng (định dạng PDF có chữ ký số) bất cứ lúc nào. |
+| **5** | | Đồng bộ toàn bộ dữ liệu Case, file quét, nhật ký xử lý, mã số chứng thực vào phân hệ Kho lưu trữ điện tử vĩnh viễn (Digital Archive Vault). |
+
+#### Yêu cầu chức năng liên quan
+* [FR-CASE-012](#425-đóng-hồ-sơ--lưu-trữ-case-closure--archiving), [FR-CASE-013](#425-đóng-hồ-sơ--lưu-trữ-case-closure--archiving), [FR-ZALO-003](#491-gửi-thông-báo-tự-động-qua-zalo-oa-zalo-notification-dispatch)
+---
+# 7. LUỒNG DỊCH VỤ HỆ THỐNG (SERVICE WORKFLOWS / SEQUENCE FLOWS)
+
+## 7.1 LUỒNG DỊCH VỤ DỊCH THUẬT (TRANSLATION SERVICE WORKFLOW)
+
+Luồng dịch vụ này mô tả toàn bộ vòng đời xử lý của một yêu cầu dịch thuật chuyên môn: từ khâu tiếp nhận, định danh khách hàng trên CRM, khởi tạo hồ sơ vụ việc, cấu hình biểu phí linh hoạt, phân công thực thi, kiểm duyệt chất lượng cho đến khâu cấp số tư pháp và đóng lưu trữ vĩnh viễn.
+
 ```mermaid
 flowchart TD
 
@@ -191,4367 +777,167 @@ flowchart TD
     CH{Kênh tiếp nhận}
 
     %% =========================
-    %% APPOINTMENT FLOW
+    %% CRM CUSTOMER INTAKE
     %% =========================
-
-    subgraph Appointment["Appointment Management"]
-
-        A0[UC-002 Search Customer]
-
-        A1{Customer tồn tại?}
-
-        A2[UC-001 Create Customer]
-
-        A3[UC-031 Create Appointment]
-
-        A4[UC-032 Assign Appointment]
-
-        A5[UC-033 Send Appointment Reminder]
-
-        A6[UC-034 Check In Appointment]
-
+    subgraph CRM_Intake["Quản lý Khách hàng (CRM)"]
+        M1[UC-CRM-02 Tra cứu khách hàng]
+        M2{Khách hàng đã tồn tại?}
+        M3[UC-CRM-01 Khởi tạo hồ sơ khách hàng]
     end
 
     %% =========================
-    %% WALK-IN FLOW
+    %% CASE CREATION
     %% =========================
-
-    subgraph WalkIn["Walk-in"]
-
-        W1[UC-002 Search Customer]
-
-        W2{Customer tồn tại?}
-
-        W3[UC-001 Create Customer]
-
+    subgraph Case_Creation["Khởi tạo Vụ việc"]
+        C1[UC-CAS-01 Khởi tạo hồ sơ nghiệp vụ]
     end
 
     %% =========================
-    %% ONLINE FLOW
+    %% LEGAL SECRETARY - INITIAL CONFIG & FEES
     %% =========================
-
-    subgraph Online["Zalo / Email"]
-
-        O1[UC-002 Search Customer]
-
-        O2{Customer tồn tại?}
-
-        O3[UC-001 Create Customer]
-
-    end
-
-    %% =========================
-    %% CASE INTAKE
-    %% =========================
-
-    subgraph Receptionist["Receptionist"]
-
-        C1[UC-004 Create Case]
-
-        C2[UC-005 Assign Case]
-
-    end
-
-    %% =========================
-    %% SECRETARY
-    %% =========================
-
-    subgraph Secretary["Secretary"]
-
-        D1[UC-007 Upload Document]
-
-        D2[UC-009 Execute Checklist<br/>CHK-TRN-001]
-
+    subgraph Secretary_Fees["Thư ký nghiệp vụ: Cấu hình & Phí"]
+        D1[UC-DOC-01 Đính kèm & số hóa tài liệu gốc]
+        D2[UC-CHK-01 Thực thi checklist nghiệp vụ<br/>CHK-TRN-001 Khâu Tiếp nhận]
         D3{Checklist đạt yêu cầu?}
-
-        D4[Yêu cầu khách bổ sung hồ sơ]
-
-        D5[UC-024 Define Translation Languages]
-
-        D6[UC-037 Calculate Translation Fee]
-
-        D7[UC-038 Approve Quotation]
-
-        D8[UC-021 Assign Translator]
-
+        D4[Yêu cầu khách hàng bổ sung giấy tờ]
+        D5[UC-PRI-01 Cấu hình ngôn ngữ & biểu phí tính phí]
+        D6[UC-PRI-02 Phê duyệt báo giá & gửi thông tin thanh toán]
     end
 
     %% =========================
-    %% TRANSLATOR
+    %% TRANSLATOR PORTAL
     %% =========================
-
-    subgraph Translator["Translator"]
-
-        T1[UC-022 Perform Translation]
-
-        T2[UC-025 Upload Translation Document]
-
+    subgraph Translator_Flow["Biên dịch viên (Translator Portal)"]
+        T1[UC-TRN-01 Chỉ định biên dịch viên]
+        T2[UC-TRN-02 Thực hiện dịch thuật & tải lên bản dịch]
     end
 
     %% =========================
-    %% REVIEWER
+    %% QUALITY CONTROL (REVIEW)
     %% =========================
-
-    subgraph Reviewer["Reviewer"]
-
-        R1[UC-023 Review Translation<br/>CHK-TRN-002]
-
-        R2{Translation Approved?}
-
+    subgraph Quality_Control["Kiểm duyệt Chất lượng"]
+        R1[UC-TRN-03 Kiểm duyệt chất lượng bản dịch<br/>CHK-TRN-002 Khâu Bản dịch]
+        R2{Bản dịch đạt chuẩn?}
     end
 
     %% =========================
-    %% SECRETARY VALIDATION
+    %% LEGAL SECRETARY - VALIDATION
     %% =========================
-
-    subgraph SecretaryValidation["Secretary"]
-
-        V1[UC-009 Execute Checklist<br/>CHK-TRN-003]
-
-        V2{Ready For Signature?}
-
+    subgraph Secretary_Validation["Thư ký nghiệp vụ: Chốt chặn Tư pháp"]
+        V1[UC-CHK-01 Thực thi checklist nghiệp vụ<br/>CHK-TRN-003 Điều kiện Ký]
+        V2{Sẵn sàng trình ký?}
     end
 
     %% =========================
-    %% NOTARY
+    %% NOTARY APPROVAL
     %% =========================
-
-    subgraph Notary["Notary"]
-
-        N1[UC-006 Update Case Status<br/>WAITING_SIGNATURE]
-
-        N2[UC-026 Sign Case]
-
+    subgraph Notary_Approval["Công chứng viên (Notary)"]
+        N1[UC-NOT-01 Phê duyệt cấp số & ký chứng thực<br/>Freeze Documents]
     end
 
     %% =========================
-    %% FINANCE
+    %% FINANCE RESOLUTION
     %% =========================
-
-    subgraph Finance["Finance"]
-
-        F1[UC-012 Record Payment]
-
-        F2{Paid In Full?}
-
-        F3[UC-040 Generate Invoice]
-
-        F4[UC-041 Send Invoice]
-
+    subgraph Finance_Resolution["Quyết toán Tài chính"]
+        F1[UC-FIN-01 Ghi nhận thanh toán & xuất hóa đơn]
     end
 
     %% =========================
-    %% COMPLETION
+    %% DELIVERY & ARCHIVE
     %% =========================
-
-    subgraph Completion["Case Completion"]
-
-        C3[UC-028 Complete Case]
-
-        C4[Case Status = READY_FOR_PICKUP]
-
-        C5[UC-035 Schedule Result Pickup]
-
-        C6[UC-018 Send Notification]
-
+    subgraph Delivery_Archive["Bàn giao & Lưu trữ"]
+        DL1[UC-CAS-02 Bàn giao kết quả và đóng lưu trữ hồ sơ<br/>CHK-TRN-004 Khâu Bàn giao]
     end
 
-    %% =========================
-    %% DELIVERY
-    %% =========================
+    END([Kết thúc vòng đời Case])
 
-    subgraph Delivery["Result Delivery"]
-
-        DL1[Khách nhận kết quả]
-
-        DL2[UC-036 Confirm Result Delivery<br/>CHK-TRN-004]
-
-        DL3[Case Status = DELIVERED]
-
-    end
-
-    %% =========================
-    %% ARCHIVE
-    %% =========================
-
-    subgraph Archive["Archive"]
-
-        AR1[UC-014 Archive Case]
-
-        AR2[Case Status = ARCHIVED]
-
-    end
-
-    END([Kết thúc])
-
-    %% ===== CHANNEL SELECTION =====
-
+    %% ===== KÊN TIẾP NHẬN ĐIỀU HƯỚNG =====
     START --> CH
+    CH -->|Tại quầy / Trực tuyến| M1
 
-    CH -->|Appointment| A0
-    CH -->|Walk-in| W1
-    CH -->|Zalo / Email| O1
+    %% ===== LUỒNG XỬ LÝ KHÁCH HÀNG CRM =====
+    M1 --> M2
+    M2 -->|Không| M3
+    M2 -->|Có| C1
+    M3 --> C1
 
-    %% ===== APPOINTMENT =====
-
-    A0 --> A1
-
-    A1 -->|Không| A2
-    A1 -->|Có| A3
-
-    A2 --> A3
-
-    A3 --> A4
-    A4 --> A5
-    A5 --> A6
-
-    A6 --> C1
-
-    %% ===== WALK-IN =====
-
-    W1 --> W2
-
-    W2 -->|Không| W3
-    W2 -->|Có| C1
-
-    W3 --> C1
-
-    %% ===== ONLINE =====
-
-    O1 --> O2
-
-    O2 -->|Không| O3
-    O2 -->|Có| C1
-
-    O3 --> C1
-
-    %% ===== COMMON FLOW =====
-
-    C1 --> C2
-
-    C2 --> D1
-
+    %% ===== LUỒNG SỐ HÓA & CHECKLIST ĐẦU VÀO =====
+    C1 --> D1
     D1 --> D2
-
     D2 --> D3
-
     D3 -->|Không đạt| D4
     D4 --> D1
-
     D3 -->|Đạt| D5
 
+    %% ===== LUỒNG TÍNH PHÍ & GIAO VIỆC TRANSLATOR =====
     D5 --> D6
-
-    D6 --> D7
-
-    D7 --> D8
-
-    D8 --> T1
-
+    D6 --> T1
     T1 --> T2
 
+    %% ===== VÒNG LẶP KIỂM DUYỆT BẢN DỊCH =====
     T2 --> R1
-
     R1 --> R2
-
-    R2 -->|Không đạt| T1
-
+    R2 -->|Không đạt / Reject| T2
     R2 -->|Đạt| V1
 
+    %% ===== CHỐT CHẶN TRÌNH KÝ & CẤP SỐ TƯ PHÁP =====
     V1 --> V2
-
-    V2 -->|Không đạt| T1
-
+    V2 -->|Không đạt| T2
     V2 -->|Đạt| N1
 
-    N1 --> N2
+    %% ===== QUYẾT TOÁN & BÀN GIAO LƯU TRỮ VĨNH VIỄN =====
+    N1 --> F1
+    F1 --> DL1
+    DL1 --> END
+
+    %% ===== CẤU HÌNH ANCHOR LINKS (THEO QUY TẮC TIẾNG VIỆT CÓ DẤU CỦA BẠN) =====
+    click M3 "#use-case-khởi-tạo-hồ-sơ-khách-hàng-create-customer"
+    click M1 "#use-case-tra-cứu-hồ-sơ-khách-hàng-search-customer"
+    click C1 "#use-case-khởi-tạo-hồ-sơ-nghiệp-vụ-create-case"
+    
+    click D1 "#use-case-đính-kèm--số-hóa-tài-liệu-gốc-upload-document"
+    click D2 "#use-case-thực-thi-checklist-nghiệp-vụ-execute-checklist"
+    click V1 "#use-case-thực-thi-checklist-nghiệp-vụ-execute-checklist"
+    
+    click D5 "#use-case-cấu-hình-ngôn-ngữ--biểu-phí-tính-phí-configure-case-details"
+    click D6 "#use-case-phê-duyệt-báo-giá--gửi-thông-tin-thanh-toán-approve-quotation--send-payment"
+    
+    click T1 "#use-case-chỉ-định-biên-dịch-viên-assign-translator"
+    click T2 "#use-case-thực-hiện-dịch-thuật--tải-lên-bản-dịch-perform-translation--upload"
+    click R1 "#use-case-kiểm-duyệt-chất-lượng-bản-dịch-review-translation"
+    
+    click N1 "#use-case-phê-duyệt-cấp-số--ký-chứng-thực-sign--approve-case"
+    click F1 "#use-case-ghi-nhận-thanh-toán--xuất-hóa-đơn-record-payment--invoice"
+    click DL1 "#use-case-bàn-giao-kết-quả-và-đóng-lưu-trữ-hồ-sơ-deliver--close-case"
+   ```
+
+---
+# 8. MA TRẬN PHÂN QUYỀN CHỨC NĂNG (FUNCTIONAL PERMISSION MATRIX)
+
+## 8.1 Bảng phân quyền chi tiết
+
+Dưới đây là ma trận phân quyền truy cập và thao tác đối với các mã yêu cầu chức năng cốt lõi của hệ thống CRM, áp dụng cho 3 phân hệ dịch vụ (Sao y, Chứng thực chữ ký, Dịch thuật công chứng) và phân hệ Quản lý Tài chính:
+
+| Mã Chức Năng | Chi Tiết Chức Năng | Legal Secretary | Translator | Notary | Accountant | Admin |
+| :--- | :--- | :---: | :---: | :---: | :---: | :---: |
+| **FR-CAS-001** | Khởi tạo hồ sơ mới (Tạo Case ID) |  | ❌ | ❌ | ❌ |  |
+| **FR-CAS-002** | Đính kèm, số hóa tài liệu scan/ảnh gốc |  | ❌ | ❌ | ❌ |  |
+| **FR-CAS-003** | Khóa hồ sơ tự động sau khi cấp số | ❌ | ❌ | ❌ | ❌ |  |
+| **FR-CAS-004** | Xem nhật ký hệ thống (Audit Trail) | ❌ | ❌ | ❌ | ❌ |  |
+| **FR-FIN-001** | Tính phí Sao y bản chính tự động |  | ❌ | ❌ | ❌ |  |
+| **FR-FIN-002** | Tính phí Chứng thực chữ ký tự động |  | ❌ | ❌ | ❌ |  |
+| **FR-FIN-003** | Cấu hình/Nhập đơn giá thủ công trên Case |  | ❌ | ❌ | ❌ |  |
+| **FR-FIN-004** | Ghi nhận cọc tiền, quyết toán thu phí |  | ❌ | ❌ |  |  |
+| **FR-FIN-005** | Nhập và đối soát thù lao chi trả cho CTV |  | ❌ | ❌ |  |  |
+| **FR-TRN-001** | Chỉ định Biên dịch viên phụ trách |  | ❌ | ❌ | ❌ |  |
+| **FR-TRN-002** | Xem danh sách việc, tải tài liệu cần dịch | ❌ |  | ❌ | ❌ |  |
+| **FR-TRN-003** | Tải lên file dịch dự thảo (`.doc`, `.docx`) | ❌ |  | ❌ | ❌ |  |
+| **FR-TRN-004** | Đánh giá chất lượng bản dịch (Duyệt/Trả lại) |  | ❌ | ❌ | ❌ |  |
+| **FR-NOT-001** | Truy cập hàng đợi trình ký điện tử | ❌ | ❌ |  | ❌ |  |
+| **FR-NOT-002** | Tích chọn checklist thẩm định pháp lý | ❌ | ❌ |  | ❌ |  |
+| **FR-NOT-003** | Phê duyệt và Cấp số chứng thực tự động | ❌ | ❌ |  | ❌ |  |
+| **FR-NOT-004** | Từ chối phê duyệt (Yêu cầu sửa/Hủy case) | ❌ | ❌ |  | ❌ |  |
+
+*Ghi chú ký hiệu:* *(Có quyền thực hiện); **❌** (Không có quyền thực hiện).*
 
-    N2 --> F1
-
-    F1 --> F2
-
-    F2 -->|Chưa đủ| F1
-
-    F2 -->|Đủ| F3
-
-    F3 --> F4
-
-    F4 --> C3
-
-    C3 --> C4
-
-    C4 --> C5
-
-    C5 --> C6
-
-    C6 --> DL1
-
-    DL1 --> DL2
-
-    DL2 --> DL3
-
-    DL3 --> AR1
-
-    AR1 --> AR2
-
-    AR2 --> END
-
-    %% ===== USE CASE LINKS =====
-
-    click A0 "#uc-002-search-customer"
-    click A2 "#uc-001-create-customer"
-    click A3 "#uc-031-create-appointment"
-    click A4 "#uc-032-assign-appointment"
-    click A5 "#uc-033-send-appointment-reminder"
-    click A6 "#uc-034-check-in-appointment"
-
-    click W1 "#uc-002-search-customer"
-    click W3 "#uc-001-create-customer"
-
-    click O1 "#uc-002-search-customer"
-    click O3 "#uc-001-create-customer"
-
-    click C1 "#uc-004-create-case"
-    click C2 "#uc-005-assign-case"
-
-    click D1 "#uc-007-upload-document"
-    click D2 "#uc-009-execute-checklist"
-    click V1 "#uc-009-execute-checklist"
-
-    click D5 "#uc-024-define-translation-languages"
-
-    click D6 "#uc-037-calculate-translation-fee"
-    click D7 "#uc-038-approve-quotation"
-
-    click D8 "#uc-021-assign-translator"
-
-    click T1 "#uc-022-perform-translation"
-    click T2 "#uc-025-upload-translation-document"
-
-    click R1 "#uc-023-review-translation"
-
-    click N1 "#uc-006-update-case-status"
-    click N2 "#uc-026-sign-case"
-
-    click F1 "#uc-012-record-payment"
-    click F3 "#uc-040-generate-invoice"
-    click F4 "#uc-041-send-invoice"
-
-    click C3 "#uc-028-complete-case"
-
-    click C5 "#uc-035-schedule-result-pickup"
-    click C6 "#uc-018-send-notification"
-
-    click DL2 "#uc-036-confirm-result-delivery"
-
-    click AR1 "#uc-014-archive-case"
-```
-
-
----
-
-### Vai trò tham gia
-
-#### Receptionist
-
-* Tiếp nhận khách hàng
-* Tạo hồ sơ
-* Upload tài liệu gốc
-
-#### Secretary
-
-* Kiểm tra hồ sơ
-* Thực hiện checklist
-* Phân công biên dịch viên
-* Theo dõi tiến độ xử lý
-
-#### Translator
-
-* Thực hiện dịch thuật
-* Upload bản dịch
-* Chỉnh sửa bản dịch theo yêu cầu
-
-#### Reviewer
-
-* Kiểm duyệt bản dịch
-* Phê duyệt hoặc từ chối bản dịch
-
-#### Notary
-
-* Ký xác nhận hồ sơ
-
----
-
-### Điều kiện hoàn tất xử lý nghiệp vụ
-
-Hồ sơ dịch thuật được xem là hoàn tất xử lý nghiệp vụ khi:
-
-* Tài liệu gốc hợp lệ.
-* Bản dịch đã được upload.
-* Bản dịch đã được kiểm duyệt.
-* Kết quả kiểm duyệt là APPROVED.
-
-Khi đáp ứng đầy đủ điều kiện trên, hồ sơ được phép chuyển từ trạng thái:
-
-PROCESSING
-
-↓
-
-WAITING_SIGNATURE
-
----
-
-### Use Cases liên quan
-
-* UC-004 Create Case
-* UC-007 Upload Document
-* UC-009 Execute Checklist
-* UC-021 Assign Translator
-* UC-022 Perform Translation
-* UC-023 Review Translation
-* UC-006 Update Case Status
-* UC-012 Record Payment
-* UC-014 Archive Case
-* UC-018 Send Notification
-
----
-
-### Functional Requirements liên quan
-
-* FR-CASE-001
-* FR-CASE-002
-* FR-DOC-001
-* FR-DOC-002
-* FR-CHK-001
-* FR-CHK-008
-* FR-TRN-001
-* FR-TRN-002
-* FR-TRN-003
-* FR-TRN-004
-* FR-TRN-005
-* FR-TRN-006
-* FR-TRN-007
-
----
-
-### Business Rules liên quan
-
-* BR-004
-* BR-007
-* BR-036
-* BR-037
-* BR-038
-* BR-039
-* BR-040
-
----
-
-
-# 4. CASE WORKFLOW
-
-## 4.1 Mục đích
-
-Workflow hồ sơ được sử dụng để quản lý vòng đời của một hồ sơ công chứng từ khi tiếp nhận đến khi lưu trữ.
-
-Mọi hồ sơ trong hệ thống phải tuân theo quy trình chuyển trạng thái được định nghĩa trong tài liệu này.
-
----
-
-## 4.2 Trạng thái hồ sơ
-
-### NEW
-
-Hồ sơ vừa được tạo trong hệ thống nhưng chưa được tiếp nhận xử lý.
-
-#### Hoạt động cho phép
-
-* Chỉnh sửa thông tin hồ sơ
-* Upload tài liệu
-* Phân công người phụ trách
-
----
-
-### RECEIVED
-
-Hồ sơ đã được tiếp nhận.
-
-### Hoạt động cho phép
-
-* Cập nhật thông tin hồ sơ
-* Upload tài liệu
-* Bổ sung khách hàng
-* Phân công người phụ trách
-
----
-
-### VERIFYING
-
-Hồ sơ đang được kiểm tra tính hợp lệ.
-
-#### Hoạt động cho phép
-
-* Thực hiện checklist
-* Kiểm tra giấy tờ
-* Yêu cầu bổ sung hồ sơ
-* Upload tài liệu bổ sung
-
----
-
-### PROCESSING
-
-Hồ sơ đang được xử lý theo nghiệp vụ của loại dịch vụ.
-
-#### Hoạt động cho phép
-
-* Thực hiện nghiệp vụ chuyên môn
-* Cập nhật tài liệu
-* Tạo phiên bản tài liệu
-* Ghi nhận kết quả xử lý
-
-#### Ví dụ theo từng dịch vụ
-
-##### Sao y
-
-* Photo tài liệu
-* Đóng dấu sao y
-* Kiểm tra số lượng bản sao
-
-##### Chứng thực chữ ký
-
-* Đối chiếu giấy tờ tùy thân
-* Kiểm tra văn bản
-* Xác nhận chữ ký
-
-##### Dịch thuật công chứng
-
-* Phân công biên dịch viên
-* Thực hiện dịch thuật
-* Upload bản dịch
-* Kiểm duyệt bản dịch
-* Hoàn tất bản dịch
-
-##### Hợp đồng mua bán nhà đất
-
-* Soạn thảo hợp đồng
-* Kiểm tra hồ sơ pháp lý
-* Xác minh thông tin các bên
-
----
-
-### WAITING_SIGNATURE
-
-Hồ sơ đã hoàn tất xử lý nghiệp vụ và đang chờ công chứng viên ký xác nhận.
-
-#### Hoạt động cho phép
-
-* Xem hồ sơ
-* In hồ sơ
-* Ký xác nhận
-* Thu phí
-
-#### Không cho phép
-
-* Chỉnh sửa checklist
-* Chỉnh sửa tài liệu đã phê duyệt
-
----
-### READY_FOR_PICKUP
-Sản phầm như bản dịch đã hoàn tất và sẵn sàng để khách hàng đến nhận
-
----
-### DELIVERED
-Sản phẩm đã đến tay KH
-
----
-### COMPLETED
-
-Hồ sơ đã hoàn tất.
-
-#### Hoạt động cho phép
-
-* Xem hồ sơ
-* In hồ sơ
-* Gửi thông báo khách hàng
-* Xuất báo cáo
-
-#### Không cho phép
-
-* Chỉnh sửa hồ sơ
-* Xóa hồ sơ
-
----
-
-### ARCHIVED
-
-Hồ sơ đã được lưu trữ.
-
-#### Hoạt động cho phép
-
-* Tra cứu hồ sơ
-
-#### Không cho phép
-
-* Chỉnh sửa hồ sơ
-* Xóa hồ sơ
-* Thay đổi trạng thái
-
----
-
-## 4.3 Sơ đồ trạng thái
-
-NEW
-
-↓
-
-RECEIVED
-
-↓
-
-VERIFYING
-
-↓
-
-PROCESSING
-
-↓
-
-WAITING_SIGNATURE
-
-↓
-
-COMPLETED
-
-↓
-
-ARCHIVED
-
----
-
-### 4.4 Quy tắc chuyển trạng thái
-
-##### NEW → RECEIVED
-
-Điều kiện
-
-* Hồ sơ đã được tạo thành công
-* Có khách hàng
-
----
-#### RECEIVED → VERIFYING
-
-Điều kiện
-
-* Có khách hàng
-* Có loại dịch vụ
-* Có người phụ trách hồ sơ
-
-Liên quan Business Rules
-
-* BR-002
-* BR-003
-
----
-
-### VERIFYING → PROCESSING
-
-Điều kiện
-
-* Checklist hoàn tất
-
-Liên quan Business Rules
-
-* BR-004
-* BR-017
-* BR-033
-
----
-
-### PROCESSING → WAITING_SIGNATURE
-
-Điều kiện
-
-* Nghiệp vụ xử lý của loại dịch vụ đã hoàn tất
-
-Ví dụ
-
-Sao y
-
-* Đã hoàn tất sao y
-
-Chứng thực chữ ký
-
-* Đã hoàn tất kiểm tra chữ ký
-
-Dịch thuật công chứng
-
-* Bản dịch đã được kiểm duyệt và phê duyệt
-
-Liên quan Business Rules
-
-* BR-024
-* BR-025
-* BR-028
-
----
-
-### WAITING_SIGNATURE → COMPLETED
-
-Điều kiện
-
-* Công chứng viên đã ký xác nhận
-* Thanh toán đầy đủ
-
-Liên quan Business Rules
-
-* BR-007
-
----
-
-### COMPLETED → ARCHIVED
-
-Điều kiện
-
-* Hồ sơ được lưu trữ
-
-Liên quan Business Rules
-
-* BR-005
-* BR-014
-
----
-
-## 4.5 Quy trình xử lý dịch vụ Dịch thuật công chứng
-
-Khi hồ sơ thuộc loại dịch vụ "Dịch thuật công chứng" và ở trạng thái PROCESSING, hệ thống phải hỗ trợ quy trình xử lý sau:
-
-1. Phân công biên dịch viên
-2. Thực hiện dịch thuật
-3. Upload bản dịch
-4. Kiểm duyệt bản dịch
-5. Chỉnh sửa bản dịch (nếu cần)
-6. Phê duyệt bản dịch
-
-Sau khi bản dịch được phê duyệt, hồ sơ được phép chuyển sang trạng thái WAITING_SIGNATURE.
-
-Use Cases liên quan:
-
-* UC-021 Assign Translator
-* UC-022 Perform Translation
-* UC-023 Review Translation
-
-Functional Requirements liên quan:
-
-* FR-TRN-001
-* FR-TRN-002
-* FR-TRN-003
-* FR-TRN-004
-* FR-TRN-005
-* FR-TRN-006
-* FR-TRN-007
-
----
-
-## 4.6 Quy trình xử lý ngoại lệ
-
-### Hồ sơ bị từ chối
-
-Trong giai đoạn VERIFYING hoặc PROCESSING, nếu phát hiện hồ sơ không hợp lệ:
-
-* Hệ thống ghi nhận lý do từ chối
-* Hệ thống thông báo cho người phụ trách
-* Hồ sơ không được phép chuyển sang trạng thái tiếp theo
-
-### Hồ sơ cần bổ sung
-
-Trong giai đoạn VERIFYING:
-
-* Người xử lý ghi nhận yêu cầu bổ sung
-* Khách hàng bổ sung giấy tờ
-* Hồ sơ tiếp tục ở trạng thái VERIFYING
-
-### Thanh toán chưa hoàn tất
-
-Nếu hồ sơ ở trạng thái WAITING_SIGNATURE:
-
-* Không được phép chuyển sang COMPLETED
-* Hệ thống hiển thị số tiền còn phải thanh toán
-
-# 5. FUNCTIONAL REQUIREMENTS
-
-## 5.1 CUSTOMER MANAGEMENT (CRM)
-
-### 5.1.1 Customer Registration
-
-#### FR-CRM-001
-
-Hệ thống phải cho phép tạo khách hàng mới.
-
-#### FR-CRM-002
-
-Thông tin khách hàng tối thiểu bao gồm:
-
-* Họ và tên
-* Số điện thoại
-* CCCD/Hộ chiếu
-* Địa chỉ
-
-#### FR-CRM-003
-
-Hệ thống phải kiểm tra tính duy nhất của CCCD trước khi tạo khách hàng.
-
-#### FR-CRM-004
-
-Nếu CCCD đã tồn tại, hệ thống phải hiển thị hồ sơ khách hàng hiện có thay vì tạo mới.
-
-#### FR-CRM-005
-
-Hệ thống phải ghi nhận thời gian tạo khách hàng.
-
-#### FR-CRM-006
-
-Hệ thống phải ghi nhận người tạo khách hàng.
-
----
-
-### 5.1.2 Customer Search
-
-#### FR-CRM-007
-
-Hệ thống phải cho phép tìm kiếm khách hàng theo:
-
-* Họ tên
-* Số điện thoại
-* CCCD
-
-#### FR-CRM-008
-
-Hệ thống phải hỗ trợ tìm kiếm gần đúng theo họ tên.
-
-#### FR-CRM-009
-
-Kết quả tìm kiếm phải hiển thị:
-
-* Mã khách hàng
-* Họ tên
-* Số điện thoại
-* CCCD
-
----
-
-### 5.1.3 Customer Profile
-
-#### FR-CRM-010
-
-Hệ thống phải cho phép xem chi tiết thông tin khách hàng.
-
-#### FR-CRM-011
-
-Hệ thống phải hiển thị lịch sử hồ sơ của khách hàng.
-
-#### FR-CRM-012
-
-Hệ thống phải hiển thị tổng số hồ sơ đã thực hiện.
-
-#### FR-CRM-013
-
-Hệ thống phải hiển thị tổng giá trị giao dịch của khách hàng.
-
-#### FR-CRM-014
-
-Hệ thống phải cho phép cập nhật thông tin khách hàng.
-
-#### FR-CRM-015
-
-Mọi thay đổi thông tin khách hàng phải được ghi nhận Audit Log.
-
----
-
-## 5.2 CASE MANAGEMENT
-
-### 5.2.1 Create Case
-
-#### FR-CASE-001
-
-Hệ thống phải cho phép tạo hồ sơ mới.
-
-#### FR-CASE-002
-
-Mỗi hồ sơ phải thuộc đúng một khách hàng.
-
-#### FR-CASE-003
-
-Mỗi hồ sơ phải có mã hồ sơ duy nhất.
-
-#### FR-CASE-004
-
-Mã hồ sơ phải được sinh tự động.
-
-Ví dụ:
-
-HS-2026-000001
-
-#### FR-CASE-005
-
-Người tạo hồ sơ phải được lưu trong hệ thống.
-
-#### FR-CASE-006
-
-Thời gian tạo hồ sơ phải được lưu trong hệ thống.
-
----
-
-### 5.2.2 Service Type
-
-#### FR-CASE-007
-
-Hệ thống phải cho phép lựa chọn loại dịch vụ.
-
-#### FR-CASE-008
-
-Các loại dịch vụ mặc định gồm:
-
-* Sao y
-* Chứng thực chữ ký
-* Dịch thuật công chứng
-
----
-
-### 5.2.3 Case Assignment
-
-#### FR-CASE-010
-
-Hệ thống phải cho phép chỉ định người phụ trách hồ sơ.
-
-#### FR-CASE-011
-
-Một hồ sơ có thể có nhiều người tham gia xử lý.
-
-#### FR-CASE-012
-
-Hệ thống phải ghi nhận thời gian phân công.
-
----
-
-### 5.2.4 Case Status
-
-#### FR-CASE-013
-
-Hệ thống phải quản lý trạng thái hồ sơ.
-
-#### FR-CASE-014
-
-Các trạng thái mặc định gồm:
-
-* NEW
-* RECEIVED
-* VERIFYING
-* PROCESSING
-* WAITING_SIGNATURE
-* COMPLETED
-* ARCHIVED
-
-#### FR-CASE-015
-
-Hệ thống chỉ cho phép chuyển trạng thái hợp lệ theo workflow đã cấu hình.
-
-#### FR-CASE-016
-
-Mọi thay đổi trạng thái phải được ghi lịch sử.
-
-#### FR-CASE-017
-
-Hệ thống phải lưu người thực hiện thay đổi trạng thái.
-
-#### FR-CASE-018
-
-Hệ thống phải lưu thời gian thay đổi trạng thái.
-
----
-
-## 5.3 DOCUMENT MANAGEMENT
-
-### 5.3.1 Upload Document
-
-#### FR-DOC-001
-
-Hệ thống phải cho phép tải tài liệu đính kèm vào hồ sơ.
-
-#### FR-DOC-002
-
-Các định dạng được hỗ trợ:
-
-* PDF
-* JPG
-* PNG
-* DOCX
-
-#### FR-DOC-003
-
-Hệ thống phải kiểm tra định dạng file trước khi tải lên.
-
-#### FR-DOC-004
-
-Hệ thống phải lưu tên file gốc.
-
-#### FR-DOC-005
-
-Hệ thống phải lưu thời gian tải file.
-
-#### FR-DOC-006
-
-Hệ thống phải lưu người tải file.
-
----
-
-### 5.3.2 Document Version
-
-#### FR-DOC-007
-
-Hệ thống phải hỗ trợ nhiều phiên bản tài liệu.
-
-#### FR-DOC-008
-
-Mỗi phiên bản phải có số phiên bản riêng.
-
-#### FR-DOC-009
-
-Hệ thống phải lưu lịch sử phiên bản.
-
----
-
-### 5.3.3 Template Management
-
-#### FR-DOC-010
-
-Hệ thống phải cho phép tạo template văn bản.
-
-#### FR-DOC-011
-
-Hệ thống phải cho phép chỉnh sửa template.
-
-#### FR-DOC-012
-
-Hệ thống phải cho phép vô hiệu hóa template.
-
-#### FR-DOC-013
-
-Hệ thống phải hỗ trợ sinh văn bản từ template.
-
----
-
-## 5.4 CHECKLIST MANAGEMENT
-
-### 5.4.1 Checklist Configuration
-
-#### FR-CHK-001
-
-Hệ thống phải cho phép cấu hình checklist theo loại dịch vụ.
-
-#### FR-CHK-002
-
-Mỗi checklist bao gồm nhiều Checklist Item.
-
-Checklist Item bao gồm:
-
-- Tên hạng mục
-- Loại kiểm tra
-- Kết quả kiểm tra
-- Ghi chú
-- Người kiểm tra
-- Thời gian kiểm tra
-
-#### FR-CHK-003
-
-Mỗi hạng mục phải có trạng thái:
-
-* Chưa kiểm tra
-* Đạt
-* Không đạt
-
----
-
-### 5.4.2 Checklist Execution
-
-#### FR-CHK-004
-
-Người xử lý phải có thể đánh dấu kết quả kiểm tra.
-
-#### FR-CHK-005
-
-Hệ thống phải lưu người thực hiện kiểm tra.
-
-#### FR-CHK-006
-
-Hệ thống phải lưu thời gian kiểm tra.
-
-#### FR-CHK-007
-
-Hệ thống phải cho phép nhập ghi chú cho từng mục.
-
----
-
-### 5.4.3 Validation
-
-#### FR-CHK-008
-
-Hệ thống không cho phép chuyển sang WAITING_SIGNATURE khi checklist chưa hoàn tất.
-
-#### FR-CHK-009
-
-Hệ thống phải cảnh báo nếu checklist có mục không đạt.
-
----
-
-### 5.5 PAYMENT MANAGEMENT
-
-### 5.5.1 Fee Configuration
-
-#### FR-PAY-001
-
-Hệ thống phải cho phép cấu hình bảng phí.
-
-#### FR-PAY-002
-
-Mỗi loại dịch vụ phải có đơn giá riêng.
-
-#### FR-PAY-003
-
-Hệ thống phải lưu lịch sử thay đổi đơn giá.
-
----
-
-### 5.5.2 Fee Calculation
-
-#### FR-PAY-004
-
-Hệ thống phải tự động tính phí dựa trên loại dịch vụ.
-
-#### FR-PAY-005
-
-Đối với sao y, thành tiền được tính theo:
-
-Số lượng bản × Đơn giá
-
-#### FR-PAY-006
-
-Hệ thống phải hỗ trợ phụ phí.
-
-#### FR-PAY-007
-
-Hệ thống phải hiển thị tổng phí phải thu.
-
----
-
-### 5.5.3 Payment
-
-#### FR-PAY-008
-
-Hệ thống phải cho phép ghi nhận thanh toán.
-
-#### FR-PAY-009
-
-Hệ thống phải hỗ trợ thanh toán nhiều lần.
-
-#### FR-PAY-010
-
-Hệ thống phải tính số tiền còn lại.
-
-#### FR-PAY-011
-
-Trạng thái thanh toán gồm:
-
-* Unpaid
-* Partial Paid
-* Paid
-
-#### FR-PAY-012
-
-Hệ thống phải lưu người thu tiền.
-
-#### FR-PAY-013
-
-Hệ thống phải lưu thời gian thu tiền.
-
-#### FR-PAY-014
-
-Hệ thống không cho phép COMPLETED nếu thanh toán chưa đủ.
-
----
-
-## 5.6 ARCHIVE MANAGEMENT
-
-### 5.6.1 Archive Case
-
-#### FR-ARC-001
-
-Hệ thống phải cho phép lưu trữ hồ sơ hoàn tất.
-
-#### FR-ARC-002
-
-Hệ thống phải lưu toàn bộ tài liệu của hồ sơ.
-
-#### FR-ARC-003
-
-Hệ thống phải lưu thời gian lưu trữ.
-
----
-
-### 5.6.2 Archive Search
-
-#### FR-ARC-004
-
-Hệ thống phải cho phép tìm kiếm hồ sơ lưu trữ theo:
-
-* Mã hồ sơ
-* Khách hàng
-* CCCD
-* Loại dịch vụ
-
-#### FR-ARC-005
-
-Hệ thống phải hỗ trợ tìm kiếm theo khoảng thời gian.
-
-#### FR-ARC-006
-
-Hệ thống phải hỗ trợ lọc theo trạng thái.
-
----
-
-### 5.6.3 Archive Protection
-
-#### FR-ARC-007
-
-Không cho phép xóa hồ sơ đã lưu trữ.
-
-#### FR-ARC-008
-
-Không cho phép chỉnh sửa dữ liệu hồ sơ đã lưu trữ.
-
----
-
-## 5.7 USER MANAGEMENT
-
-### 5.7.1 User Account
-
-#### FR-USER-001
-
-Admin phải có thể tạo tài khoản.
-
-#### FR-USER-002
-
-Admin phải có thể khóa tài khoản.
-
-#### FR-USER-003
-
-Admin phải có thể mở khóa tài khoản.
-
-#### FR-USER-004
-
-Admin phải có thể đặt lại mật khẩu.
-
----
-
-### 5.7.2 Role Management
-
-#### FR-USER-005
-
-Các role mặc định gồm:
-
-* Receptionist
-* Secretary
-* Notary
-* Accountant
-* Manager
-* Admin
-
-#### FR-USER-006
-
-Người dùng chỉ được truy cập chức năng thuộc quyền hạn của mình.
-
-#### FR-USER-007
-
-Hệ thống phải kiểm tra quyền truy cập trước khi thực hiện chức năng.
-
----
-
-## 5.8 NOTIFICATION MANAGEMENT
-
-### 5.8.1 Zalo Notification
-
-#### FR-ZALO-001
-
-Hệ thống phải cho phép gửi tin nhắn qua Zalo OA.
-
-#### FR-ZALO-002
-
-Tin nhắn cảm ơn phải được gửi sau khi hồ sơ hoàn tất.
-
-#### FR-ZALO-003
-Hệ thống phải cho phép gửi khảo sát chất lượng.
-
-#### FR-ZALO-004
-
-Hệ thống phải lưu lịch sử gửi tin nhắn.
-
-#### FR-ZALO-005
-
-Hệ thống phải ghi nhận trạng thái gửi.
-
----
-
-### 5.8.2 Reminder
-
-#### FR-ZALO-006
-
-Hệ thống phải hỗ trợ gửi nhắc việc nội bộ.
-
-#### FR-ZALO-007
-
-Hệ thống phải cho phép cấu hình mẫu thông báo.
-
----
-
-
-## 5.9 DASHBOARD & REPORT
-
-### 5.9.1 Dashboard
-
-#### FR-RPT-001
-
-Hệ thống phải hiển thị tổng số hồ sơ theo trạng thái.
-
-#### FR-RPT-002
-
-Hệ thống phải hiển thị số hồ sơ trong ngày.
-
-#### FR-RPT-003
-
-Hệ thống phải hiển thị số hồ sơ hoàn tất trong ngày.
-
-#### FR-RPT-004
-
-Hệ thống phải hiển thị doanh thu trong ngày.
-
----
-
-### 5.9.2 Reports
-
-#### FR-RPT-005
-
-Hệ thống phải xuất báo cáo doanh thu.
-
-#### FR-RPT-006
-
-Hệ thống phải xuất báo cáo hồ sơ.
-
-#### FR-RPT-007
-
-Hệ thống phải xuất báo cáo hiệu suất nhân sự.
-
-#### FR-RPT-008
-
-Hệ thống phải hỗ trợ xuất Excel.
-
-#### FR-RPT-009
-
-Hệ thống phải hỗ trợ xuất PDF.
-
----
-
-## 5.10 AUDIT LOG
-
-#### FR-AUDIT-001
-
-Hệ thống phải ghi nhận mọi thao tác tạo dữ liệu.
-
-#### FR-AUDIT-002
-
-Hệ thống phải ghi nhận mọi thao tác cập nhật dữ liệu.
-
-#### FR-AUDIT-003
-
-Hệ thống phải ghi nhận mọi thao tác xóa dữ liệu.
-
-#### FR-AUDIT-004
-
-Audit Log phải bao gồm:
-
-* Người thực hiện
-* Thời gian
-* Hành động
-* Dữ liệu trước
-* Dữ liệu sau
-
-#### FR-AUDIT-005
-
-Audit Log không được phép chỉnh sửa.
-
-#### FR-AUDIT-006
-
-Audit Log không được phép xóa.
-
----
-
-## 5.11 Translation Management
-
-#### FR-TRN-001
-
-Hệ thống phải cho phép phân công biên dịch viên cho hồ sơ dịch thuật.
-
-#### FR-TRN-002
-
-Hệ thống phải cho phép tải lên bản dịch của tài liệu.
-
-#### FR-TRN-003
-
-Hệ thống phải quản lý trạng thái xử lý dịch thuật.
-
-#### FR-TRN-004
-
-Hệ thống phải cho phép kiểm duyệt và phê duyệt bản dịch.
-
-#### FR-TRN-005
-
-Hệ thống phải lưu lịch sử chỉnh sửa và phiên bản của bản dịch.
-
-#### FR-TRN-006
-
-Hệ thống phải cho phép xác định ngôn ngữ nguồn và ngôn ngữ đích của hồ sơ dịch thuật.
-
-#### FR-TRN-007
-
-Hệ thống phải cho phép quản lý danh sách biên dịch viên theo ngôn ngữ được hỗ trợ.
-
----
-
-## 5.12 Appointment Management
-
-#### FR-APT-001
-
-Hệ thống phải cho phép tạo lịch hẹn tư vấn cho khách hàng.
-
-#### FR-APT-002
-
-Hệ thống phải cho phép cập nhật trạng thái lịch hẹn.
-
-#### FR-APT-003
-
-Hệ thống phải cho phép phân công nhân viên phụ trách lịch hẹn.
-
-#### FR-APT-004
-
-Hệ thống phải hỗ trợ gửi thông báo nhắc lịch hẹn cho khách hàng.
-
----
-
-## 5.13 Notification Management
-
-#### FR-NOTI-001
-
-Hệ thống phải hỗ trợ gửi thông báo cho khách hàng theo các sự kiện nghiệp vụ.
-
-#### FR-NOTI-002
-
-Hệ thống phải lưu lịch sử gửi thông báo.
-
-#### FR-NOTI-003
-
-Hệ thống phải hỗ trợ quản lý mẫu thông báo.
-
----
-
-## 5.14 Result Delivery Management
-
-#### FR-DEL-001
-
-Hệ thống phải cho phép tạo lịch hẹn trả kết quả cho khách hàng.
-
-#### FR-DEL-002
-
-Hệ thống phải hỗ trợ gửi thông báo hẹn nhận kết quả.
-
-#### FR-DEL-003
-
-Hệ thống phải cho phép xác nhận khách hàng đã nhận kết quả.
-
-#### FR-DEL-004
-
-Hệ thống phải ghi nhận người nhận kết quả.
-
-#### FR-DEL-005
-
-Hệ thống phải ghi nhận thời gian bàn giao kết quả.
-
-#### FR-DEL-006
-
-Hệ thống phải lưu lịch sử bàn giao kết quả.
-
-#### FR-DEL-007
-
-Hệ thống phải cập nhật trạng thái hồ sơ thành DELIVERED sau khi bàn giao thành công.
-
----
-
-## 5.15 Pricing Management
-
-### FR-PRI-001
-
-Hệ thống phải cho phép cấu hình bảng giá dịch thuật theo cặp ngôn ngữ.
-
-### FR-PRI-002
-
-Hệ thống phải cho phép cấu hình đơn giá dịch thuật theo đơn vị tính.
-
-Ví dụ:
-
-* Theo trang
-* Theo từ
-* Theo tài liệu
-
-### FR-PRI-003
-
-Hệ thống phải tự động tính phí dịch thuật dựa trên:
-
-* Ngôn ngữ nguồn
-* Ngôn ngữ đích
-* Số trang
-* Đơn giá áp dụng
-
-### FR-PRI-004
-
-Hệ thống phải cho phép cấu hình phí chứng thực chữ ký người dịch.
-
-### FR-PRI-005
-
-Hệ thống phải tự động tính phí chứng thực dựa trên:
-
-* Số bản công chứng
-* Đơn giá chứng thực
-
-### FR-PRI-006
-
-Hệ thống phải cho phép nhập phụ phí dịch vụ.
-
-Ví dụ:
-
-* Dịch chuyên ngành
-* Dịch khẩn
-* Phí xử lý đặc biệt
-* Phí ngoài giờ
-
-### FR-PRI-007
-
-Hệ thống phải cho phép nhập chiết khấu hoặc giảm giá cho hồ sơ.
-
-### FR-PRI-008
-
-Hệ thống phải tự động tính tổng báo giá hồ sơ.
-
-Công thức:
-
-Tổng báo giá =
-Phí dịch thuật +
-Phí chứng thực +
-Phụ phí dịch vụ -
-Chiết khấu
-
-### FR-PRI-009
-
-Hệ thống phải cho phép lưu báo giá của hồ sơ.
-
-### FR-PRI-010
-
-Hệ thống phải ghi nhận người tạo báo giá và thời gian tạo báo giá.
-
-### FR-PRI-011
-
-Hệ thống phải cho phép cập nhật báo giá trước khi khách hàng chấp thuận.
-
-### FR-PRI-012
-
-Hệ thống phải lưu lịch sử thay đổi báo giá.
-
-### FR-PRI-013
-
-Hệ thống phải cho phép ghi nhận việc khách hàng chấp thuận báo giá.
-
-### FR-PRI-014
-
-Hệ thống phải lưu thời gian khách hàng chấp thuận báo giá.
-
-### FR-PRI-015
-
-Hệ thống phải ngăn việc phân công biên dịch viên nếu báo giá chưa được khách hàng chấp thuận.
-
-### FR-PRI-016
-
-Hệ thống phải hỗ trợ tính phí cho hồ sơ có nhiều ngôn ngữ đích.
-
-### FR-PRI-017
-
-Hệ thống phải tính phí riêng cho từng ngôn ngữ đích trong hồ sơ đa ngôn ngữ.
-
-### FR-PRI-018
-
-Hệ thống phải cho phép gộp phí của nhiều yêu cầu dịch thuật vào cùng một giao dịch thanh toán.
-
-### FR-PRI-019
-
-Hệ thống phải cho phép tạo báo giá doanh nghiệp (B2B).
-
-### FR-PRI-020
-
-Hệ thống phải cho phép lưu thông tin xuất hóa đơn doanh nghiệp.
-
-Bao gồm:
-
-* Tên công ty
-* Mã số thuế
-* Địa chỉ
-* Email nhận hóa đơn
-
-### FR-PRI-021
-
-Hệ thống phải hỗ trợ cấu hình hiệu lực của bảng giá.
-
-Ví dụ:
-
-* Ngày bắt đầu hiệu lực
-* Ngày kết thúc hiệu lực
-
-### FR-PRI-022
-
-Hệ thống phải lưu lịch sử thay đổi bảng giá.
-
-### FR-PRI-023
-
-Hệ thống phải cho phép tra cứu báo giá theo:
-
-* Hồ sơ
-* Khách hàng
-* Khoảng thời gian
-* Trạng thái chấp thuận
-
-### FR-PRI-024
-
-Hệ thống phải hiển thị chi tiết các thành phần cấu thành báo giá.
-
-Bao gồm:
-
-* Phí dịch thuật
-* Phí chứng thực
-* Phụ phí
-* Giảm giá
-* Tổng tiền
-
-### FR-PRI-025
-
-Hệ thống phải hỗ trợ xuất báo giá dưới dạng PDF.
-
----
-
-### UC-037 Calculate Translation Fee
-
-#### Use Case ID
-
-UC-037
-
-#### Use Case Name
-
-Calculate Translation Fee
-
-#### Description
-
-Cho phép tính toán báo giá dịch thuật dựa trên ngôn ngữ, số trang và các loại phí áp dụng.
-
-#### Primary Actor
-
-Receptionist
-
-#### Supporting Actors
-
-System
-
-#### Trigger
-
-Receptionist tạo hồ sơ dịch thuật mới.
-
-#### Preconditions
-
-* Hồ sơ đã được tạo.
-* Tài liệu đã được upload.
-* Đã xác định ngôn ngữ nguồn và ngôn ngữ đích.
-
-#### Postconditions
-
-* Báo giá được tạo.
-* Tổng phí được tính toán.
-* Báo giá được lưu vào hệ thống.
-
-#### Main Flow
-
-| Step | Actor        | Action                              |
-| ---- | ------------ | ----------------------------------- |
-| 1    | Receptionist | Mở hồ sơ dịch thuật                 |
-| 2    | Receptionist | Nhập số trang tài liệu              |
-| 3    | Receptionist | Chọn ngôn ngữ nguồn                 |
-| 4    | Receptionist | Chọn ngôn ngữ đích                  |
-| 5    | System       | Tra cứu bảng giá                    |
-| 6    | System       | Tính phí dịch thuật                 |
-| 7    | System       | Tính phí chứng thực                 |
-| 8    | Receptionist | Nhập phụ phí hoặc giảm giá (nếu có) |
-| 9    | System       | Tính tổng báo giá                   |
-| 10   | System       | Lưu báo giá                         |
-| 11   | System       | Hiển thị báo giá                    |
-
-#### Related Functional Requirements
-
-* FR-PRI-001
-* FR-PRI-002
-* FR-PRI-003
-* FR-PRI-004
-* FR-PRI-005
-* FR-PRI-006
-* FR-PRI-007
-* FR-PRI-008
-
-#### Related Business Rules
-
-* BR-036
-
----
-
-### UC-038 Approve Quotation
-
-#### Use Case ID
-
-UC-038
-
-#### Use Case Name
-
-Approve Quotation
-
-#### Description
-
-Cho phép ghi nhận việc khách hàng chấp thuận báo giá trước khi hồ sơ được xử lý.
-
-#### Primary Actor
-
-Receptionist
-
-#### Supporting Actors
-
-Customer
-System
-
-#### Trigger
-
-Báo giá đã được tạo.
-
-#### Preconditions
-
-* Báo giá tồn tại.
-* Hồ sơ chưa được phân công cho biên dịch viên.
-
-#### Postconditions
-
-* Báo giá được đánh dấu đã chấp thuận.
-* Hồ sơ đủ điều kiện chuyển sang bước phân công biên dịch viên.
-
-#### Main Flow
-
-| Step | Actor        | Action                          |
-| ---- | ------------ | ------------------------------- |
-| 1    | Receptionist | Hiển thị báo giá cho khách hàng |
-| 2    | Customer     | Xem báo giá                     |
-| 3    | Customer     | Đồng ý báo giá                  |
-| 4    | Receptionist | Xác nhận chấp thuận             |
-| 5    | System       | Cập nhật trạng thái báo giá     |
-| 6    | System       | Lưu thời gian chấp thuận        |
-| 7    | System       | Ghi Audit Log                   |
-
-#### Alternative Flow A1 – Customer Rejects Quotation
-
-| Step | Actor        | Action               |
-| ---- | ------------ | -------------------- |
-| A1.1 | Customer     | Từ chối báo giá      |
-| A1.2 | Receptionist | Điều chỉnh báo giá   |
-| A1.3 | System       | Lưu lịch sử thay đổi |
-
-#### Related Functional Requirements
-
-* FR-PRI-009
-* FR-PRI-010
-* FR-PRI-011
-* FR-PRI-012
-* FR-PRI-013
-* FR-PRI-014
-* FR-PRI-015
-
-#### Related Business Rules
-
-* BR-037
-* BR-038
-
----
-
-### UC-039 Manage Translation Pricing
-
-#### Use Case ID
-
-UC-039
-
-#### Use Case Name
-
-Manage Translation Pricing
-
-#### Description
-
-Cho phép quản trị viên quản lý bảng giá dịch thuật.
-
-#### Primary Actor
-
-Admin
-
-#### Supporting Actors
-
-System
-
-#### Trigger
-
-Admin muốn tạo hoặc cập nhật bảng giá.
-
-#### Preconditions
-
-* Admin đã đăng nhập.
-
-#### Postconditions
-
-* Bảng giá được tạo hoặc cập nhật.
-* Lịch sử thay đổi được lưu.
-
-#### Main Flow
-
-| Step | Actor  | Action                          |
-| ---- | ------ | ------------------------------- |
-| 1    | Admin  | Mở màn hình quản lý bảng giá    |
-| 2    | System | Hiển thị danh sách bảng giá     |
-| 3    | Admin  | Tạo mới hoặc chỉnh sửa bảng giá |
-| 4    | Admin  | Nhập ngôn ngữ nguồn             |
-| 5    | Admin  | Nhập ngôn ngữ đích              |
-| 6    | Admin  | Nhập đơn giá                    |
-| 7    | Admin  | Nhập thời gian hiệu lực         |
-| 8    | Admin  | Lưu bảng giá                    |
-| 9    | System | Kiểm tra dữ liệu                |
-| 10   | System | Lưu bảng giá                    |
-| 11   | System | Lưu lịch sử thay đổi            |
-
-#### Related Functional Requirements
-
-* FR-PRI-021
-* FR-PRI-022
-
-#### Related Business Rules
-
-* BR-036
-
----
-
-### UC-040 Generate Invoice
-
-#### Use Case ID
-
-UC-040
-
-#### Use Case Name
-
-Generate Invoice
-
-#### Description
-
-Cho phép tạo hóa đơn điện tử cho hồ sơ đã thanh toán.
-
-#### Primary Actor
-
-Finance
-
-#### Supporting Actors
-
-System
-
-#### Trigger
-
-Thanh toán được xác nhận thành công.
-
-#### Preconditions
-
-* Hồ sơ đã thanh toán.
-* Thông tin hóa đơn hợp lệ.
-
-#### Postconditions
-
-* Hóa đơn được tạo.
-* Hóa đơn được liên kết với hồ sơ.
-
-#### Main Flow
-
-| Step | Actor   | Action                        |
-| ---- | ------- | ----------------------------- |
-| 1    | Finance | Mở hồ sơ đã thanh toán        |
-| 2    | Finance | Chọn tạo hóa đơn              |
-| 3    | System  | Hiển thị thông tin thanh toán |
-| 4    | Finance | Xác nhận thông tin hóa đơn    |
-| 5    | System  | Tạo hóa đơn                   |
-| 6    | System  | Lưu thông tin hóa đơn         |
-| 7    | System  | Liên kết hóa đơn với hồ sơ    |
-
-#### Related Functional Requirements
-
-* FR-PRI-019
-* FR-PRI-020
-
----
-
-### UC-041 Send Invoice
-
-#### Use Case ID
-
-UC-041
-
-#### Use Case Name
-
-Send Invoice
-
-#### Description
-
-Cho phép gửi hóa đơn điện tử cho khách hàng hoặc doanh nghiệp.
-
-#### Primary Actor
-
-Finance
-
-#### Supporting Actors
-
-System
-
-#### Trigger
-
-Hóa đơn đã được tạo.
-
-#### Preconditions
-
-* Hóa đơn tồn tại.
-* Email nhận hóa đơn hợp lệ.
-
-#### Postconditions
-
-* Hóa đơn được gửi thành công.
-* Lịch sử gửi hóa đơn được lưu.
-
-#### Main Flow
-
-| Step | Actor   | Action                     |
-| ---- | ------- | -------------------------- |
-| 1    | Finance | Chọn hóa đơn cần gửi       |
-| 2    | System  | Hiển thị thông tin hóa đơn |
-| 3    | Finance | Xác nhận gửi               |
-| 4    | System  | Gửi email hóa đơn          |
-| 5    | System  | Ghi nhận lịch sử gửi       |
-| 6    | System  | Hiển thị kết quả gửi       |
-
-#### Related Functional Requirements
-
-* FR-PRI-020
-
----
-
-# 6. USE CASE SPECIFICATIONS
-
-## UC-001 CREATE CUSTOMER
-
-#### Use Case ID
-
-UC-001
-
-### Use Case Name
-
-Create Customer
-
-### Description
-
-Cho phép nhân viên tạo mới khách hàng trong hệ thống CRM.
-
-### Primary Actor
-
-Receptionist
-
-### Secondary Actor
-
-Secretary
-
-### Trigger
-
-Khách hàng mới đến văn phòng và chưa tồn tại trong hệ thống.
-
-### Preconditions
-
-* Người dùng đã đăng nhập.
-* Người dùng có quyền tạo khách hàng.
-
-### Postconditions
-
-* Thông tin khách hàng được lưu thành công.
-* Audit Log được tạo.
-
-### Main Flow
-
-| Step | Actor Action                    | System Response                   |
-| ---- | ------------------------------- | --------------------------------- |
-| 1    | Chọn chức năng "Tạo khách hàng" | Hiển thị form tạo khách hàng      |
-| 2    | Nhập thông tin khách hàng       | Kiểm tra dữ liệu bắt buộc         |
-| 3    | Chọn lưu                        | Kiểm tra CCCD đã tồn tại hay chưa |
-| 4    |                                 | Tạo khách hàng mới                |
-| 5    |                                 | Sinh mã khách hàng                |
-| 6    |                                 | Ghi Audit Log                     |
-| 7    |                                 | Hiển thị thông báo thành công     |
-
-### Alternative Flow A1
-
-#### CCCD đã tồn tại
-
-| Step | Actor Action | System Response                       |
-| ---- | ------------ | ------------------------------------- |
-| A1.1 | Nhấn lưu     | Tìm thấy khách hàng có cùng CCCD      |
-| A1.2 |              | Hiển thị thông tin khách hàng hiện có |
-| A1.3 |              | Không tạo khách hàng mới              |
-
-### Exception Flow E1
-
-#### Thiếu dữ liệu bắt buộc
-
-| Step | Actor Action | System Response                |
-| ---- | ------------ | ------------------------------ |
-| E1.1 | Nhấn lưu     | Phát hiện dữ liệu không hợp lệ |
-| E1.2 |              | Hiển thị lỗi validation        |
-
-### Business Rules
-
-* BR-001
-
-### Related Functional Requirements
-
-* [FR-CRM-001](#fr-crm-001)
-* FR-CRM-002
-* FR-CRM-003
-* FR-CRM-004
-* FR-AUDIT-001
-
----
-
-## UC-002 SEARCH CUSTOMER
-
-### Use Case ID
-
-UC-002
-
-### Use Case Name
-
-Search Customer
-
-### Description
-
-Cho phép tìm kiếm khách hàng trong hệ thống.
-
-### Primary Actor
-
-Receptionist
-
-### Trigger
-
-Người dùng cần tìm thông tin khách hàng.
-
-### Preconditions
-
-* Người dùng đã đăng nhập.
-
-### Postconditions
-
-* Danh sách khách hàng phù hợp được hiển thị.
-
-### Main Flow
-
-| Step | Actor Action                 | System Response              |
-| ---- | ---------------------------- | ---------------------------- |
-| 1    | Truy cập màn hình khách hàng | Hiển thị bộ lọc tìm kiếm     |
-| 2    | Nhập từ khóa                 | Tìm kiếm khách hàng          |
-| 3    |                              | Hiển thị danh sách kết quả   |
-| 4    | Chọn khách hàng              | Hiển thị chi tiết khách hàng |
-
-### Alternative Flow A1
-
-#### Tìm bằng CCCD
-
-| Step | Actor Action | System Response    |
-| ---- | ------------ | ------------------ |
-| A1.1 | Nhập CCCD    | Tìm kiếm theo CCCD |
-| A1.2 |              | Hiển thị kết quả   |
-
-### Alternative Flow A2
-
-#### Tìm bằng số điện thoại
-
-| Step | Actor Action       | System Response             |
-| ---- | ------------------ | --------------------------- |
-| A2.1 | Nhập số điện thoại | Tìm kiếm theo số điện thoại |
-| A2.2 |                    | Hiển thị kết quả            |
-
-### Exception Flow E1
-
-#### Không tìm thấy khách hàng
-
-| Step | Actor Action       | System Response                   |
-| ---- | ------------------ | --------------------------------- |
-| E1.1 | Thực hiện tìm kiếm | Không có kết quả                  |
-| E1.2 |                    | Hiển thị thông báo không tìm thấy |
-
-### Related Functional Requirements
-
-* FR-CRM-007
-* FR-CRM-008
-* FR-CRM-009
-
----
-
-## UC-003 UPDATE CUSTOMER
-
-### Use Case ID
-
-UC-003
-
-### Use Case Name
-
-Update Customer
-
-### Description
-
-Cho phép cập nhật thông tin khách hàng.
-
-### Primary Actor
-
-Receptionist
-
-Secretary
-
-### Trigger
-
-Khách hàng yêu cầu cập nhật thông tin.
-
-### Preconditions
-
-* Khách hàng đã tồn tại.
-* Người dùng có quyền cập nhật.
-
-### Postconditions
-
-* Thông tin khách hàng được cập nhật.
-* Audit Log được ghi nhận.
-
-### Main Flow
-
-| Step | Actor Action            | System Response               |
-| ---- | ----------------------- | ----------------------------- |
-| 1    | Mở thông tin khách hàng | Hiển thị dữ liệu hiện tại     |
-| 2    | Chỉnh sửa thông tin     | Kiểm tra dữ liệu              |
-| 3    | Nhấn lưu                | Cập nhật dữ liệu              |
-| 4    |                         | Ghi Audit Log                 |
-| 5    |                         | Hiển thị thông báo thành công |
-
-### Exception Flow E1
-
-#### Dữ liệu không hợp lệ
-
-| Step | Actor Action | System Response     |
-| ---- | ------------ | ------------------- |
-| E1.1 | Nhấn lưu     | Validation thất bại |
-| E1.2 |              | Hiển thị lỗi        |
-
-### Related Functional Requirements
-
-* FR-CRM-014
-* FR-CRM-015
-* FR-AUDIT-002
-
----
-
-## UC-004 CREATE CASE
-
-### Use Case ID
-
-UC-004
-
-### Use Case Name
-
-Create Case
-
-### Description
-
-Tạo hồ sơ công chứng mới cho khách hàng.
-
-### Primary Actor
-
-Receptionist
-
-### Trigger
-
-Khách hàng yêu cầu sử dụng dịch vụ công chứng.
-
-### Preconditions
-
-* Khách hàng tồn tại trong hệ thống.
-* Người dùng có quyền tạo hồ sơ.
-* Người dùng đã đăng nhập.
-
-### Postconditions
-
-* Hồ sơ được tạo.
-* Hồ sơ ở trạng thái RECEIVED.
-* Checklist được khởi tạo.
-* Nếu hồ sơ được tạo từ Appointment thì Appointment được liên kết với hồ sơ.
-
-### Main Flow
-
-| Step | Actor Action         | System Response               |
-|------|----------------------|-------------------------------|
-| 1    | Chọn tạo hồ sơ       | Hiển thị form tạo hồ sơ       |
-| 2    | Chọn khách hàng      | Hiển thị thông tin khách hàng |
-| 3    | Chọn loại dịch vụ    | Hiển thị cấu hình dịch vụ     |
-| 4    | Nhập thông tin hồ sơ | Kiểm tra dữ liệu              |
-| 5    | Nhấn lưu             | Sinh mã hồ sơ                 |
-| 6    |                      | Tạo hồ sơ                     |
-| 7    |                      | Khởi tạo checklist            |
-| 8    |                      | Đặt trạng thái RECEIVED       |
-| 9    |                      | Ghi Audit Log                 |
-| 10   |                      | Hiển thị thông báo thành công |
-
-### Alternative Flow A1
-
-#### Khách hàng chưa tồn tại
-
-| Step | Actor Action   | System Response            |
-| ---- | -------------- | -------------------------- |
-| A1.1 | Tìm khách hàng | Không tìm thấy             |
-| A1.2 |                | Yêu cầu tạo khách hàng mới |
-| A1.3 | Tạo khách hàng | Quay lại bước 2            |
-
-#### Tạo hồ sơ từ Appointment
-| Step | Actor Action                 | System Response                              |
-|------|------------------------------|----------------------------------------------|
-| A2.1 | 	Mở Appointment đã Check-In	 | Hiển thị thông tin Appointment               |
-| A2.2 | 	Chọn "Tạo hồ sơ"	           | Kiểm tra dữ liệu Appointment                 |
-| A2.3 | 		                           | Tạo hồ sơ mới                                |
-| A2.4 | 		                           | Sao chép thông tin khách hàng từ Appointment |
-| A2.5 | 		                           | Liên kết Appointment với Case                |
-| A2.6 | 		                           | Cập nhật Appointment Status = COMPLETED      |
-| A2.7 | 		                           | Gán trạng thái hồ sơ NEW                     |
-| A2.8 | 		                           | Ghi Audit Log                                |
-| A2.9 | 		                           | Hiển thị hồ sơ vừa tạo                       |
-
-### Exception Flow E1
-
-#### Loại dịch vụ chưa được cấu hình
-
-| Step | Actor Action | System Response          |
-| ---- | ------------ | ------------------------ |
-| E1.1 | Chọn dịch vụ | Không tìm thấy cấu hình  |
-| E1.2 |              | Hiển thị lỗi             |
-| E1.3 |              | Không cho phép tạo hồ sơ |
-
-### Business Rules
-
-* BR-002
-* BR-003
-
-### Related Functional Requirements
-
-* FR-CASE-001
-* FR-CASE-002
-* FR-CASE-003
-* FR-CASE-004
-* FR-CASE-005
-* FR-CASE-006
-
----
-
-## UC-005 ASSIGN CASE
-
-### Use Case ID
-
-UC-005
-
-### Use Case Name
-
-Assign Case
-
-### Description
-
-Phân công hồ sơ cho nhân viên xử lý.
-
-### Primary Actor
-
-Manager
-
-Secretary
-
-### Trigger
-
-Hồ sơ cần được giao cho người phụ trách.
-
-### Preconditions
-
-* Hồ sơ tồn tại.
-* Hồ sơ chưa hoàn tất.
-
-### Postconditions
-
-* Người phụ trách được gán vào hồ sơ.
-
-### Main Flow
-
-| Step | Actor Action             | System Response               |
-| ---- | ------------------------ | ----------------------------- |
-| 1    | Mở hồ sơ                 | Hiển thị thông tin hồ sơ      |
-| 2    | Chọn chức năng phân công | Hiển thị danh sách nhân viên  |
-| 3    | Chọn nhân viên           | Kiểm tra quyền xử lý          |
-| 4    | Xác nhận                 | Lưu phân công                 |
-| 5    |                          | Ghi lịch sử phân công         |
-| 6    |                          | Hiển thị thông báo thành công |
-
-### Exception Flow E1
-
-#### Nhân viên bị khóa tài khoản
-
-| Step | Actor Action   | System Response               |
-| ---- | -------------- | ----------------------------- |
-| E1.1 | Chọn nhân viên | Kiểm tra trạng thái tài khoản |
-| E1.2 |                | Từ chối phân công             |
-| E1.3 |                | Hiển thị lỗi                  |
-
-### Related Functional Requirements
-
-* FR-CASE-010
-* FR-CASE-011
-* FR-CASE-012
-
----
-
-## UC-006 UPDATE CASE STATUS
-
-### Use Case ID
-
-UC-006
-
-### Use Case Name
-
-Update Case Status
-
-### Description
-
-Cập nhật trạng thái hồ sơ theo workflow nghiệp vụ.
-
-### Primary Actor
-
-Secretary
-
-Notary
-
-### Trigger
-
-Người xử lý hoàn thành một bước nghiệp vụ.
-
-### Preconditions
-
-* Hồ sơ tồn tại.
-* Người dùng có quyền cập nhật trạng thái.
-
-### Postconditions
-
-* Trạng thái hồ sơ được cập nhật.
-* Lịch sử trạng thái được ghi nhận.
-
-### Main Flow
-
-| Step | Actor Action        | System Response                      |
-| ---- | ------------------- | ------------------------------------ |
-| 1    | Mở hồ sơ            | Hiển thị thông tin hồ sơ             |
-| 2    | Chọn trạng thái mới | Kiểm tra workflow                    |
-| 3    | Xác nhận            | Kiểm tra điều kiện chuyển trạng thái |
-| 4    |                     | Cập nhật trạng thái                  |
-| 5    |                     | Ghi lịch sử trạng thái               |
-| 6    |                     | Ghi Audit Log                        |
-| 7    |                     | Hiển thị thông báo thành công        |
-
-### Alternative Flow A1
-
-#### VERIFYING → PROCESSING
-
-| Step | Actor Action    | System Response            |
-| ---- | --------------- | -------------------------- |
-| A1.1 | Chọn PROCESSING | Kiểm tra checklist         |
-| A1.2 |                 | Checklist hợp lệ           |
-| A1.3 |                 | Cho phép chuyển trạng thái |
-
-### Alternative Flow A2
-
-#### WAITING_SIGNATURE → COMPLETED
-
-| Step | Actor Action   | System Response         |
-| ---- | -------------- | ----------------------- |
-| A2.1 | Chọn COMPLETED | Kiểm tra thanh toán     |
-| A2.2 |                | Thanh toán đầy đủ       |
-| A2.3 |                | Cho phép hoàn tất hồ sơ |
-
-### Exception Flow E1
-
-#### Checklist chưa hoàn tất
-
-| Step | Actor Action                                  | System Response           |
-| ---- | --------------------------------------------- | ------------------------- |
-| E1.1 | Chuyển sang PROCESSING hoặc WAITING_SIGNATURE | Kiểm tra checklist        |
-| E1.2 |                                               | Checklist chưa hoàn tất   |
-| E1.3 |                                               | Từ chối chuyển trạng thái |
-
-### Exception Flow E2
-
-#### Thanh toán chưa hoàn tất
-
-| Step | Actor Action          | System Response           |
-| ---- | --------------------- | ------------------------- |
-| E2.1 | Chuyển sang COMPLETED | Kiểm tra thanh toán       |
-| E2.2 |                       | Phát hiện còn công nợ     |
-| E2.3 |                       | Từ chối chuyển trạng thái |
-
-### Business Rules
-
-* BR-004
-* BR-006
-* BR-007
-
-### Related Functional Requirements
-
-* FR-CASE-013
-* FR-CASE-014
-* FR-CASE-015
-* FR-CASE-016
-* FR-CASE-017
-* FR-CASE-018
-* FR-CHK-008
-* FR-PAY-014
-
----
-
-## UC-007 UPLOAD DOCUMENT
-
-### Use Case ID
-
-UC-007
-
-### Use Case Name
-
-Upload Document
-
-### Description
-
-Cho phép người dùng tải tài liệu lên hồ sơ công chứng.
-
-### Primary Actor
-
-Receptionist
-
-Secretary
-
-### Trigger
-
-Người dùng cần bổ sung hoặc cập nhật tài liệu cho hồ sơ.
-
-### Preconditions
-
-* Hồ sơ đã tồn tại.
-* Người dùng có quyền chỉnh sửa hồ sơ.
-* Hồ sơ chưa ở trạng thái ARCHIVED.
-
-### Postconditions
-
-* Tài liệu được lưu thành công.
-* Thông tin file được ghi nhận.
-* Audit Log được tạo.
-
-### Main Flow
-
-| Step | Actor Action                     | System Response               |
-| ---- | -------------------------------- | ----------------------------- |
-| 1    | Mở hồ sơ                         | Hiển thị thông tin hồ sơ      |
-| 2    | Chọn chức năng "Upload tài liệu" | Hiển thị cửa sổ chọn file     |
-| 3    | Chọn file cần tải lên            | Kiểm tra định dạng file       |
-| 4    |                                  | Kiểm tra kích thước file      |
-| 5    | Xác nhận upload                  | Lưu file vào hệ thống         |
-| 6    |                                  | Tạo bản ghi tài liệu          |
-| 7    |                                  | Ghi Audit Log                 |
-| 8    |                                  | Hiển thị thông báo thành công |
-
-### Alternative Flow A1
-
-#### Upload nhiều file
-
-| Step | Actor Action    | System Response            |
-| ---- | --------------- | -------------------------- |
-| A1.1 | Chọn nhiều file | Kiểm tra từng file         |
-| A1.2 |                 | Upload toàn bộ file hợp lệ |
-| A1.3 |                 | Hiển thị kết quả upload    |
-
-### Exception Flow E1
-
-#### Định dạng không được hỗ trợ
-
-| Step | Actor Action | System Response        |
-| ---- | ------------ | ---------------------- |
-| E1.1 | Chọn file    | Kiểm tra định dạng     |
-| E1.2 |              | Từ chối upload         |
-| E1.3 |              | Hiển thị thông báo lỗi |
-
-### Exception Flow E2
-
-#### Dung lượng vượt giới hạn
-
-| Step | Actor Action | System Response        |
-| ---- | ------------ | ---------------------- |
-| E2.1 | Chọn file    | Kiểm tra dung lượng    |
-| E2.2 |              | Từ chối upload         |
-| E2.3 |              | Hiển thị thông báo lỗi |
-
-### Business Rules
-
-* BR-021
-* BR-022
-* BR-023
-
-### Related Functional Requirements
-
-* FR-DOC-001
-* FR-DOC-002
-* FR-DOC-003
-* FR-DOC-004
-* FR-DOC-005
-* FR-DOC-006
-* FR-AUDIT-001
-
----
-
-## UC-008 MANAGE DOCUMENT VERSION
-
-### Use Case ID
-
-UC-008
-
-### Use Case Name
-
-Manage Document Version
-
-### Description
-
-Cho phép tạo và quản lý các phiên bản của tài liệu.
-
-### Primary Actor
-
-Secretary
-
-Notary
-
-### Trigger
-
-Tài liệu cần chỉnh sửa hoặc cập nhật.
-
-### Preconditions
-
-* Tài liệu đã tồn tại.
-* Người dùng có quyền chỉnh sửa tài liệu.
-
-### Postconditions
-
-* Phiên bản mới được tạo.
-* Lịch sử phiên bản được lưu.
-
-### Main Flow
-
-| Step | Actor Action           | System Response               |
-| ---- | ---------------------- | ----------------------------- |
-| 1    | Mở tài liệu            | Hiển thị thông tin tài liệu   |
-| 2    | Chọn tạo phiên bản mới | Hiển thị form upload          |
-| 3    | Upload file mới        | Kiểm tra file                 |
-| 4    | Xác nhận               | Tạo phiên bản mới             |
-| 5    |                        | Tăng số phiên bản             |
-| 6    |                        | Lưu lịch sử phiên bản         |
-| 7    |                        | Hiển thị thông báo thành công |
-
-### Alternative Flow A1
-
-#### Xem lịch sử phiên bản
-
-| Step | Actor Action           | System Response              |
-| ---- | ---------------------- | ---------------------------- |
-| A1.1 | Chọn lịch sử phiên bản | Hiển thị danh sách phiên bản |
-| A1.2 | Chọn phiên bản         | Hiển thị chi tiết            |
-
-### Exception Flow E1
-
-#### Phiên bản không tồn tại
-
-| Step | Actor Action   | System Response        |
-| ---- | -------------- | ---------------------- |
-| E1.1 | Chọn phiên bản | Không tìm thấy dữ liệu |
-| E1.2 |                | Hiển thị lỗi           |
-
-### Business Rules
-- BR-024
-- BR-025
-- BR-026
-- BR-027
-
-### Related Functional Requirements
-
-* FR-DOC-007
-* FR-DOC-008
-* FR-DOC-009
-
----
-
-## UC-009 EXECUTE CHECKLIST
-
-### Use Case ID
-
-UC-009
-
-### Use Case Name
-
-Execute Checklist
-
-### Description
-
-Thực hiện kiểm tra các hạng mục checklist của hồ sơ.
-
-### Primary Actor
-
-Secretary
-
-Notary
-
-### Trigger
-
-Hồ sơ chuyển sang giai đoạn VERIFYING.
-
-### Preconditions
-
-* Hồ sơ tồn tại.
-* Checklist đã được khởi tạo.
-* Người dùng có quyền xử lý hồ sơ.
-
-### Postconditions
-
-* Kết quả checklist được lưu.
-* Trạng thái checklist được cập nhật.
-
-### Main Flow
-
-| Step | Actor Action               | System Response               |
-| ---- | -------------------------- | ----------------------------- |
-| 1    | Mở hồ sơ                   | Hiển thị checklist            |
-| 2    | Chọn hạng mục cần kiểm tra | Hiển thị thông tin chi tiết   |
-| 3    | Chọn kết quả kiểm tra      | Ghi nhận kết quả              |
-| 4    | Nhập ghi chú (nếu có)      | Lưu ghi chú                   |
-| 5    | Xác nhận                   | Lưu kết quả kiểm tra          |
-| 6    |                            | Ghi nhận người kiểm tra       |
-| 7    |                            | Ghi nhận thời gian kiểm tra   |
-| 8    |                            | Cập nhật trạng thái checklist |
-
-### Alternative Flow A1
-
-#### Đánh dấu đạt
-
-| Step | Actor Action | System Response  |
-| ---- | ------------ | ---------------- |
-| A1.1 | Chọn "Đạt"   | Lưu kết quả PASS |
-
-### Alternative Flow A2
-
-#### Đánh dấu không đạt
-
-| Step | Actor Action     | System Response   |
-| ---- | ---------------- | ----------------- |
-| A2.1 | Chọn "Không đạt" | Lưu kết quả FAIL  |
-| A2.2 |                  | Hiển thị cảnh báo |
-
-### Alternative Flow A3
-
-#### Hoàn tất checklist
-
-| Step | Actor Action          | System Response             |
-| ---- | --------------------- | --------------------------- |
-| A3.1 | Hoàn thành tất cả mục | Kiểm tra checklist          |
-| A3.2 |                       | Đánh dấu checklist hoàn tất |
-
-### Exception Flow E1
-
-#### Thiếu hạng mục bắt buộc
-
-| Step | Actor Action            | System Response          |
-| ---- | ----------------------- | ------------------------ |
-| E1.1 | Chọn hoàn tất checklist | Kiểm tra dữ liệu         |
-| E1.2 |                         | Phát hiện mục chưa xử lý |
-| E1.3 |                         | Từ chối hoàn tất         |
-
-### Business Rules
-- BR-029
-- BR-030
-- BR-031
-- BR-032
-- BR-033
-- BR-034
-
-### Related Functional Requirements
-
-* FR-CHK-004
-* FR-CHK-005
-* FR-CHK-006
-* FR-CHK-007
-* FR-CHK-008
-* FR-CHK-009
-
----
-
-## UC-010 CONFIGURE CHECKLIST TEMPLATE
-
-### Use Case ID
-
-UC-010
-
-### Use Case Name
-
-Configure Checklist Template
-
-### Description
-
-Cho phép cấu hình checklist mẫu cho từng loại dịch vụ.
-
-### Primary Actor
-
-Admin
-
-Manager
-
-### Trigger
-
-Cần tạo mới hoặc chỉnh sửa checklist nghiệp vụ.
-
-### Preconditions
-
-* Người dùng có quyền quản trị checklist.
-
-### Postconditions
-
-* Checklist template được lưu.
-* Checklist template có thể sử dụng khi tạo hồ sơ mới.
-
-### Main Flow
-
-| Step | Actor Action                         | System Response               |
-| ---- | ------------------------------------ | ----------------------------- |
-| 1    | Truy cập màn hình Checklist Template | Hiển thị danh sách template   |
-| 2    | Chọn tạo mới                         | Hiển thị form tạo template    |
-| 3    | Nhập thông tin template              | Kiểm tra dữ liệu              |
-| 4    | Thêm các checklist item              | Hiển thị danh sách item       |
-| 5    | Đánh dấu item bắt buộc               | Lưu cấu hình                  |
-| 6    | Xác nhận                             | Tạo checklist template        |
-| 7    |                                      | Hiển thị thông báo thành công |
-
-### Alternative Flow A1
-
-#### Chỉnh sửa template
-
-| Step | Actor Action   | System Response   |
-| ---- | -------------- | ----------------- |
-| A1.1 | Chọn template  | Hiển thị chi tiết |
-| A1.2 | Chỉnh sửa item | Cập nhật dữ liệu  |
-| A1.3 | Lưu            | Ghi nhận thay đổi |
-
-### Alternative Flow A2
-
-#### Vô hiệu hóa template
-
-| Step | Actor Action     | System Response              |
-| ---- | ---------------- | ---------------------------- |
-| A2.1 | Chọn template    | Hiển thị thông tin           |
-| A2.2 | Chọn vô hiệu hóa | Cập nhật trạng thái Inactive |
-
-### Exception Flow E1
-
-#### Template đang được sử dụng
-
-| Step | Actor Action | System Response   |
-| ---- | ------------ | ----------------- |
-| E1.1 | Xóa template | Kiểm tra liên kết |
-| E1.2 |              | Từ chối xóa       |
-| E1.3 |              | Hiển thị cảnh báo |
-
-### Business Rules
-
-* Mỗi loại dịch vụ có thể có nhiều template.
-* Template chỉ áp dụng cho hồ sơ tạo sau thời điểm kích hoạt.
-* Không được xóa template đang được sử dụng.
-
-### Related Functional Requirements
-
-* FR-CHK-001
-* FR-CHK-002
-* FR-CHK-003
-
----
-
-## UC-012 RECORD PAYMENT
-
-### Use Case ID
-
-UC-012
-
-### Use Case Name
-
-Record Payment
-
-### Description
-
-Cho phép ghi nhận thanh toán của khách hàng cho hồ sơ công chứng.
-
-### Primary Actor
-
-Finance
-
-### Secondary Actor
-
-Receptionist
-
-### Trigger
-
-Khách hàng thực hiện thanh toán.
-
-### Preconditions
-
-* Người dùng đã đăng nhập.
-* Người dùng có quyền ghi nhận thanh toán.
-* Hồ sơ tồn tại.
-* Hồ sơ chưa được thanh toán đầy đủ.
-
-### Postconditions
-
-* Giao dịch thanh toán được lưu.
-* Công nợ hồ sơ được cập nhật.
-* Audit Log được tạo.
-
-### Main Flow
-
-| Step | Actor Action                       | System Response                |
-| ---- | ---------------------------------- | ------------------------------ |
-| 1    | Mở hồ sơ                           | Hiển thị thông tin thanh toán  |
-| 2    | Chọn chức năng ghi nhận thanh toán | Hiển thị form thanh toán       |
-| 3    | Nhập số tiền thanh toán            | Kiểm tra dữ liệu               |
-| 4    | Chọn phương thức thanh toán        | Hiển thị danh sách phương thức |
-| 5    | Xác nhận thanh toán                | Lưu giao dịch                  |
-| 6    |                                    | Cập nhật số tiền đã thanh toán |
-| 7    |                                    | Tính toán số tiền còn lại      |
-| 8    |                                    | Ghi Audit Log                  |
-| 9    |                                    | Hiển thị thông báo thành công  |
-
-### Alternative Flow A1
-
-#### Thanh toán nhiều lần
-
-| Step | Actor Action             | System Response                   |
-| ---- | ------------------------ | --------------------------------- |
-| A1.1 | Nhập thanh toán một phần | Lưu giao dịch                     |
-| A1.2 |                          | Cập nhật công nợ còn lại          |
-| A1.3 |                          | Giữ trạng thái chưa thanh toán đủ |
-
-### Exception Flow E1
-
-#### Số tiền không hợp lệ
-
-| Step | Actor Action | System Response                |
-| ---- | ------------ | ------------------------------ |
-| E1.1 | Nhập số tiền | Kiểm tra dữ liệu               |
-| E1.2 |              | Phát hiện số tiền không hợp lệ |
-| E1.3 |              | Hiển thị thông báo lỗi         |
-
-### Related Functional Requirements
-
-* FR-PAY-001
-* FR-PAY-002
-* FR-PAY-003
-* FR-PAY-004
-
-### Related Business Rules
-
-* BR-007
-
----
-
-## UC-014 ARCHIVE CASE
-
-### Use Case ID
-
-UC-014
-
-### Use Case Name
-
-Archive Case
-
-### Description
-
-Cho phép lưu trữ hồ sơ đã hoàn tất để phục vụ tra cứu và quản lý lâu dài.
-
-### Primary Actor
-
-System
-
-### Secondary Actor
-
-Secretary
-
-### Trigger
-
-Hồ sơ đủ điều kiện lưu trữ.
-
-### Preconditions
-
-* Hồ sơ ở trạng thái COMPLETED.
-
-### Postconditions
-
-* Hồ sơ chuyển sang trạng thái ARCHIVED.
-* Thời gian lưu trữ được ghi nhận.
-* Tài liệu hồ sơ được lưu giữ.
-* Audit Log được tạo.
-
-### Main Flow
-
-| Step | Actor Action           | System Response                     |
-| ---- | ---------------------- | ----------------------------------- |
-| 1    | Khởi tạo lưu trữ hồ sơ | Kiểm tra trạng thái hồ sơ           |
-| 2    |                        | Xác nhận hồ sơ đủ điều kiện lưu trữ |
-| 3    |                        | Chuyển trạng thái ARCHIVED          |
-| 4    |                        | Ghi nhận thời gian lưu trữ          |
-| 5    |                        | Lưu toàn bộ tài liệu hồ sơ          |
-| 6    |                        | Ghi Audit Log                       |
-| 7    |                        | Hiển thị kết quả thành công         |
-
-### Alternative Flow A1
-
-#### Lưu trữ thủ công
-
-| Step | Actor Action                 | System Response    |
-| ---- | ---------------------------- | ------------------ |
-| A1.1 | Secretary chọn lưu trữ hồ sơ | Kiểm tra điều kiện |
-| A1.2 |                              | Thực hiện lưu trữ  |
-| A1.3 |                              | Ghi nhận kết quả   |
-
-### Exception Flow E1
-
-#### Hồ sơ chưa hoàn tất
-
-| Step | Actor Action    | System Response                |
-| ---- | --------------- | ------------------------------ |
-| E1.1 | Yêu cầu lưu trữ | Kiểm tra trạng thái            |
-| E1.2 |                 | Phát hiện hồ sơ chưa COMPLETED |
-| E1.3 |                 | Từ chối lưu trữ                |
-
-### Related Functional Requirements
-
-* FR-ARC-001
-* FR-ARC-002
-* FR-ARC-003
-
-### Related Business Rules
-
-* BR-005
-
----
-
-## UC-018 SEND NOTIFICATION
-
-### Use Case ID
-
-UC-018
-
-### Use Case Name
-
-Send Notification
-
-### Description
-
-Cho phép gửi thông báo tới khách hàng về trạng thái hoặc kết quả xử lý hồ sơ.
-
-### Primary Actor
-
-System
-
-### Secondary Actor
-
-Secretary
-
-### Trigger
-
-Xảy ra sự kiện yêu cầu gửi thông báo.
-
-### Preconditions
-
-* Hồ sơ tồn tại.
-* Khách hàng có thông tin liên hệ hợp lệ.
-
-### Postconditions
-
-* Thông báo được gửi.
-* Lịch sử gửi thông báo được lưu.
-* Audit Log được tạo.
-
-### Main Flow
-
-| Step | Actor Action                         | System Response          |
-| ---- | ------------------------------------ | ------------------------ |
-| 1    | Sự kiện gửi thông báo được kích hoạt | Xác định loại thông báo  |
-| 2    |                                      | Tạo nội dung thông báo   |
-| 3    |                                      | Lấy thông tin người nhận |
-| 4    |                                      | Gửi thông báo            |
-| 5    |                                      | Lưu lịch sử gửi          |
-| 6    |                                      | Ghi Audit Log            |
-
-### Alternative Flow A1
-
-#### Gửi thông báo thủ công
-
-| Step | Actor Action       | System Response   |
-| ---- | ------------------ | ----------------- |
-| A1.1 | Chọn gửi thông báo | Hiển thị nội dung |
-| A1.2 | Xác nhận gửi       | Thực hiện gửi     |
-| A1.3 |                    | Lưu lịch sử gửi   |
-
-### Exception Flow E1
-
-#### Không có thông tin liên hệ
-
-| Step | Actor Action            | System Response                  |
-| ---- | ----------------------- | -------------------------------- |
-| E1.1 | Thực hiện gửi thông báo | Kiểm tra người nhận              |
-| E1.2 |                         | Không tìm thấy thông tin liên hệ |
-| E1.3 |                         | Hủy gửi thông báo                |
-
-### Exception Flow E2
-
-#### Gửi thất bại
-
-| Step | Actor Action  | System Response     |
-| ---- | ------------- | ------------------- |
-| E2.1 | Thực hiện gửi | Kết nối dịch vụ gửi |
-| E2.2 |               | Gửi thất bại        |
-| E2.3 |               | Ghi nhận lỗi        |
-| E2.4 |               | Cho phép gửi lại    |
-
-### Related Functional Requirements
-
-* FR-NOTI-001
-* FR-NOTI-002
-* FR-NOTI-003
-
-### Related Business Rules
-
-* BR-008
----
-## UC-021 ASSIGN TRANSLATOR
-
-### Use Case ID
-
-UC-021
-
-### Use Case Name
-
-Assign Translator
-
-### Description
-
-Cho phép phân công biên dịch viên thực hiện dịch thuật cho hồ sơ dịch thuật công chứng.
-
-### Primary Actor
-
-Secretary
-
-### Secondary Actor
-
-Manager
-
-### Trigger
-
-Hồ sơ dịch thuật đã hoàn tất bước xác minh và sẵn sàng xử lý.
-
-### Preconditions
-
-* Người dùng đã đăng nhập.
-* Người dùng có quyền phân công hồ sơ.
-* Hồ sơ tồn tại.
-* Hồ sơ thuộc loại dịch vụ Dịch thuật công chứng.
-* Hồ sơ đang ở trạng thái PROCESSING.
-* Đã xác định ngôn ngữ nguồn và ngôn ngữ đích.
-
-### Postconditions
-
-* Biên dịch viên được gán cho hồ sơ.
-* Thông tin phân công được lưu.
-* Lịch sử phân công được ghi nhận.
-* Audit Log được tạo.
-
-### Main Flow
-
-| Step | Actor Action                              | System Response                   |
-| ---- | ----------------------------------------- | --------------------------------- |
-| 1    | Mở hồ sơ dịch thuật                       | Hiển thị thông tin hồ sơ          |
-| 2    | Chọn chức năng "Phân công biên dịch viên" | Hiển thị danh sách biên dịch viên |
-| 3    | Chọn biên dịch viên                       | Kiểm tra năng lực ngôn ngữ        |
-| 4    | Xác nhận phân công                        | Lưu thông tin phân công           |
-| 5    |                                           | Ghi nhận thời gian phân công      |
-| 6    |                                           | Ghi nhận người phân công          |
-| 7    |                                           | Ghi Audit Log                     |
-| 8    |                                           | Hiển thị thông báo thành công     |
-
-### Alternative Flow A1
-
-#### Thay đổi biên dịch viên
-
-| Step | Actor Action             | System Response      |
-| ---- | ------------------------ | -------------------- |
-| A1.1 | Chọn biên dịch viên khác | Hiển thị danh sách   |
-| A1.2 | Xác nhận thay đổi        | Cập nhật phân công   |
-| A1.3 |                          | Ghi lịch sử thay đổi |
-
-### Exception Flow E1
-
-#### Biên dịch viên không phù hợp ngôn ngữ
-
-| Step | Actor Action        | System Response                         |
-| ---- | ------------------- | --------------------------------------- |
-| E1.1 | Chọn biên dịch viên | Kiểm tra năng lực                       |
-| E1.2 |                     | Phát hiện không hỗ trợ ngôn ngữ yêu cầu |
-| E1.3 |                     | Từ chối phân công                       |
-
-### Related Functional Requirements
-
-* FR-TRN-001
-* FR-TRN-006
-* FR-TRN-007
-
-### Related Business Rules
-
-* BR-036
-* BR-037
-
----
-
-## UC-022 PERFORM TRANSLATION
-
-### Use Case ID
-
-UC-022
-
-### Use Case Name
-
-Perform Translation
-
-### Description
-
-Cho phép biên dịch viên thực hiện dịch thuật và nộp bản dịch cho hồ sơ.
-
-### Primary Actor
-
-Translator
-
-### Trigger
-
-Biên dịch viên được phân công xử lý hồ sơ dịch thuật.
-
-### Preconditions
-
-* Hồ sơ đã được phân công biên dịch viên.
-* Hồ sơ đang ở trạng thái PROCESSING.
-* Biên dịch viên có quyền truy cập hồ sơ.
-
-### Postconditions
-
-* Bản dịch được tải lên hệ thống.
-* Phiên bản bản dịch được tạo.
-* Hồ sơ sẵn sàng cho bước kiểm duyệt.
-
-### Main Flow
-
-| Step | Actor Action            | System Response               |
-| ---- | ----------------------- | ----------------------------- |
-| 1    | Mở hồ sơ được phân công | Hiển thị tài liệu gốc         |
-| 2    | Tải tài liệu gốc        | Hiển thị tài liệu             |
-| 3    | Thực hiện dịch thuật    |                               |
-| 4    | Chọn Upload bản dịch    | Hiển thị màn hình tải file    |
-| 5    | Chọn file bản dịch      | Kiểm tra file                 |
-| 6    | Xác nhận upload         | Lưu bản dịch                  |
-| 7    |                         | Tạo phiên bản tài liệu        |
-| 8    |                         | Ghi Audit Log                 |
-| 9    |                         | Hiển thị thông báo thành công |
-
-### Alternative Flow A1
-
-#### Cập nhật bản dịch
-
-| Step | Actor Action        | System Response       |
-| ---- | ------------------- | --------------------- |
-| A1.1 | Upload bản dịch mới | Kiểm tra file         |
-| A1.2 |                     | Tạo phiên bản mới     |
-| A1.3 |                     | Lưu lịch sử phiên bản |
-
-### Exception Flow E1
-
-#### File không hợp lệ
-
-| Step | Actor Action | System Response        |
-| ---- | ------------ | ---------------------- |
-| E1.1 | Upload file  | Kiểm tra định dạng     |
-| E1.2 |              | Từ chối upload         |
-| E1.3 |              | Hiển thị thông báo lỗi |
-
-### Exception Flow E2
-
-#### Hồ sơ chưa được phân công
-
-| Step | Actor Action   | System Response        |
-| ---- | -------------- | ---------------------- |
-| E2.1 | Truy cập hồ sơ | Kiểm tra phân công     |
-| E2.2 |                | Từ chối truy cập       |
-| E2.3 |                | Hiển thị thông báo lỗi |
-
-### Related Functional Requirements
-
-* FR-TRN-002
-* FR-TRN-005
-
-### Related Business Rules
-
-* BR-039
-
----
-
-## UC-023 REVIEW TRANSLATION
-
-### Use Case ID
-
-UC-023
-
-### Use Case Name
-
-Review Translation
-
-### Description
-
-Cho phép kiểm duyệt và phê duyệt bản dịch trước khi chuyển sang bước ký công chứng.
-
-### Primary Actor
-
-Reviewer
-
-### Secondary Actor
-
-Notary
-
-### Trigger
-
-Biên dịch viên đã hoàn tất và nộp bản dịch.
-
-### Preconditions
-
-* Hồ sơ đang ở trạng thái PROCESSING.
-* Bản dịch đã được tải lên hệ thống.
-* Người dùng có quyền kiểm duyệt bản dịch.
-
-### Postconditions
-
-* Kết quả kiểm duyệt được lưu.
-* Hồ sơ được phê duyệt hoặc trả về chỉnh sửa.
-* Audit Log được tạo.
-
-### Main Flow
-
-| Step | Actor Action               | System Response                   |
-| ---- | -------------------------- | --------------------------------- |
-| 1    | Mở hồ sơ dịch thuật        | Hiển thị tài liệu gốc và bản dịch |
-| 2    | Kiểm tra nội dung bản dịch |                                   |
-| 3    | Chọn "Phê duyệt"           | Hiển thị xác nhận                 |
-| 4    | Xác nhận phê duyệt         | Lưu kết quả                       |
-| 5    |                            | Ghi người kiểm duyệt              |
-| 6    |                            | Ghi thời gian kiểm duyệt          |
-| 7    |                            | Ghi Audit Log                     |
-| 8    |                            | Hiển thị thông báo thành công     |
-
-### Alternative Flow A1
-
-#### Từ chối bản dịch
-
-| Step | Actor Action   | System Response                              |
-| ---- | -------------- | -------------------------------------------- |
-| A1.1 | Chọn "Từ chối" | Hiển thị ô nhập nhận xét                     |
-| A1.2 | Nhập lý do     | Lưu nhận xét                                 |
-| A1.3 | Xác nhận       | Ghi kết quả REJECTED                         |
-| A1.4 |                | Chuyển hồ sơ về cho biên dịch viên chỉnh sửa |
-
-### Exception Flow E1
-
-#### Chưa có bản dịch
-
-| Step | Actor Action         | System Response         |
-| ---- | -------------------- | ----------------------- |
-| E1.1 | Thực hiện kiểm duyệt | Kiểm tra bản dịch       |
-| E1.2 |                      | Không tìm thấy bản dịch |
-| E1.3 |                      | Từ chối kiểm duyệt      |
-
-### Exception Flow E2
-
-#### Bản dịch không phải phiên bản mới nhất
-
-| Step | Actor Action         | System Response        |
-| ---- | -------------------- | ---------------------- |
-| E2.1 | Thực hiện kiểm duyệt | Kiểm tra phiên bản     |
-| E2.2 |                      | Phát hiện phiên bản cũ |
-| E2.3 |                      | Hiển thị cảnh báo      |
-
-### Related Functional Requirements
-
-* FR-TRN-003
-* FR-TRN-004
-* FR-TRN-005
-
-### Related Business Rules
-
-* BR-038
-* BR-039
-* BR-040
-
----
-## UC-024 DEFINE TRANSLATION LANGUAGES
-
-### Use Case ID
-
-UC-024
-
-### Use Case Name
-
-Define Translation Languages
-
-### Description
-
-Cho phép xác định ngôn ngữ nguồn và ngôn ngữ đích của hồ sơ dịch thuật.
-
-### Primary Actor
-
-Secretary
-
-### Trigger
-
-Hồ sơ dịch thuật được tạo mới.
-
-### Preconditions
-
-* Hồ sơ tồn tại.
-* Hồ sơ thuộc loại Dịch thuật công chứng.
-
-### Postconditions
-
-* Ngôn ngữ nguồn được lưu.
-* Ngôn ngữ đích được lưu.
-
-### Main Flow
-
-| Step | Actor Action        | System Response               |
-| ---- | ------------------- | ----------------------------- |
-| 1    | Mở hồ sơ dịch thuật | Hiển thị thông tin hồ sơ      |
-| 2    | Chọn ngôn ngữ nguồn | Hiển thị danh sách ngôn ngữ   |
-| 3    | Chọn ngôn ngữ đích  | Hiển thị danh sách ngôn ngữ   |
-| 4    | Xác nhận            | Kiểm tra dữ liệu              |
-| 5    |                     | Lưu ngôn ngữ nguồn            |
-| 6    |                     | Lưu ngôn ngữ đích             |
-| 7    |                     | Hiển thị thông báo thành công |
-
-### Exception Flow E1
-
-#### Chưa chọn ngôn ngữ
-
-| Step | Actor Action  | System Response            |
-| ---- | ------------- | -------------------------- |
-| E1.1 | Lưu thông tin | Kiểm tra dữ liệu           |
-| E1.2 |               | Hiển thị lỗi bắt buộc nhập |
-
-### Related Functional Requirements
-
-* FR-TRN-006
-
-### Related Business Rules
-
-* BR-036
-
----
-
-## UC-025 UPLOAD TRANSLATION DOCUMENT
-
-### Use Case ID
-
-UC-025
-
-### Use Case Name
-
-Upload Translation Document
-
-### Description
-
-Cho phép tải lên bản dịch của tài liệu gốc.
-
-### Primary Actor
-
-Translator
-
-### Trigger
-
-Bản dịch hoàn tất.
-
-### Preconditions
-
-* Hồ sơ đã được phân công biên dịch viên.
-* Hồ sơ ở trạng thái PROCESSING.
-
-### Postconditions
-
-* Bản dịch được lưu.
-* Phiên bản tài liệu được tạo.
-
-### Main Flow
-
-| Step | Actor Action            | System Response            |
-| ---- | ----------------------- | -------------------------- |
-| 1    | Mở hồ sơ                | Hiển thị thông tin hồ sơ   |
-| 2    | Chọn Upload Translation | Hiển thị màn hình tải file |
-| 3    | Chọn file               | Kiểm tra file              |
-| 4    | Xác nhận upload         | Lưu tài liệu               |
-| 5    |                         | Tạo phiên bản mới          |
-| 6    |                         | Ghi Audit Log              |
-| 7    |                         | Hiển thị thành công        |
-
-### Exception Flow E1
-
-#### File không hợp lệ
-
-| Step | Actor Action | System Response    |
-| ---- | ------------ | ------------------ |
-| E1.1 | Upload file  | Kiểm tra định dạng |
-| E1.2 |              | Từ chối upload     |
-| E1.3 |              | Hiển thị lỗi       |
-
-### Related Functional Requirements
-
-* FR-TRN-002
-* FR-TRN-005
-
-### Related Business Rules
-
-* BR-021
-* BR-023
-* BR-039
-
----
-## UC-031 CREATE APPOINTMENT
-
-### Use Case ID
-
-UC-031
-
-### Use Case Name
-
-Create Appointment
-
-### Description
-
-Cho phép tạo lịch hẹn tư vấn cho khách hàng trước khi khách đến văn phòng công chứng.
-
-### Primary Actor
-
-Receptionist
-
-### Trigger
-
-Khách hàng liên hệ văn phòng công chứng qua điện thoại, Zalo, Facebook, Website hoặc trực tiếp tại văn phòng.
-
-### Preconditions
-
-* Người dùng đã đăng nhập.
-* Người dùng có quyền tạo lịch hẹn.
-
-### Postconditions
-
-* Lịch hẹn được tạo thành công.
-* Trạng thái lịch hẹn là SCHEDULED.
-* Thông tin khách hàng tiềm năng được lưu.
-
-### Main Flow
-
-| Step | Actor Action                | System Response               |
-| ---- | --------------------------- | ----------------------------- |
-| 1    | Chọn chức năng tạo lịch hẹn | Hiển thị form tạo lịch hẹn    |
-| 2    | Nhập thông tin khách hàng   | Hiển thị dữ liệu đã nhập      |
-| 3    | Chọn loại dịch vụ           | Hiển thị danh sách dịch vụ    |
-| 4    | Chọn ngày giờ hẹn           | Kiểm tra lịch                 |
-| 5    | Nhập ghi chú                | Hiển thị nội dung ghi chú     |
-| 6    | Xác nhận tạo lịch hẹn       | Lưu lịch hẹn                  |
-| 7    |                             | Gán trạng thái SCHEDULED      |
-| 8    |                             | Ghi Audit Log                 |
-| 9    |                             | Hiển thị thông báo thành công |
-
-### Alternative Flow A1
-
-#### Khách hàng chưa xác định thời gian hẹn
-
-| Step | Actor Action           | System Response                     |
-| ---- | ---------------------- | ----------------------------------- |
-| A1.1 | Bỏ trống thời gian hẹn | Cho phép lưu dưới dạng chờ xác nhận |
-| A1.2 |                        | Trạng thái vẫn là SCHEDULED         |
-
-### Exception Flow E1
-
-#### Thiếu thông tin bắt buộc
-
-| Step | Actor Action | System Response               |
-| ---- | ------------ | ----------------------------- |
-| E1.1 | Lưu lịch hẹn | Kiểm tra dữ liệu              |
-| E1.2 |              | Hiển thị lỗi dữ liệu bắt buộc |
-
-### Related Functional Requirements
-
-* FR-APT-001
-* FR-APT-002
-
----
-
-## UC-032 ASSIGN APPOINTMENT
-
-### Use Case ID
-
-UC-032
-
-### Use Case Name
-
-Assign Appointment
-
-### Description
-
-Cho phép phân công nhân viên phụ trách theo dõi và chăm sóc lịch hẹn.
-
-### Primary Actor
-
-Receptionist
-
-### Trigger
-
-Lịch hẹn được tạo mới.
-
-### Preconditions
-
-* Lịch hẹn tồn tại.
-* Lịch hẹn chưa được phân công.
-
-### Postconditions
-
-* Nhân viên phụ trách được gán.
-* Lịch sử phân công được lưu.
-
-### Main Flow
-
-| Step | Actor Action             | System Response               |
-| ---- | ------------------------ | ----------------------------- |
-| 1    | Mở lịch hẹn              | Hiển thị thông tin lịch hẹn   |
-| 2    | Chọn nhân viên phụ trách | Hiển thị danh sách nhân viên  |
-| 3    | Xác nhận phân công       | Lưu thông tin phân công       |
-| 4    |                          | Ghi Audit Log                 |
-| 5    |                          | Hiển thị thông báo thành công |
-
-### Alternative Flow A1
-
-#### Tự động phân công
-
-| Step | Actor Action           | System Response                     |
-| ---- | ---------------------- | ----------------------------------- |
-| A1.1 | Chọn tự động phân công | Hệ thống xác định nhân viên phù hợp |
-| A1.2 |                        | Gán nhân viên phụ trách             |
-
-### Exception Flow E1
-
-#### Nhân viên không khả dụng
-
-| Step | Actor Action   | System Response                    |
-| ---- | -------------- | ---------------------------------- |
-| E1.1 | Chọn nhân viên | Kiểm tra trạng thái                |
-| E1.2 |                | Thông báo nhân viên không khả dụng |
-
-### Related Functional Requirements
-
-* FR-APT-003
-
----
-
-## UC-033 SEND APPOINTMENT REMINDER
-
-### Use Case ID
-
-UC-033
-
-### Use Case Name
-
-Send Appointment Reminder
-
-### Description
-
-Cho phép gửi thông báo nhắc lịch hẹn cho khách hàng.
-
-### Primary Actor
-
-System
-
-### Secondary Actor
-
-Receptionist
-
-### Trigger
-
-Đến thời điểm nhắc lịch theo cấu hình.
-
-### Preconditions
-
-* Lịch hẹn tồn tại.
-* Lịch hẹn ở trạng thái SCHEDULED hoặc CONFIRMED.
-* Có thông tin liên hệ khách hàng.
-
-### Postconditions
-
-* Thông báo được gửi.
-* Lịch sử gửi được lưu.
-
-### Main Flow
-
-| Step | Actor Action            | System Response        |
-| ---- | ----------------------- | ---------------------- |
-| 1    | Đến thời gian nhắc lịch | Kiểm tra lịch hẹn      |
-| 2    |                         | Tạo nội dung nhắc lịch |
-| 3    |                         | Gửi thông báo          |
-| 4    |                         | Lưu lịch sử gửi        |
-| 5    |                         | Ghi Audit Log          |
-
-### Alternative Flow A1
-
-#### Gửi thủ công
-
-| Step | Actor Action       | System Response   |
-| ---- | ------------------ | ----------------- |
-| A1.1 | Chọn gửi nhắc lịch | Hiển thị nội dung |
-| A1.2 | Xác nhận gửi       | Thực hiện gửi     |
-| A1.3 |                    | Lưu lịch sử gửi   |
-
-### Exception Flow E1
-
-#### Không có thông tin liên hệ
-
-| Step | Actor Action  | System Response         |
-| ---- | ------------- | ----------------------- |
-| E1.1 | Gửi nhắc lịch | Kiểm tra người nhận     |
-| E1.2 |               | Hủy gửi và ghi nhận lỗi |
-
-### Related Functional Requirements
-
-* FR-APT-004
-* FR-NOTI-001
-
----
-
-## UC-034 CHECK IN APPOINTMENT
-
-### Use Case ID
-
-UC-034
-
-### Use Case Name
-
-Check In Appointment
-
-### Description
-
-Cho phép xác nhận khách hàng đã đến văn phòng theo lịch hẹn.
-
-### Primary Actor
-
-Receptionist
-
-### Trigger
-
-Khách hàng đến văn phòng công chứng.
-
-### Preconditions
-
-* Lịch hẹn tồn tại.
-* Lịch hẹn ở trạng thái CONFIRMED hoặc REMINDED.
-
-### Postconditions
-
-* Trạng thái lịch hẹn chuyển sang CHECKED_IN.
-* Thời gian check-in được ghi nhận.
-
-### Main Flow
-
-| Step | Actor Action          | System Response                |
-| ---- | --------------------- | ------------------------------ |
-| 1    | Tìm lịch hẹn          | Hiển thị thông tin lịch hẹn    |
-| 2    | Xác nhận khách đã đến | Hiển thị thông tin khách hàng  |
-| 3    | Chọn Check In         | Cập nhật trạng thái CHECKED_IN |
-| 4    |                       | Ghi nhận thời gian check-in    |
-| 5    |                       | Ghi Audit Log                  |
-| 6    |                       | Hiển thị thông báo thành công  |
-
-### Alternative Flow A1
-
-#### Khách đến không đúng giờ
-
-| Step | Actor Action       | System Response            |
-| ---- | ------------------ | -------------------------- |
-| A1.1 | Thực hiện Check In | Ghi nhận thời gian thực tế |
-| A1.2 |                    | Vẫn cập nhật CHECKED_IN    |
-
-### Exception Flow E1
-
-#### Không tìm thấy lịch hẹn
-
-| Step | Actor Action | System Response                   |
-| ---- | ------------ | --------------------------------- |
-| E1.1 | Tìm lịch hẹn | Kiểm tra dữ liệu                  |
-| E1.2 |              | Hiển thị thông báo không tìm thấy |
-
-### Related Functional Requirements
-
-* FR-APT-005
-
----
-## UC-035 Schedule Result Pickup
-
-### Use Case ID
-
-UC-035
-
-### Use Case Name
-
-Schedule Result Pickup
-
-### Description
-
-Cho phép tạo lịch hẹn nhận kết quả cho khách hàng sau khi hồ sơ đã hoàn tất xử lý.
-
-### Primary Actor
-
-Secretary
-
-### Supporting Actors
-
-* Receptionist
-* System
-
-### Trigger
-
-Hồ sơ đã hoàn tất xử lý và sẵn sàng trả kết quả cho khách hàng.
-
-### Preconditions
-
-* Hồ sơ tồn tại.
-* Hồ sơ đã được ký xác nhận.
-* Hồ sơ đã thanh toán đầy đủ.
-* Hồ sơ ở trạng thái READY_FOR_PICKUP.
-
-### Postconditions
-
-* Lịch hẹn nhận kết quả được tạo.
-* Lịch hẹn được liên kết với hồ sơ.
-* Thông tin lịch hẹn được lưu vào hệ thống.
-
-### Main Flow
-
-| Step | Actor     | Action                                   |
-| ---- | --------- | ---------------------------------------- |
-| 1    | Secretary | Mở hồ sơ cần trả kết quả                 |
-| 2    | System    | Hiển thị thông tin hồ sơ                 |
-| 3    | Secretary | Chọn chức năng tạo lịch hẹn nhận kết quả |
-| 4    | System    | Hiển thị form lịch hẹn                   |
-| 5    | Secretary | Nhập ngày giờ nhận kết quả               |
-| 6    | Secretary | Nhập ghi chú (nếu có)                    |
-| 7    | Secretary | Xác nhận tạo lịch hẹn                    |
-| 8    | System    | Kiểm tra dữ liệu                         |
-| 9    | System    | Tạo lịch hẹn                             |
-| 10   | System    | Liên kết lịch hẹn với hồ sơ              |
-| 11   | System    | Ghi Audit Log                            |
-| 12   | System    | Hiển thị thông báo thành công            |
-
-### Alternative Flow A1 – Update Pickup Schedule
-
-| Step | Actor     | Action                         |
-| ---- | --------- | ------------------------------ |
-| A1.1 | Secretary | Chọn chỉnh sửa lịch hẹn        |
-| A1.2 | System    | Hiển thị thông tin lịch hẹn    |
-| A1.3 | Secretary | Cập nhật ngày giờ nhận kết quả |
-| A1.4 | Secretary | Xác nhận cập nhật              |
-| A1.5 | System    | Lưu thay đổi                   |
-| A1.6 | System    | Ghi Audit Log                  |
-
-### Exception Flow E1 – Invalid Pickup Date
-
-| Step | Actor     | Action                          |
-| ---- | --------- | ------------------------------- |
-| E1.1 | Secretary | Tạo lịch hẹn                    |
-| E1.2 | System    | Phát hiện ngày giờ không hợp lệ |
-| E1.3 | System    | Hiển thị thông báo lỗi          |
-| E1.4 | Secretary | Nhập lại thông tin              |
-
-### Related Functional Requirements
-
-* FR-DEL-001
-* FR-DEL-002
-
-### Related Business Rules
-
-* BR-016
-* BR-017
-
----
-
-## UC-036 Confirm Result Delivery
-
-### Use Case ID
-
-UC-036
-
-### Use Case Name
-
-Confirm Result Delivery
-
-### Description
-
-Cho phép xác nhận khách hàng đã nhận kết quả và hoàn tất quá trình bàn giao hồ sơ.
-
-### Primary Actor
-
-Receptionist
-
-### Supporting Actors
-
-* Secretary
-* System
-
-### Trigger
-
-Khách hàng đến nhận kết quả tại Văn phòng Công chứng.
-
-### Preconditions
-
-* Hồ sơ tồn tại.
-* Hồ sơ ở trạng thái READY_FOR_PICKUP.
-* Kết quả đã được chuẩn bị đầy đủ.
-* Checklist bàn giao đã sẵn sàng thực hiện.
-
-### Postconditions
-
-* Việc bàn giao được ghi nhận.
-* Trạng thái hồ sơ được cập nhật thành DELIVERED.
-* Lịch sử bàn giao được lưu vào hệ thống.
-
-### Main Flow
-
-| Step | Actor        | Action                                          |
-| ---- | ------------ | ----------------------------------------------- |
-| 1    | Receptionist | Mở hồ sơ cần bàn giao                           |
-| 2    | System       | Hiển thị thông tin hồ sơ                        |
-| 3    | Receptionist | Xác minh người nhận kết quả                     |
-| 4    | Receptionist | Thực hiện CHK-TRN-004 Result Delivery Checklist |
-| 5    | System       | Kiểm tra kết quả checklist                      |
-| 6    | Receptionist | Xác nhận hoàn tất bàn giao                      |
-| 7    | System       | Ghi nhận người nhận                             |
-| 8    | System       | Ghi nhận thời gian bàn giao                     |
-| 9    | System       | Cập nhật trạng thái hồ sơ thành DELIVERED       |
-| 10   | System       | Ghi Audit Log                                   |
-| 11   | System       | Hiển thị thông báo thành công                   |
-
-### Alternative Flow A1 – Authorized Representative
-
-| Step | Actor        | Action                                     |
-| ---- | ------------ | ------------------------------------------ |
-| A1.1 | Receptionist | Phát hiện người nhận không phải khách hàng |
-| A1.2 | Receptionist | Kiểm tra giấy ủy quyền                     |
-| A1.3 | System       | Lưu thông tin giấy ủy quyền                |
-| A1.4 | Receptionist | Tiếp tục bàn giao hồ sơ                    |
-
-### Exception Flow E1 – Checklist Not Completed
-
-| Step | Actor        | Action                              |
-| ---- | ------------ | ----------------------------------- |
-| E1.1 | Receptionist | Xác nhận bàn giao                   |
-| E1.2 | System       | Phát hiện checklist chưa hoàn thành |
-| E1.3 | System       | Hiển thị thông báo lỗi              |
-| E1.4 | System       | Không cho phép bàn giao             |
-
-### Exception Flow E2 – Case Not Ready
-
-| Step | Actor        | Action                                             |
-| ---- | ------------ | -------------------------------------------------- |
-| E2.1 | Receptionist | Mở hồ sơ                                           |
-| E2.2 | System       | Kiểm tra trạng thái hồ sơ                          |
-| E2.3 | System       | Hiển thị thông báo hồ sơ chưa sẵn sàng trả kết quả |
-
-### Related Functional Requirements
-
-* FR-DEL-003
-* FR-DEL-004
-* FR-DEL-005
-* FR-DEL-006
-* FR-DEL-007
-
-### Related Business Rules
-
-* BR-018
-* BR-019
-* BR-020
-* BR-021
-
-
----
-
-# 7. MA TRẬN PHÂN QUYỀN
-
-| Chức năng    | Lễ tân | Thư ký | CCV | Kế toán | Admin |
-| ------------ | ------ | ------ | --- | ------- | ----- |
-| Quản lý KH   | X      | X      |     |         | X     |
-| Tạo hồ sơ    | X      | X      |     |         | X     |
-| Sửa hồ sơ    |        | X      |     |         | X     |
-| Duyệt hồ sơ  |        |        | X   |         | X     |
-| Thanh toán   |        |        |     | X       | X     |
-| Quản lý user |        |        |     |         | X     |
-
----
-
-# 8. YÊU CẦU GIAO DIỆN
-
-## 8.1 UI
-
-Layout:
-
-* Sidebar
-* Header
-* Content
-
-Dashboard hiển thị:
-
-* Hồ sơ mới
-* Hồ sơ đang xử lý
-* Hồ sơ hoàn tất
-* Doanh thu
-
----
-
-## 8.2 Hardware Interface
-
-* Máy scan
-* Máy in
-* Máy quét CCCD
-
----
-
-## 8.3 Software Interface
-
-* UCHI API
-* Zalo OA API
-* Hóa đơn điện tử API
-
----
-
-# 9. YÊU CẦU PHI CHỨC NĂNG
-
-## Performance
-
-Tra cứu hồ sơ:
-
-< 2 giây
-
-Tìm kiếm khách hàng:
-
-< 1 giây
-
----
-
-## Security
-
-* RBAC
-* Mã hóa mật khẩu bằng BCrypt
-* HTTPS
-
----
-
-## Availability
-
-Uptime:
-
-99%
-
 ---
-
-## Reliability
-
-Backup dữ liệu hằng ngày.
-
----
-
-# 10. BUSINESS RULES
-
-## BR-001
-Không cho phép tạo khách hàng trùng CCCD.
-
-## BR-002
-Mỗi hồ sơ phải thuộc đúng một khách hàng.
-
-## BR-003
-Mỗi hồ sơ phải có ít nhất một người phụ trách.
-
-## BR-004
-Checklist phải hoàn tất trước khi chuyển sang WAITING_SIGNATURE.
-
-## BR-005
-Không được xóa hồ sơ COMPLETED hoặc ARCHIVED.
-
-## BR-006
-Mọi thay đổi trạng thái hồ sơ phải được ghi nhận vào Audit Log.
-
-## BR-007
-Hồ sơ chỉ được chuyển sang COMPLETED khi thanh toán đầy đủ.
-
-## BR-008
-Tin nhắn Zalo chỉ được gửi sau khi hồ sơ COMPLETED.
-
-## BR-009
-Mỗi hồ sơ phải có mã hồ sơ duy nhất.
-
-## BR-010
-Mỗi tài liệu phải thuộc đúng một hồ sơ.
-
-## BR-011
-Phiên bản tài liệu không được chỉnh sửa sau khi tạo.
-
-## BR-012
-Người dùng chỉ được thực hiện chức năng thuộc quyền của vai trò được gán.
-
-## BR-013
-Không được phân công hồ sơ cho tài khoản bị khóa.
-
-## BR-014
-Hồ sơ ARCHIVED không được phép chỉnh sửa.
-
-## BR-015
-Mọi khoản thu phải gắn với một hồ sơ.
-
-## BR-016
-Số tiền đã thu không được vượt quá tổng phí phải thu.
-
-## BR-017
-Mỗi Checklist Item phải có kết quả kiểm tra trước khi checklist được hoàn tất.
-
-## BR-018
-Checklist Template chỉ áp dụng cho các hồ sơ được tạo sau thời điểm kích hoạt Template.
-
-## BR-019
-Mọi thay đổi dữ liệu khách hàng phải được ghi nhận Audit Log.
-
-## BR-020
-Audit Log không được phép chỉnh sửa hoặc xóa.
-
-## BR-021
-Hệ thống chỉ cho phép tải lên các tài liệu có định dạng được hỗ trợ.
-
-## BR-022
-Các định dạng tài liệu được hỗ trợ gồm:
-- PDF
-- DOCX
-- JPG
-- PNG
-
-## BR-023
-Tên file gốc của tài liệu phải được lưu trong hệ thống khi tải lên.
-
-## BR-024
-Phiên bản tài liệu đã được tạo không được phép chỉnh sửa nội dung.
-
-## BR-025
-Mọi thay đổi đối với tài liệu phải được thực hiện bằng cách tạo phiên bản mới.
-
-## BR-026
-Hệ thống phải lưu toàn bộ lịch sử phiên bản của tài liệu.
-
-## BR-027
-Mỗi phiên bản tài liệu phải có mã hoặc số phiên bản duy nhất trong phạm vi tài liệu.
-
-## BR-028
-
-Mỗi phiên bản tài liệu phải lưu người tạo phiên bản và thời gian tạo phiên bản.
-
-## BR-029
-Mỗi Checklist Item phải có kết quả kiểm tra trước khi được đánh dấu hoàn thành.
-
-## BR-030
-Kết quả kiểm tra của Checklist Item chỉ được phép nhận một trong các giá trị được hệ thống hỗ trợ.
-
-Ví dụ:
-- PASS
-- FAIL
-- N/A
-
-## BR-031
-Mỗi Checklist Item phải ghi nhận người thực hiện kiểm tra.
-
-## BR-032
-Mỗi Checklist Item phải ghi nhận thời gian thực hiện kiểm tra.
-
-## BR-033
-Checklist chỉ được đánh dấu hoàn thành khi tất cả Checklist Item bắt buộc đã có kết quả kiểm tra.
-
-## BR-034
-Checklist Item có kết quả FAIL phải được phép nhập ghi chú giải thích nguyên nhân.
-
-## BR-035
-Checklist đã hoàn thành không được phép chỉnh sửa nếu hồ sơ đã chuyển sang trạng thái WAITING_SIGNATURE hoặc COMPLETED.
-
-## BR-036
-Hồ sơ dịch thuật phải xác định ngôn ngữ nguồn và ngôn ngữ đích trước khi được phân công biên dịch viên.
-
-## BR-037
-Chỉ biên dịch viên có năng lực đối với cặp ngôn ngữ yêu cầu mới được phép nhận phân công.
-
-## BR-038
-Bản dịch phải được kiểm duyệt và phê duyệt trước khi hồ sơ được chuyển sang WAITING_SIGNATURE.
-
-## BR-039
-Mọi thay đổi đối với bản dịch phải tạo phiên bản mới.
-
-## BR-040
-Kết quả kiểm duyệt phải được lưu cùng người kiểm duyệt và thời gian kiểm duyệt.
-
-## BR-041
-
-Hệ thống phải tính phí dịch thuật dựa trên ngôn ngữ đích và số trang tài liệu.
-
-## BR-042
-
-Hồ sơ dịch thuật phải có báo giá trước khi được phân công cho biên dịch viên.
-
-## BR-043
-
-Khách hàng phải chấp thuận báo giá trước khi hồ sơ được chuyển sang xử lý dịch thuật.
-
-## BR-044
-
-Phụ phí dịch vụ phải được ghi nhận riêng với phí dịch thuật.
-
-## BR-045
-
-Hồ sơ có nhiều ngôn ngữ đích phải tính phí riêng cho từng ngôn ngữ.
-
-## BR-046
-
-Mọi thay đổi báo giá phải được lưu lịch sử.
-
----
-
-# 10. CHECKLIST DEFINITIONS
-
-## 10.1 Mục đích
-
-Checklist là tập hợp các hạng mục kiểm tra được áp dụng trong quá trình xử lý hồ sơ nhằm đảm bảo tính đầy đủ, chính xác và tuân thủ quy trình nghiệp vụ.
-
-Mỗi checklist:
-
-* Được áp dụng cho một hoặc nhiều loại dịch vụ.
-* Bao gồm các hạng mục kiểm tra (Checklist Items).
-* Có người thực hiện.
-* Có thời gian thực hiện.
-* Có kết quả thực hiện.
-* Được sử dụng làm điều kiện chuyển trạng thái hồ sơ.
-
-Checklist là một cơ chế kiểm soát chất lượng thường được sử dụng trong quá trình rà soát yêu cầu và quy trình nghiệp vụ để đảm bảo tính đầy đủ, nhất quán và khả năng kiểm chứng.
-
----
-
-## 10.2 CHK-TRN-001 – Translation Document Verification Checklist
-
-### Mục đích
-
-Kiểm tra tính hợp lệ và đầy đủ của tài liệu trước khi thực hiện dịch thuật.
-
-### Loại dịch vụ áp dụng
-
-* Dịch thuật công chứng
-
-### Thực hiện bởi
-
-* Secretary
-
-### Use Cases liên quan
-
-* UC-009 Execute Checklist
-
-### Điều kiện hoàn thành
-
-Tất cả các mục bắt buộc phải đạt.
-
-### Checklist Items
-
-| Code           | Hạng mục kiểm tra                              | Bắt buộc |
-| -------------- | ---------------------------------------------- | -------- |
-| CHK-TRN-001-01 | Đã nhận tài liệu gốc từ khách hàng             | Yes      |
-| CHK-TRN-001-02 | Tài liệu có thể đọc được                       | Yes      |
-| CHK-TRN-001-03 | Tài liệu không bị mất trang                    | Yes      |
-| CHK-TRN-001-04 | Tài liệu không bị mờ hoặc hư hỏng nghiêm trọng | Yes      |
-| CHK-TRN-001-05 | Xác định được ngôn ngữ nguồn                   | Yes      |
-| CHK-TRN-001-06 | Xác định được ngôn ngữ đích                    | Yes      |
-| CHK-TRN-001-07 | Đã ghi nhận số lượng trang                     | Yes      |
-| CHK-TRN-001-08 | Đã upload đầy đủ tài liệu lên hệ thống         | Yes      |
-| CHK-TRN-001-09 | Đã ghi nhận yêu cầu dịch thuật của khách hàng  | Yes      |
-| CHK-TRN-001-10 | Hồ sơ đủ điều kiện phân công dịch thuật        | Yes      |
-
----
-
-## 10.3 CHK-TRN-002 – Translation Review Checklist
-
-### Mục đích
-
-Kiểm tra chất lượng bản dịch trước khi phê duyệt.
-
-### Loại dịch vụ áp dụng
-
-* Dịch thuật công chứng
-
-### Thực hiện bởi
-
-* Reviewer
-
-### Use Cases liên quan
-
-* UC-023 Review Translation
-
-### Điều kiện hoàn thành
-
-Tất cả các mục bắt buộc phải đạt.
-
-### Checklist Items
-
-| Code           | Hạng mục kiểm tra                    | Bắt buộc |
-| -------------- | ------------------------------------ | -------- |
-| CHK-TRN-002-01 | Bản dịch đã được upload lên hệ thống | Yes      |
-| CHK-TRN-002-02 | Đầy đủ tất cả các trang              | Yes      |
-| CHK-TRN-002-03 | Không bỏ sót nội dung                | Yes      |
-| CHK-TRN-002-04 | Thuật ngữ được sử dụng nhất quán     | Yes      |
-| CHK-TRN-002-05 | Tên riêng được dịch chính xác        | Yes      |
-| CHK-TRN-002-06 | Ngày tháng được dịch chính xác       | Yes      |
-| CHK-TRN-002-07 | Số liệu được giữ nguyên              | Yes      |
-| CHK-TRN-002-08 | Con dấu được mô tả đầy đủ            | Yes      |
-| CHK-TRN-002-09 | Chữ ký được ghi nhận đầy đủ          | Yes      |
-| CHK-TRN-002-10 | Không có lỗi chính tả nghiêm trọng   | Yes      |
-| CHK-TRN-002-11 | Không có lỗi ngữ pháp nghiêm trọng   | Yes      |
-| CHK-TRN-002-12 | Định dạng đáp ứng yêu cầu            | Yes      |
-| CHK-TRN-002-13 | Bản dịch đủ điều kiện phê duyệt      | Yes      |
-
----
-
-## 10.4 CHK-TRN-003 – Translation Certification Checklist
-
-### Mục đích
-
-Kiểm tra điều kiện trình công chứng viên ký xác nhận.
-
-### Loại dịch vụ áp dụng
-
-* Dịch thuật công chứng
-
-### Thực hiện bởi
-
-* Secretary
-
-### Use Cases liên quan
-
-* UC-009 Execute Checklist
-* UC-026 Sign Case
-
-### Điều kiện hoàn thành
-
-Tất cả các mục bắt buộc phải đạt.
-
-### Checklist Items
-
-| Code           | Hạng mục kiểm tra                 | Bắt buộc |
-| -------------- | --------------------------------- | -------- |
-| CHK-TRN-003-01 | Bản gốc đã được lưu trong hồ sơ   | Yes      |
-| CHK-TRN-003-02 | Bản dịch đã được phê duyệt        | Yes      |
-| CHK-TRN-003-03 | Biên dịch viên đã được ghi nhận   | Yes      |
-| CHK-TRN-003-04 | Ngôn ngữ nguồn đã được xác định   | Yes      |
-| CHK-TRN-003-05 | Ngôn ngữ đích đã được xác định    | Yes      |
-| CHK-TRN-003-06 | Hồ sơ đã đính kèm đầy đủ tài liệu | Yes      |
-| CHK-TRN-003-07 | Hồ sơ có người phụ trách          | Yes      |
-| CHK-TRN-003-08 | Hồ sơ đủ điều kiện trình ký       | Yes      |
-
----
-
-## 10.5 CHK-TRN-004 – Result Delivery Checklist
-
-### Mục đích
-
-Kiểm tra điều kiện bàn giao kết quả cho khách hàng.
-
-### Loại dịch vụ áp dụng
-
-* Dịch thuật công chứng
-
-### Thực hiện bởi
-
-* Receptionist
-* Secretary
-
-### Use Cases liên quan
-
-* UC-036 Confirm Result Delivery
-
-### Điều kiện hoàn thành
-
-Tất cả các mục bắt buộc phải đạt.
-
-### Checklist Items
-
-| Code           | Hạng mục kiểm tra                      | Bắt buộc |
-| -------------- | -------------------------------------- | -------- |
-| CHK-TRN-004-01 | Bản dịch công chứng đã được in         | Yes      |
-| CHK-TRN-004-02 | Tài liệu đã được đóng dấu              | Yes      |
-| CHK-TRN-004-03 | Tài liệu đã được ký xác nhận           | Yes      |
-| CHK-TRN-004-04 | Hồ sơ đã thanh toán đầy đủ             | Yes      |
-| CHK-TRN-004-05 | Đã chuẩn bị đầy đủ tài liệu giao khách | Yes      |
-| CHK-TRN-004-06 | Đã xác minh người nhận kết quả         | Yes      |
-| CHK-TRN-004-07 | Khách hàng đã ký nhận kết quả          | Yes      |
-| CHK-TRN-004-08 | Đã ghi nhận thời gian bàn giao         | Yes      |
-
-
