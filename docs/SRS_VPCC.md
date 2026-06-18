@@ -27,18 +27,23 @@
     - [2.4.3 Phân rã module Quản lý khách hàng (CRM)](#243-phân-rã-module-quản-lý-khách-hàng-crm)
     - [2.4.4 Phân rã module Lưu trữ hồ sơ điện tử (Document Archive)](#244-phân-rã-module-lưu-trữ-hồ-sơ-điện-tử-document-archive)
     - [2.4.5 Phân rã module Quản lý phí & Tài chính (Fee & Billing)](#245-phân-rã-module-quản-lý-phí--tài-chính-fee--billing)
-  - [2.5 Đặc tả các usecase (Use Case Specifications)](#25-đặc-tả-các-usecase-use-case-specifications)
-    - [2.5.1 Nhóm Use Case Xác thực & Hệ thống (Auth & Admin)](#251-nhóm-use-case-xác-thực--hệ-thống-auth--admin)
+  - [2.5 Quy trình nghiệp vụ (Business Processes)](#25-quy-trình-nghiệp-vụ-business-processes)
+    - [2.5.1 Sơ đồ luồng hoạt động nghiệp vụ tổng quát (Activity Diagram)](#251-sơ-đồ-luồng-hoạt-động-nghiệp-vụ-tổng-quát-activity-diagram)
+    - [2.5.2 Quy trình nghiệp vụ Sao y bản chính (Certified Copying Process)](#252-quy-trình-nghiệp-vụ-sao-y-bản-chính-certified-copying-process)
+    - [2.5.3 Quy trình nghiệp vụ Chứng thực chữ ký (Signature Authentication Process)](#253-quy-trình-nghiệp-vụ-chứng-thực-chữ-ký-signature-authentication-process)
+    - [2.5.4 Quy trình nghiệp vụ Dịch thuật công chứng (Notarized Translation Process)](#254-quy-trình-nghiệp-vụ-dịch-thuật-công-chứng-notarized-translation-process)
+  - [2.6 Đặc tả các usecase (Use Case Specifications)](#26-đặc-tả-các-usecase-use-case-specifications)
+    - [2.6.1 Nhóm Use Case Xác thực & Hệ thống (Auth & Admin)](#261-nhóm-use-case-xác-thực--hệ-thống-auth--admin)
       - [UC001: Đăng nhập hệ thống](#uc001-đăng-nhập-hệ-thống)
       - [UC002: Thay đổi mật khẩu](#uc002-thay-đổi-mật-khẩu)
       - [UC003: Quản lý & Cấp tài khoản nhân sự](#uc003-quản-lý--cấp-tài-khoản-nhân-sự)
       - [UC004: Phân quyền & Thiết lập vai trò (RBAC)](#uc004-phân-quyền--thiết-lập-vai-trò-rbac)
-    - [2.5.2 Nhóm Use Case Nghiệp vụ (Dossier & Checklist)](#252-nhóm-use-case-nghiệp-vụ-dossier--checklist)
+    - [2.6.2 Nhóm Use Case Nghiệp vụ (Dossier & Checklist)](#262-nhóm-use-case-nghiệp-vụ-dossier--checklist)
       - [UC005: Tiếp nhận khách hàng & Khởi tạo hồ sơ](#uc005-tiếp-nhận-khách-hàng--khởi-tạo-hồ-sơ)
       - [UC006: Thẩm định hồ sơ & Duyệt Checklist chặn](#uc006-thẩm-định-hồ-sơ--duyệt-checklist-chặn)
       - [UC007: Soạn thảo Lời chứng tự động](#uc007-soạn-thảo-lời-chứng-tự-động)
       - [UC008: Quét & Lưu trữ hồ sơ điện tử đã đóng dấu](#uc008-quét--lưu-trữ-hồ-sơ-điện-tử-đã-đóng-dấu)
-    - [2.5.3 Nhóm Use Case Tài chính & Chăm sóc (Billing & CRM)](#253-nhóm-use-case-tài-chính--chăm-sóc-billing--crm)
+    - [2.6.3 Nhóm Use Case Tài chính & Chăm sóc (Billing & CRM)](#263-nhóm-use-case-tài-chính--chăm-sóc-billing--crm)
       - [UC009: Thu phí & Đối soát dòng tiền](#uc009-thu-phí--đối-soát-dòng-tiền)
       - [UC010: Xuất hóa đơn điện tử tự động (VNPT/Vĩnh Hy)](#uc010-xuất-hoa-đơn-điện-tử-tự-động-vnptvĩnh-hy)
       - [UC011: Chăm sóc khách hàng tự động qua Zalo OA](#uc011-chăm-sóc-khách-hàng-tự-động-qua-zalo-oa)
@@ -477,9 +482,130 @@ flowchart LR
     UC010 -.->|include| UC_Split
 ```
 
-### 2.5 Đặc tả các usecase (Use Case Specifications)
+### 2.5 Quy trình nghiệp vụ (Business Processes)
 
-#### 2.5.1 Nhóm Use Case Xác thực & Hệ thống (Auth & Admin)
+#### 2.5.1 Sơ đồ luồng hoạt động nghiệp vụ tổng quát (Activity Diagram)
+Quy trình nghiệp vụ khép kín của một hồ sơ công chứng/chứng thực chung từ khi tiếp nhận khách hàng cho tới lúc hoàn tất được mô tả qua sơ đồ dưới đây:
+
+```mermaid
+flowchart TD
+%% Admin Lane
+  subgraph Admin_Lane ["Quản trị viên"]
+    direction TB
+    UC003("UC003: Cấp tài khoản") --> UC004("UC004: Thiết lập vai trò & RBAC")
+  end
+
+%% Secretary Lane
+  subgraph Sec_Lane ["Thư ký nghiệp vụ"]
+    direction TB
+    UC001("UC001: Đăng nhập") --> UC005("UC005: Tạo hồ sơ & Báo phí")
+    UC005 --> UC006("UC006: Duyệt Checklist & UCHI")
+    UC006 --> UC007("UC007: Soạn thảo Lời chứng")
+    UC008("UC008: Tải file scan dấu đỏ")
+  end
+
+%% Notary Officer Lane
+  subgraph CCV_Lane ["Công chứng viên (Offline)"]
+    UC_Sign["Ký & Đóng dấu vật lý"]
+  end
+
+%% Accountant Lane
+  subgraph Acc_Lane ["Kế toán"]
+    direction TB
+    UC009("UC009: Thu phí & Đối soát") --> UC010("UC010: Xuất hóa đơn điện tử")
+  end
+
+%% System Lane
+  subgraph Sys_Lane ["Hệ thống tự động"]
+    UC011("UC011: Chăm sóc qua Zalo OA")
+  end
+
+%% Inter-Lane Flow Connections
+  UC004 -.->|Cấp quyền truy cập| UC001
+  UC007 --> UC_Sign
+  UC_Sign --> UC008
+  UC008 --> UC009
+  UC010 --> UC011
+```
+
+#### 2.5.2 Quy trình nghiệp vụ Sao y bản chính (Certified Copying Process)
+Quy trình tập trung vào việc đối chiếu tốc độ cao tài liệu gốc, kiểm tra tính pháp lý (tẩy xóa, dấu mật), tự động tính toán số tiền dựa trên số trang/số bản và xuất biên lai nhanh tại quầy.
+
+```mermaid
+flowchart TD
+    A([Bắt đầu]) --> B[Thư ký: Tiếp nhận tài liệu gốc từ Khách hàng]
+    B --> C{Kiểm tra tính hợp lệ<br>Nghị định 23/2015/NĐ-CP}
+    
+    C -- Bị tẩy xóa / Rách / Dấu MẬT --> D[Hệ thống: Thư ký bấm Từ chối & Chọn lý do luật định] --> E([Kết thúc luồng từ chối])
+    
+    C -- Hợp lệ --> F[Hệ thống: Khởi tạo hồ sơ Sao y & Auto-fill thông tin CRM]
+    F --> G[Hệ thống: Nhập số trang, số bản -> Tự động tính phí theo biểu phí]
+    G --> H[Hệ thống: Tự động phân tách hóa đơn nếu phí gốc > 200k]
+    H --> I[Hệ thống: Sinh & In Lời chứng Sao y bản chính]
+    
+    I --> J[CCV: Đối chiếu bản gốc offline & Ký duyệt lời chứng]
+    J --> K[Văn phòng: Đóng dấu vật lý đóng số lượng bản sao]
+    
+    K --> L[Hệ thống: Thư ký Thu phí tại quầy & Xác nhận trạng thái Đã Thu Phí]
+    L --> M[Hệ thống: Quét tài liệu đóng dấu đỏ tải lên hồ sơ điện tử]
+    
+    M --> N[Hệ thống: Kế toán đối soát dòng tiền & Phát hành Hóa đơn điện tử VAT]
+    N --> O[Hệ thống: Tự động gửi link Hóa đơn & Thông báo qua Zalo OA]
+    O --> P([Kết thúc thành công])
+```
+
+#### 2.5.3 Quy trình nghiệp vụ Chứng thực chữ ký (Signature Authentication Process)
+Quy trình yêu cầu khắt khe về định danh khách hàng (tích hợp máy đọc chip CCCD), kiểm tra nội dung văn bản (không vi phạm điều cấm) và bắt buộc chứng kiến ký trực tiếp.
+
+```mermaid
+flowchart TD
+    A([Bắt đầu]) --> B[Thư ký: Tiếp nhận Khách hàng yêu cầu chứng thực chữ ký]
+    B --> C[Hệ thống: Kết nối máy đọc CCCD gắn chip / QR định danh chính xác]
+    C --> D{Kiểm tra nội dung văn bản<br>Tờ khai/Giấy ủy quyền...}
+    
+    D -- Nội dung trái pháp luật / Đạo đức --> E[Hệ thống: Bấm từ chối tiếp nhận hồ sơ] --> F([Kết thúc luồng từ chối])
+    
+    D -- Hợp lệ --> G[Hệ thống: Khởi tạo hồ sơ Chứng thực chữ ký]
+    G --> H[Thư ký/CCV: Chứng kiến Khách hàng ký trực tiếp vào văn bản offline]
+    H --> I[Hệ thống: Sinh Lời chứng Chứng thực chữ ký tương ứng]
+    
+    I --> J[CCV: Ký xác nhận Lời chứng offline]
+    J --> K[Văn phòng: Đóng dấu tròn dấu tên CCV lên văn bản]
+    
+    K --> L[Hệ thống: Thư ký Thu phí dịch vụ & Cập nhật hệ thống]
+    L --> M[Hệ thống: Scan văn bản đã ký hoàn chỉnh lưu trữ kho điện tử]
+    
+    M --> N[Hệ thống: Kế toán đối soát & Đẩy dữ liệu xuất hóa đơn VAT]
+    N --> O[Hệ thống: Gửi tin nhắn xác nhận hoàn tất kèm mã tra cứu qua Zalo OA]
+    O --> P([Kết thúc thành công])
+```
+
+#### 2.5.4 Quy trình nghiệp vụ Dịch thuật công chứng (Notarized Translation Process)
+Quy trình có sự tham gia của bên thứ ba (Cộng tác viên dịch thuật) và yêu cầu luồng tương tác: Giao việc -> Dịch thuật -> Kiểm tra -> Người dịch ký mẫu -> CCV chứng thực chữ ký người dịch.
+```mermaid
+flowchart TD
+    A([Bắt đầu]) --> B[Thư ký: Tiếp nhận tài liệu gốc cần dịch thuật từ Khách hàng]
+    B --> C[Hệ thống: Tạo hồ sơ, chọn ngôn ngữ nguồn/đích & Báo phí tạm ứng]
+    C --> D[Hệ thống: Giao việc tự động cho Cộng tác viên CTV dịch thuật phù hợp]
+    
+    D --> E[Hệ thống: CTV nhận việc, dịch thuật tài liệu & Upload bản dịch lên hệ thống]
+    E --> F[Thư ký: Kiểm tra sơ bộ định dạng và nội dung bản dịch trên hệ thống]
+    
+    F --> G[Hệ thống: In bản dịch kèm Lời chứng chữ ký người dịch]
+    G --> H[CTV/Người dịch: Đến văn phòng ký trực tiếp vào bản dịch theo chữ ký mẫu]
+    
+    H --> I[CCV: Kiểm tra tư cách người dịch & Ký duyệt Lời chứng tư pháp]
+    I --> J[Văn phòng: Đóng dấu giáp lai đóng dấu tròn văn phòng]
+    
+    J --> K[Hệ thống: Thư ký Thu nốt phần phí còn lại & Tải file scan hoàn chỉnh lên Cloud]
+    K --> L[Hệ thống: Kế toán đối soát & Hệ thống gọi API VNPT/Vĩnh Hy xuất hóa đơn]
+    L --> M[Hệ thống: Tự động gửi thông báo nhận kết quả qua Zalo OA]
+    M --> N([Kết thúc thành công])
+```
+
+### 2.6 Đặc tả các usecase (Use Case Specifications)
+
+#### 2.6.1 Nhóm Use Case Xác thực & Hệ thống (Auth & Admin)
 
 ##### UC001: Đăng nhập hệ thống
 | Đặc tả Use Case | Chi tiết |
@@ -568,7 +694,7 @@ flowchart LR
 
 ---
 
-#### 2.5.2 Nhóm Use Case Nghiệp vụ (Dossier & Checklist)
+#### 2.6.2 Nhóm Use Case Nghiệp vụ (Dossier & Checklist)
 
 ##### UC005: Tiếp nhận khách hàng & Khởi tạo hồ sơ
 | Đặc tả Use Case | Chi tiết |
@@ -659,7 +785,7 @@ flowchart LR
 
 ---
 
-#### 2.5.3 Nhóm Use Case Tài chính & Chăm sóc (Billing & CRM)
+#### 2.6.3 Nhóm Use Case Tài chính & Chăm sóc (Billing & CRM)
 
 ##### UC009: Thu phí dịch vụ
 | Đặc tả Use Case | Chi tiết |
