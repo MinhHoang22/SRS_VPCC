@@ -24,7 +24,9 @@
   - [2.4 Biểu đồ use case phân rã (Decomposed Use Case Diagrams)](#24-biểu-đồ-use-case-phân-rã-decomposed-use-case-diagrams)
     - [2.4.1 Phân rã nhóm chức năng Xác thực & Quản trị (Auth & Admin)](#241-phân-rã-nhóm-chức-năng-xác-thực--quản-trị-auth--admin)
     - [2.4.2 Phân rã nhóm chức năng Nghiệp vụ Hồ sơ (Dossier Processing)](#242-phân-rã-nhóm-chức-năng-nghiệp-vụ-hồ-sơ-dossier-processing)
-    - [2.4.3 Phân rã nhóm chức năng Tài chính & Xuất hóa đơn (Billing & Invoice)](#243-phân-rã-nhóm-chức-năng-tài-chính--xuất-hóa-đơn-billing--invoice)
+    - [2.4.3 Phân rã module Quản lý khách hàng (CRM)](#243-phân-rã-module-quản-lý-khách-hàng-crm)
+    - [2.4.4 Phân rã module Lưu trữ hồ sơ điện tử (Document Archive)](#244-phân-rã-module-lưu-trữ-hồ-sơ-điện-tử-document-archive)
+    - [2.4.5 Phân rã module Quản lý phí & Tài chính (Fee & Billing)](#245-phân-rã-module-quản-lý-phí--tài-chính-fee--billing)
   - [2.5 Đặc tả các usecase (Use Case Specifications)](#25-đặc-tả-các-usecase-use-case-specifications)
     - [2.5.1 Nhóm Use Case Xác thực & Hệ thống (Auth & Admin)](#251-nhóm-use-case-xác-thực--hệ-thống-auth--admin)
       - [UC001: Đăng nhập hệ thống](#uc001-đăng-nhập-hệ-thống)
@@ -156,28 +158,48 @@ Hệ thống định nghĩa 5 tác nhân (vai trò người dùng) trực tiếp
      - Nhận phản hồi và chỉnh sửa bản dịch nếu cần.
 
 ### 2.2 Các chức năng của hệ thống (System Functions)
-Các chức năng cốt lõi của hệ thống được phân chia theo 3 lớp vận hành chính:
+Các chức năng cốt lõi của hệ thống được phân chia theo các nhóm vận hành chính:
 
-#### A. Lớp Khách hàng (CRM)
-- **Quản lý khách hàng:** Thêm mới, cập nhật và lưu trữ thông tin định danh của khách hàng cá nhân (CCCD, SĐT) và doanh nghiệp (Mã số thuế, địa chỉ trụ sở).
-- **Auto-fill & Tra cứu nhanh:** Tự động điền thông tin khách hàng cũ dựa vào SĐT, Căn cước công dân (CCCD) khi tạo hồ sơ mới.
+#### A. Quản lý khách hàng (CRM)
+Module trung tâm lưu trữ dữ liệu khách hàng, hỗ trợ trực tiếp cho quá trình tạo hồ sơ nhanh chóng:
+- **Quản lý khách hàng:** Thêm mới, cập nhật và lưu trữ thông tin định danh của khách hàng cá nhân (CCCD, SĐT) và doanh nghiệp/tổ chức (Mã số thuế, địa chỉ trụ sở).
+- **Auto-fill & Tra cứu nhanh:** Tự động điền thông tin khách hàng cũ dựa vào SĐT, Căn cước công dân (CCCD) khi tạo hồ sơ mới, giúp rút ngắn thời gian nhập liệu.
 - **Lịch sử giao dịch:** Lưu vết và hiển thị toàn bộ lịch sử hồ sơ, giao dịch của từng khách hàng tại văn phòng.
 - **Tương tác đa kênh:** Tự động gửi tin nhắn chăm sóc, thông báo nhận kết quả và link hóa đơn VAT qua Zalo OA.
 
-#### B. Lớp Nghiệp vụ
-- **Tiếp nhận & Tạo hồ sơ:** Khởi tạo hồ sơ nghiệp vụ, tự động cấp mã hồ sơ duy nhất, chọn dịch vụ (Sao y, Dịch thuật, Chứng thực chữ ký).
+#### B. Nghiệp vụ Hồ sơ (Dossier Processing)
+- **Tiếp nhận & Tạo hồ sơ:** Khởi tạo hồ sơ nghiệp vụ, tự động cấp mã hồ sơ duy nhất, chọn dịch vụ (Sao y, Dịch thuật, Chứng thực chữ ký). Tích hợp tra cứu CRM để auto-fill thông tin khách hàng.
 - **Checklist động & Kiểm soát lỗi:** Áp đặt các danh sách kiểm tra bắt buộc tùy thuộc vào loại giấy tờ để ngăn ngừa lỗi kỹ thuật của Thư ký.
 - **Tra cứu ngăn chặn (UCHI):** Kết nối API hệ thống UCHI của Sở Tư pháp để tra cứu trạng thái phong tỏa của thửa đất/tài sản rủi ro cao.
 - **Soạn thảo & Quản lý phiên bản:** Tự động trộn dữ liệu hồ sơ vào mẫu Lời chứng, quản lý các phiên bản tài liệu (Nháp, Đang xử lý, Chờ ký, Đã ký).
-- **Quản lý tính phí nghiệp vụ:** Tự động tính phí gốc nhà nước theo trang/bản, bóc tách thù lao dịch vụ khác, và tự động phân tách hóa đơn con khi phí gốc vượt trần pháp luật quy định ($\le 200.000đ$).
-- **Scan & Lưu trữ tài liệu:** Hỗ trợ quét và lưu trữ bản chụp dấu đỏ đã hoàn thành lên hệ thống đám mây làm cơ sở đối chiếu và lưu trữ điện tử.
+- **Ký duyệt & Đóng dấu:** Công chứng viên ký duyệt và đóng dấu lời chứng vật lý (quyền hạn độc quyền).
+- **Scan & Lưu trữ tài liệu:** Hỗ trợ quét và lưu trữ bản chụp dấu đỏ đã hoàn thành lên hệ thống đám mây.
 
-#### C. Lớp Quản trị
+#### C. Lưu trữ hồ sơ điện tử (Document Archive)
+Module lưu trữ toàn bộ các hồ sơ tài liệu đã hoàn thành giao dịch (sau khi đã in, ký và thu phí):
+- **Kho lưu trữ tập trung:** Lưu trữ an toàn toàn bộ file scan bản cứng dấu đỏ, lời chứng, hợp đồng và các tài liệu liên quan lên hệ thống đám mây.
+- **Tra cứu & Trích lục hồ sơ:** Hỗ trợ tìm kiếm nhanh theo mã hồ sơ, tên khách hàng, CCCD, ngày tạo, loại nghiệp vụ. Phục vụ việc trích lục hồ sơ nhanh chóng cho các nghiệp vụ về sau.
+- **Quản lý vòng đời tài liệu:** Theo dõi trạng thái lưu trữ (Đang hoạt động, Lưu kho, Hết hạn bảo quản) theo quy định pháp luật.
+
+#### D. Quản lý phí theo dịch vụ (Fee Management)
+Module cung cấp cơ sở dữ liệu đơn giá để các module dịch vụ gọi ra và tính tổng tiền cho hồ sơ:
+- **Cấu hình biểu phí:** Thiết lập đơn giá phí gốc nhà nước và thù lao dịch vụ riêng biệt cho từng loại dịch vụ (Sao y, Chứng thực chữ ký, Dịch thuật công chứng...).
+- **Công thức tính phí tự động:** Tự động tính phí gốc theo số trang/bản, bóc tách thù lao dịch vụ khác, áp dụng đúng đơn giá từ biểu phí đã cấu hình.
+- **Tự động tách hóa đơn:** Phân tách hóa đơn con khi phí gốc vượt trần pháp luật quy định ($\le 200.000đ$).
+- **Lịch sử thay đổi biểu phí:** Ghi nhận nhật ký mọi lần cập nhật biểu phí (ai thay đổi, thời gian, giá trị cũ/mới).
+
+#### E. Tài chính & Xuất hóa đơn (Billing & Invoice)
+- **Thu phí dịch vụ tại quầy:** Thư ký/CCV tiếp nhận thanh toán từ khách hàng (Tiền mặt, Chuyển khoản, POS) và xác nhận thu phí trên hệ thống.
+- **Đối soát dòng tiền:** Kế toán đối chiếu dòng tiền thực nhận (két tiền mặt, tài khoản ngân hàng) với giao dịch thu phí trên hệ thống.
+- **Xuất hóa đơn điện tử:** Hệ thống tự động gọi API VNPT/Vĩnh Hy phát hành hóa đơn VAT sau khi Kế toán xác nhận đối soát.
+- **Chăm sóc khách hàng:** Tự động gửi tin nhắn ZNS cảm ơn và link hóa đơn qua Zalo OA.
+
+#### F. Hệ thống & Quản trị (Auth & Admin)
 - **Xác thực & Bảo mật:** Đăng nhập, thay đổi mật khẩu, chính sách độ phức tạp mật khẩu, và session timeout tự động.
 - **Quản trị tài khoản & Nhân sự:** Tạo mới, khóa/mở khóa tài khoản nhân viên.
 - **Phân quyền RBAC:** Cấu hình ma trận quyền chi tiết (Xem, Thêm, Sửa, Xóa, Duyệt) cho từng vai trò đối với từng chức năng.
 - **Nhật ký hệ thống (Audit Trail):** Ghi nhận bất biến thao tác của toàn bộ người dùng trên hệ thống.
-- **Quản lý biểu mẫu & Biểu phí:** Cấu hình mẫu lời chứng động và thiết lập công thức tính phí cho từng nhóm dịch vụ.
+- **Quản lý biểu mẫu:** Cấu hình mẫu lời chứng động và các biểu mẫu hợp đồng.
 
 ### 2.3 Biểu đồ use case tổng quan (Overall Use Case Diagram)
 
@@ -185,7 +207,7 @@ Dưới đây là sơ đồ Use Case tổng quan phân bổ theo các phân hệ
 
 #### A. Sơ đồ Use Case tổng quan
 
-Sơ đồ dưới đây phân chia hệ thống thành 3 phân vùng (subgraphs) tương ứng với 3 nhóm chức năng chính, cùng với các tác nhân (Actors) có liên kết tương tác trực tiếp hoặc kế thừa quyền:
+Sơ đồ dưới đây phân chia hệ thống thành các phân vùng (subgraphs) tương ứng với các nhóm chức năng chính, cùng với các tác nhân (Actors) có liên kết tương tác trực tiếp hoặc kế thừa quyền:
 
 ```mermaid
 flowchart LR
@@ -207,12 +229,24 @@ flowchart LR
             UC004("UC004: Phân quyền RBAC")
         end
         
+        subgraph CRM_Module ["Quản lý khách hàng - CRM"]
+            UC_CRM("Quản lý khách hàng")
+        end
+        
         subgraph Dossier_Module ["Nghiệp vụ Hồ sơ"]
             UC005("UC005: Tiếp nhận & Tạo hồ sơ")
             UC006("UC006: Thẩm định & Duyệt Checklist")
             UC007("UC007: Soạn thảo Lời chứng tự động")
             UC012("UC012: Ký duyệt & Đóng dấu lời chứng")
             UC008("UC008: Quét & Lưu trữ file scan")
+        end
+        
+        subgraph Archive_Module ["Lưu trữ hồ sơ điện tử"]
+            UC_ARCHIVE("Lưu trữ & Tra cứu trích lục hồ sơ")
+        end
+        
+        subgraph Fee_Module ["Quản lý phí theo dịch vụ"]
+            UC_FEE("Cấu hình đơn giá & Tính phí")
         end
         
         subgraph Finance_Module ["Tài chính & CRM"]
@@ -228,11 +262,13 @@ flowchart LR
     %% Thư ký nghiệp vụ Links
     Sec --- UC001
     Sec --- UC002
+    Sec --- UC_CRM
     Sec --- UC005
     Sec --- UC006
     Sec --- UC007
     Sec --- UC008
     Sec --- UC009
+    Sec --- UC_ARCHIVE
 
     %% Công chứng viên Links
     CCV --- UC012
@@ -242,6 +278,7 @@ flowchart LR
     Admin --- UC002
     Admin --- UC003
     Admin --- UC004
+    Admin --- UC_FEE
 
     %% Kế toán Links
     Acc --- UC001
@@ -251,6 +288,11 @@ flowchart LR
     %% Hệ thống Links
     Sys --- UC010
     Sys --- UC011
+
+    %% Module Dependencies
+    UC005 -.->|Tra cứu & Auto-fill| UC_CRM
+    UC005 -.->|Lấy đơn giá| UC_FEE
+    UC008 -.->|Lưu trữ| UC_ARCHIVE
 ```
 
 #### B. Ma trận vai trò - Use Case (Use Case Matrix)
@@ -263,11 +305,14 @@ Bảng ma trận dưới đây làm rõ quyền hạn chi tiết và điểm tư
 | | **UC002** | Thay đổi mật khẩu | ✔️ | ✔️ | ✔️ | ✔️ | |
 | | **UC003** | Quản lý & Cấp tài khoản nhân sự | | | | ✔️ | |
 | | **UC004** | Phân quyền & Thiết lập vai trò (RBAC) | | | | ✔️ | |
+| **Quản lý khách hàng (CRM)** | — | Quản lý khách hàng (Lưu trữ, tra cứu, auto-fill) | ✔️ | ✔️ *(Kế thừa)* | | | |
 | **Nghiệp vụ Hồ sơ** | **UC005** | Tiếp nhận & Khởi tạo hồ sơ | ✔️ | ✔️ *(Kế thừa)* | | | |
 | | **UC006** | Thẩm định & Duyệt Checklist chặn | ✔️ | ✔️ *(Kế thừa)* | | | |
 | | **UC007** | Soạn thảo Lời chứng tự động | ✔️ | ✔️ *(Kế thừa)* | | | |
 | | **UC012** | Ký duyệt & Đóng dấu lời chứng | | ✔️ *(Độc quyền)* | | | |
 | | **UC008** | Quét & Lưu trữ hồ sơ điện tử đã đóng dấu | ✔️ | ✔️ *(Kế thừa)* | | | |
+| **Lưu trữ hồ sơ điện tử** | — | Lưu trữ & Tra cứu trích lục hồ sơ | ✔️ | ✔️ *(Kế thừa)* | | | |
+| **Quản lý phí theo dịch vụ** | — | Cấu hình đơn giá & Tính phí theo dịch vụ | | | | ✔️ | |
 | **Tài chính & CRM** | **UC009** | Thu phí dịch vụ tại quầy | ✔️ | ✔️ *(Kế thừa)* | | | |
 | | **UC010** | Đối soát & Xuất hóa đơn | | | ✔️ | | ✔️ *(Gọi API)* |
 | | **UC011** | Chăm sóc khách hàng tự động qua Zalo OA | | | | | ✔️ *(Tự động)* |
@@ -333,8 +378,79 @@ flowchart LR
     UC006 -.->|include| UC_UCHI
 ```
 
-#### 2.4.3 Phân rã nhóm chức năng Tài chính & Xuất hóa đơn (Billing & Invoice)
-Nhóm chức năng thu phí, đối soát dòng tiền và xuất hóa đơn điện tử tự động:
+#### 2.4.3 Phân rã module Quản lý khách hàng (CRM)
+Module trung tâm lưu trữ dữ liệu khách hàng cá nhân và tổ chức/doanh nghiệp, hỗ trợ trực tiếp cho quá trình tạo hồ sơ nhanh chóng:
+
+```mermaid
+flowchart LR
+    Sec(["📝 Thư ký nghiệp vụ"])
+    CCV(["⚖️ Công chứng viên"])
+
+    subgraph CRM_Decomposed ["Phân rã Quản lý khách hàng (CRM)"]
+        CRM_Add("Thêm mới khách hàng")
+        CRM_Update("Cập nhật thông tin khách hàng")
+        CRM_Search("Tra cứu & Auto-fill khách hàng")
+        CRM_History("Xem lịch sử giao dịch")
+    end
+
+    CCV -->|Kế thừa quyền| Sec
+
+    Sec --- CRM_Add
+    Sec --- CRM_Update
+    Sec --- CRM_Search
+    Sec --- CRM_History
+```
+
+#### 2.4.4 Phân rã module Lưu trữ hồ sơ điện tử (Document Archive)
+Module lưu trữ toàn bộ các hồ sơ tài liệu đã hoàn thành giao dịch, phục vụ việc tra cứu và trích lục hồ sơ nhanh chóng:
+
+```mermaid
+flowchart LR
+    Sec(["📝 Thư ký nghiệp vụ"])
+    CCV(["⚖️ Công chứng viên"])
+
+    subgraph Archive_Decomposed ["Phân rã Lưu trữ hồ sơ điện tử"]
+        ARC_Store("Lưu trữ hồ sơ hoàn tất")
+        ARC_Search("Tra cứu & Trích lục hồ sơ")
+        ARC_Lifecycle("Quản lý vòng đời tài liệu")
+    end
+
+    CCV -->|Kế thừa quyền| Sec
+
+    Sec --- ARC_Store
+    Sec --- ARC_Search
+    Sec --- ARC_Lifecycle
+```
+
+#### 2.4.5 Phân rã module Quản lý phí & Tài chính (Fee & Billing)
+Module quản lý tổng thể về phí dịch vụ và tài chính, bao gồm: cấu hình biểu phí, tính phí tự động, thu phí tại quầy, đối soát dòng tiền và xuất hóa đơn điện tử.
+
+##### A. Quản lý phí theo dịch vụ (Fee Management)
+Cung cấp cơ sở dữ liệu về đơn giá để các module dịch vụ gọi ra và tính tổng tiền cho hồ sơ. Tính phí rõ ràng và minh bạch theo từng loại dịch vụ:
+
+```mermaid
+flowchart LR
+    Admin(["📊 Quản trị viên"])
+    Sys(["🤖 Hệ thống tự động"])
+
+    subgraph Fee_Decomposed ["Phân rã Quản lý phí theo dịch vụ"]
+        FEE_Config("Cấu hình biểu phí theo dịch vụ")
+        FEE_Calc("Tính phí tự động theo trang/bản")
+        FEE_Split("Tách hóa đơn khi vượt trần")
+        FEE_Log("Lịch sử thay đổi biểu phí")
+    end
+
+    Admin --- FEE_Config
+    Admin --- FEE_Log
+    
+    Sys --- FEE_Calc
+    Sys --- FEE_Split
+
+    FEE_Calc -.->|Lấy đơn giá| FEE_Config
+```
+
+##### B. Tài chính & Xuất hóa đơn (Billing & Invoice)
+Nhóm chức năng thu phí, đối soát dòng tiền và xuất hóa đơn điện tử tự động — sử dụng dữ liệu biểu phí từ module Quản lý phí:
 
 ```mermaid
 flowchart LR
@@ -351,7 +467,7 @@ flowchart LR
         UC_Split("Tách hóa đơn tự động")
     end
 
-    CCV --> Sec
+    CCV -->|Kế thừa quyền| Sec
 
     Sec --- UC009
     Acc --- UC010
