@@ -525,12 +525,16 @@ flowchart TD
     CCV_Sign_SY --> SY_Scan[9a. Tải lên bản đã ký & Lưu trữ hồ sơ]
 
     %% Branch 2: Dịch thuật
-    ChooseBranch -- Dịch thuật công chứng --> DT_Config[3b. Chọn ngôn ngữ & Chọn CTV]
-    DT_Config --> DT_Assign[4b. CTV nhận việc & Ký NDA online]
-    DT_Assign --> DT_Translate[5b. CTV dịch thuật & Upload bản dịch nháp]
-    DT_Translate --> DT_Check[6b. Thư ký duyệt chất lượng & Sinh Lời chứng dịch]
-    DT_Check --> CTV_Sign_DT[7b. CTV ký chữ ký mẫu & CCV ký đóng dấu offline]
-    CTV_Sign_DT --> DT_Scan[8b. Quét bản dịch dấu đỏ & Tải lên]
+    ChooseBranch -- Dịch thuật công chứng --> DT_Input[3b. Khởi tạo hồ sơ & Nhập thông tin KH]
+    DT_Input --> DT_Config[4b. Chọn ngôn ngữ nguồn, đích & chọn loại tài liệu]
+    DT_Config --> DT_CHECKLIST[5b. Kiểm tra tài liệu]
+    DT_CHECKLIST --> DT_CALCULATE[6b. Tính toán chi phí & Báo giá]
+    DT_CALCULATE --> DT_SEARCH[7b. Tìm và gán CTV]
+    DT_SEARCH -->  DT_Assign[8b. CTV nhận việc & Ký NDA online]
+    DT_Assign --> DT_Translate[9b. CTV dịch thuật & Upload bản dịch nháp]
+    DT_Translate --> DT_Check[10b. KH, thư ký duyệt chất lượng & Thư ký sinh Lời chứng dịch]
+    DT_Check --> CTV_Sign_DT[11b. CTV ký chữ ký mẫu & CCV ký đóng dấu offline]
+    CTV_Sign_DT --> DT_Scan[12b. Scan bản dịch dấu đỏ & Tải lên]
 
     %% Branch 3: Chứng thực chữ ký (7 bước mới)
     ChooseBranch -- Chứng thực chữ ký --> CT_Create[1c. Tạo hồ sơ Chứng thực chữ ký]
@@ -543,7 +547,7 @@ flowchart TD
     CCV_Sign_CT --> CT_Complete[7c. Hoàn tất form & Scan & Thu phí tại quầy]
 
     %% Common End Phase
-    SY_Scan --> CollectFee[Thu phí tại quầy & Xác nhận trên PM]
+    SY_Scan --> CollectFee[Thu phí & Xác nhận trên PM]
     DT_Scan --> CollectFee
     CT_Complete --> AccReconcile
 
