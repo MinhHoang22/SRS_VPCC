@@ -591,20 +591,21 @@ Quy trình sử dụng phần mềm đối với nghiệp vụ Sao y bản chín
 Quy trình sử dụng phần mềm đối với phân hệ nghiệp vụ Dịch thuật công chứng (Chứng thực chữ ký người dịch) được thực hiện tuần tự theo các bước chuẩn hóa và kiểm soát rủi ro như sau:
 
 1. **Tiếp nhận, Phân loại & CRM (Quầy hoặc Đa kênh từ xa):**
+    - Thư ký bấm nút khởi tạo hồ sơ
     - **Luồng tại quầy:** Thư ký nghiệp vụ tiếp nhận bản chính tài liệu, nhập Số điện thoại/CCCD (Cá nhân) hoặc Mã số thuế (Doanh nghiệp) vào CRM để tự động điền (Auto-fill) thông tin.
-    - **Luồng từ xa qua Zalo OA:** Nếu khách hàng gửi ảnh tài liệu qua Zalo OA, Thư ký trực kênh chat sẽ kiểm tra độ nét và bấm nút **"Khởi tạo hồ sơ từ Chat"**. Hệ thống tự động tạo mã hồ sơ mới (trạng thái: *"Chờ bản gốc"*), gom toàn bộ ảnh chụp trong hội thoại thành tệp đính kèm của hồ sơ.
-    - Thư ký phân loại tài liệu, chọn ngôn ngữ nguồn và ngôn ngữ đích (ví dụ: Tiếng Anh $\rightarrow$ Tiếng Việt, Tiếng Việt $\rightarrow$ Tiếng Nga...).
+    - **Luồng từ xa:** Nếu khách hàng gửi ảnh tài liệu từ xa (qua email hay zalo), thư ký sẽ chỉ lấy thông tin định danh tối thiểu (Số điện thoại từ Zalo hoặc Địa chỉ Email).
+    - Thư ký phân loại tài liệu (hộ chiếu, CCCD, Bằng cấp,...) chọn ngôn ngữ nguồn và ngôn ngữ đích (ví dụ: Tiếng Anh $\rightarrow$ Tiếng Việt, Tiếng Việt $\rightarrow$ Tiếng Nga...).
 
-2. **Áp dụng Mô hình Giá lai linh hoạt (Hybrid Pricing Model):**
+2. **Kiểm soát rủi ro pháp lý & Chặn nghiệp vụ (Checklist động):**
+    - Tùy thuộc vào nhãn tài liệu đầu vào (Văn bản trong nước hay Văn bản do cơ quan nước ngoài cấp), hệ thống tự động tải bộ Checklist kiểm soát lỗi tương ứng.
+    - **Cơ chế chặn:** Đối với văn bản nước ngoài, hệ thống bắt buộc Thư ký phải tích chọn đầu mục `[ ] Kiểm tra tem và con dấu Hợp pháp hóa lãnh sự`. Nếu Thư ký chọn `Không đạt (Fail)`, hệ thống sẽ kích hoạt cơ chế khóa bảo vệ, ẩn toàn bộ nút **"Giao việc cho CTV"** và nút **"In Lời chứng"**, đồng thời hỗ trợ in *"Phiếu từ chối chứng thực"* tự động nêu rõ căn cứ luật định.
+
+3. **Áp dụng Mô hình Giá lai linh hoạt (Hybrid Pricing Model):**
     - Thư ký nhập số trang tài liệu gốc và số bản kết quả yêu cầu.
     - **Hệ thống gợi ý giá sàn:** Hệ thống tự động tính toán Phí gốc nhà nước ($15.000đ/\text{chữ ký người dịch} \times \text{Số bản}$) và hiển thị mức giá sàn thù lao dịch thuật tối giản theo nhóm ngôn ngữ đã được Admin cấu hình.
     - **Cơ chế ghi đè giá (Price Override):** Để tránh mất thời gian cấu hình ma trận cặp ngôn ngữ A $\rightarrow$ B thuận nghịch phức tạp, Thư ký được quyền nhập trực tiếp số tiền thực tế thỏa thuận với khách hàng vào trường `Tổng thực thu` (bao gồm phí dịch thuật chuyên ngành, phí dịch vụ hỏa tốc, in ấn).
     - **Cơ chế an toàn (Financial Guardrails):** Nếu tổng số tiền Thư ký nhập thấp hơn mức Giá sàn tối thiểu của văn phòng, hệ thống tự động bật cờ kiểm soát `Chờ phê duyệt giá` và gửi thông báo đến tài khoản Quản lý/CCV để duyệt quyền đặc biệt trước khi cho phép in lời chứng.
     - **Quản lý đa ngôn ngữ (Master - Sub Dossier):** Nếu tài liệu gốc cần dịch ra nhiều ngôn ngữ cùng lúc (ví dụ: Anh, Pháp, Đức), Thư ký bấm **"Thêm nhánh dịch thuật"**. Hệ thống tự động sinh ra các hồ sơ con độc lập (`DT-SUB-ANH`, `DT-SUB-PHAP`...) liên kết với một `Hồ sơ cha (MASTER)` duy nhất để gộp biểu phí và xuất một hóa đơn VAT tổng.
-
-3. **Kiểm soát rủi ro pháp lý & Chặn nghiệp vụ (Checklist động):**
-    - Tùy thuộc vào nhãn tài liệu đầu vào (Văn bản trong nước hay Văn bản do cơ quan nước ngoài cấp), hệ thống tự động tải bộ Checklist kiểm soát lỗi tương ứng.
-    - **Cơ chế chặn:** Đối với văn bản nước ngoài, hệ thống bắt buộc Thư ký phải tích chọn đầu mục `[ ] Kiểm tra tem và con dấu Hợp pháp hóa lãnh sự`. Nếu Thư ký chọn `Không đạt (Fail)`, hệ thống sẽ kích hoạt cơ chế khóa bảo vệ, ẩn toàn bộ nút **"Giao việc cho CTV"** và nút **"In Lời chứng"**, đồng thời hỗ trợ in *"Phiếu từ chối chứng thực"* tự động nêu rõ căn cứ luật định.
 
 4. **Yêu cầu Tạm ứng & Kích hoạt luồng dịch:**
     - Đối với các hồ sơ có giá trị lớn (doanh nghiệp B2B) hoặc ngôn ngữ hiếm, hệ thống tự động bật cờ `Yêu cầu tạm ứng` và khóa tính năng phân công cho đến khi Thư ký xác nhận đã thu trước tối thiểu 50% tiền cọc (Khách hàng quẹt thẻ POS hoặc quét mã QR động chuyển khoản).
