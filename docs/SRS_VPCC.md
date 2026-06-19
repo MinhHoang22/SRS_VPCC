@@ -639,28 +639,42 @@ Quy trình sử dụng phần mềm đối với phân hệ nghiệp vụ Dịch
 
 Quy trình sử dụng phần mềm đối với nghiệp vụ Chứng thực chữ ký (tờ khai, giấy ủy quyền, sơ yếu lý lịch...) gồm các bước sau:
 
-1. **Tiếp nhận & CRM:**
-   - Thư ký tiếp nhận yêu cầu chứng thực chữ ký từ khách hàng.
-   - Thư ký nhập thông tin định danh của người yêu cầu vào CRM. Nếu văn bản yêu cầu nhiều người ký (ví dụ: vợ chồng cùng ủy quyền), Thư ký bấm "Thêm người ký" trên hệ thống để nhập định danh của tất cả các chủ thể cùng tham gia ký.
-2. **Cấu hình & Báo phí:**
-   - Thư ký chọn loại văn bản cần chứng thực và chọn mẫu Lời chứng phù hợp (Ví dụ: Lời chứng chữ ký cá nhân, Lời chứng điểm chỉ, Lời chứng người đại diện tổ chức...).
-   - Nhập số bản cần chứng thực chữ ký.
-   - **Hệ thống tự động tính phí:** Tính toán phí gốc chứng thực chữ ký ($15.000đ/chữ\ ký \times Số\ chữ\ ký \times Số\ bản$).
-   - Thư ký báo phí trọn gói với khách hàng, tích checkbox `Khách hàng đồng ý báo phí` và bấm "Lưu hồ sơ". Trạng thái hồ sơ chuyển sang "Đang lý".
-3. **Thực hiện Checklist & Đối chiếu định danh:**
-   - Hệ thống tải động Checklist nghiệp vụ chứng thực chữ ký (kiểm tra năng lực hành vi dân sự, giấy tờ tùy thân còn hạn, văn bản không vi phạm điều cấm của pháp luật, không có nội dung hợp đồng chuyển dịch quyền sở hữu tài sản bắt buộc phải công chứng...).
-   - Thư ký đối khớp khuôn mặt khách hàng với ảnh trên CCCD vật lý và tích chọn hoàn thành checklist trên phần mềm.
-4. **Ký tên/Điểm chỉ trực tiếp & CCV ký đóng dấu:**
+1. **Tạo hồ sơ:**
+   - Thư ký tạo hồ sơ mới trên hệ thống, chọn dịch vụ **"Chứng thực chữ ký"**.
+   - Hệ thống tự động cấp mã hồ sơ duy nhất (dạng `CTCK-YYYYMMDD-XXXXX`) ở trạng thái "Đang xử lý".
+
+2. **Chọn loại văn bản:**
+   - Thư ký chọn loại văn bản chứng thực cụ thể từ danh mục được cấu hình sẵn trên hệ thống (Ví dụ: Tờ khai lý lịch, Giấy ủy quyền cá nhân, Sơ yếu lý lịch, Đơn xin phép, Giấy cam đoan, Giấy ủy quyền tổ chức...).
+   - Loại văn bản đã chọn sẽ quyết định bộ checklist nghiệp vụ và mẫu Lời chứng tương ứng ở các bước sau.
+
+3. **Nhập form thông tin khách hàng:**
+   - Thư ký nhập thông tin định danh của người yêu cầu chứng thực vào form hồ sơ.
+   - **Trường hợp khách hàng đưa CCCD hoặc đọc số điện thoại:** Thư ký nhập số CCCD hoặc SĐT vào ô tìm kiếm nhanh. Nếu trùng khớp dữ liệu trong Module Quản lý khách hàng (CRM), các trường thông tin còn lại (Họ tên, ngày sinh, địa chỉ, giới tính...) sẽ **auto-fill** (tự động điền).
+   - Nếu văn bản yêu cầu nhiều người ký (ví dụ: vợ chồng cùng ủy quyền), Thư ký bấm **"Thêm người ký"** trên hệ thống để nhập định danh của tất cả các chủ thể cùng tham gia ký.
+   - *(Thư ký có thể chưa cần nhập hoàn thiện tất cả các trường thông tin ở bước này để đẩy nhanh tiến độ xử lý, thông tin còn thiếu sẽ được bổ sung ở bước 7 trước khi thu phí).*
+
+4. **Báo phí:**
+   - Hệ thống tự động tính phí dựa trên Module **Quản lý phí theo dịch vụ**: Phí gốc chứng thực chữ ký = $15.000đ/\text{chữ ký} \times \text{Số chữ ký} \times \text{Số bản}$.
+   - Thư ký nhập số bản cần chứng thực và xem tổng phí hệ thống hiển thị.
+   - Thư ký báo phí trọn gói với khách hàng (bao gồm cả phí dịch vụ in ấn, bìa hồ sơ nếu có). Nhập số tiền thỏa thuận thực thu vào trường `Tổng thực thu`. Hệ thống tự động ghi nhận phần chênh lệch thù lao dịch vụ khác.
+
+5. **Checklist nghiệp vụ (động theo loại văn bản):**
+   - Hệ thống tự động hiển thị bộ checklist kiểm soát lỗi tương ứng với **loại văn bản đã chọn ở bước 2**.
+   - Các đầu mục kiểm tra bắt buộc bao gồm: Kiểm tra năng lực hành vi dân sự, giấy tờ tùy thân còn hạn, văn bản không vi phạm điều cấm của pháp luật, không có nội dung hợp đồng chuyển dịch quyền sở hữu tài sản bắt buộc phải công chứng...
+   - Đối với các loại văn bản có yêu cầu tra cứu UCHI (ví dụ: ủy quyền liên quan đến tài sản), hệ thống sẽ hiển thị thêm đầu mục xác nhận UCHI.
+   - Thư ký/CCV **bắt buộc tích chọn xác nhận 100%** tất cả các đầu mục checklist trước khi hệ thống mở khóa bước tiếp theo.
+   - Thư ký đối khớp khuôn mặt khách hàng với ảnh trên CCCD vật lý và tích chọn hoàn thành checklist đối chiếu định danh trên phần mềm.
+
+6. **In ấn và Ký duyệt:**
+   - Thư ký in Lời chứng tương ứng (đã được hệ thống tự động điền dữ liệu từ form hồ sơ), dán kẹp vào văn bản.
    - Khách hàng ký tên hoặc điểm chỉ trực tiếp lên văn bản giấy trước sự chứng kiến của Thư ký và CCV.
-   - Thư ký in Lời chứng tương ứng đã được hệ thống tự động điền dữ liệu, dán kẹp vào văn bản.
-   - CCV ký tên xác nhận và đóng dấu đỏ vật lý lên văn bản kẹp Lời chứng.
-5. **Scan số hóa & Thu phí tại quầy:**
-   - Thư ký scan bản văn bản đã ký đóng dấu đầy đủ, tải file scan lên hệ thống và bấm "Hoàn tất xử lý". Hồ sơ chuyển sang "Chờ thu phí".
-   - Thư ký thu tiền mặt/chuyển khoản/POS tại quầy từ khách hàng, nhấn "Xác nhận nhận đủ tiền". Trạng thái hồ sơ chuyển sang "Chờ đối soát".
-6. **Đối soát & Xuất hóa đơn:**
-   - Kế toán đối soát dòng tiền thực tế, nhấn "Xác nhận đối soát".
-   - Hệ thống ghi sổ cái bất biến, tự động bóc tách thuế VAT thù lao dịch vụ, gọi API VNPT/Vĩnh Hy xuất hóa đơn điện tử gửi cho khách hàng. Trạng thái đổi thành "Đã hoàn tất".
-7. **Chăm sóc Khách hàng:**
+   - Công chứng viên (CCV) ký tên xác nhận lên Lời chứng và đóng dấu đỏ vật lý lên văn bản kẹp Lời chứng.
+
+7. **Hoàn tất form và Thu phí:**
+   - Thư ký xin thông tin khách hàng để nhập hoàn thiện các trường còn thiếu trên form hồ sơ (nếu trước đó đã bỏ qua ở bước 3).
+   - Thư ký scan bản văn bản đã ký đóng dấu đầy đủ, tải file scan lên hệ thống và bấm **"Hoàn tất xử lý"**. Hồ sơ chuyển sang trạng thái "Chờ thu phí".
+   - Thư ký tiến hành in hóa đơn (biên lai) và thu tiền mặt/chuyển khoản tại quầy từ khách hàng, nhấn **"Xác nhận nhận đủ tiền"**. Trạng thái hồ sơ chuyển sang "Chờ đối soát".
+   - Kế toán đối soát dòng tiền thực tế, nhấn "Xác nhận đối soát". Hệ thống ghi sổ cái bất biến, tự động bóc tách thuế VAT thù lao dịch vụ, gọi API VNPT/Vĩnh Hy xuất hóa đơn điện tử gửi cho khách hàng. Trạng thái đổi thành "Đã hoàn tất".
    - Hệ thống tự động gửi tin nhắn Zalo OA/SMS cảm ơn kèm liên kết tải hóa đơn điện tử cho khách hàng.
 
 <a id="2.x-cau-hinh-bieu-phi-dich-thuat-linh-hoat"></a>
