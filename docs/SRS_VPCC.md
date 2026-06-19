@@ -54,6 +54,12 @@
     - [3.1.4 Case 4: Doanh nghiệp sao y giấy phép & Yêu cầu hóa đơn VAT (B2B)](#3.1.4-case-4-doanh-nghiep-sao-y-giay-phep)
     - [3.1.5 Case 5: Sao y giấy tờ có yếu tố nước ngoài (Yêu cầu Hợp pháp hóa lãnh sự)](#3.1.5-case-5-sao-y-giay-to-nuoc-ngoai)
     - [3.1.6 Case 6: Từ chối sao y các giấy tờ bị cấm chứng thực (Tẩy xóa, đóng dấu MẬT, rách nát)](#3.1.6-case-6-tu-choi-sao-y)
+  - [3.2 Nghiệp vụ Dịch thuật công chứng (Certified Translation Cases)](#32-nghiệp-vụ-dịch-thuật-công-chứng-certified-translation-cases)
+    - [3.2.1 Case 1: Dịch thuật công chứng Giấy tờ hộ tịch cá nhân (Anh - Việt) - Luồng siêu tốc lấy ngay](#321-case-1-dịch-hộ-tịch-siêu-tốc)
+    - [3.2.2 Case 2: Dịch tài liệu thương mại đa trang (Tiếng Nga) - Luồng quản lý tiến độ CTV từ xa và Yêu cầu tạm ứng](#322-case-2-dịch-tài-liệu-hiem-va-quan-ly-tu-xa)
+    - [3.2.3 Case 3: Khởi tạo hồ sơ dịch thuật từ xa qua Zalo OA - Luồng phê duyệt bản nháp trực tuyến](#323-case-3-khởi-tạo-từ-xa-qua-zalo-oa)
+    - [3.2.4 Case 4: Dịch thuật đa ngôn ngữ cho cùng một tài liệu - Luồng tách hồ sơ con song song (Master - Sub Dossier)](#324-case-4-dịch-đa-ngôn-ngữ)
+    - [3.2.5 Case 5: Từ chối dịch thuật công chứng tài liệu không hợp pháp (Chưa Hợp pháp hóa lãnh sự)](#325-case-5-từ-chối-dịch-thuật)
 
 ---
 
@@ -581,35 +587,48 @@ Quy trình sử dụng phần mềm đối với nghiệp vụ Sao y bản chín
 <a id="2.5.2-quy-trinh-nghiep-vu-dich-thuat-cong-chung"></a>
 #### 2.5.2 Quy trình Nghiệp vụ Dịch thuật công chứng (Certified Translation Workflow)
 
-Quy trình sử dụng phần mềm đối với nghiệp vụ Dịch thuật công chứng (chứng thực chữ ký người dịch) gồm các bước sau:
+Quy trình sử dụng phần mềm đối với phân hệ nghiệp vụ Dịch thuật công chứng (Chứng thực chữ ký người dịch) được thực hiện tuần tự theo các bước chuẩn hóa và kiểm soát rủi ro như sau:
 
-1. **Tiếp nhận & CRM:**
-   - Thư ký nghiệp vụ tiếp nhận bản chính tài liệu cần dịch từ khách hàng, thu thập thông tin khách hàng nhập vào CRM để auto-fill hoặc tạo mới thông tin.
-2. **Cấu hình dịch thuật & Tính phí:**
-   - Thư ký chọn ngôn ngữ nguồn (ví dụ: Tiếng Việt) và ngôn ngữ đích (ví dụ: Tiếng Anh). Nhập số trang tài liệu cần dịch.
-   - Thư ký chọn Cộng tác viên dịch thuật (CTV) phù hợp từ danh sách CTV đã đăng ký chữ ký mẫu tại VPCC.
-   - **Hệ thống tự động tính toán phí:** Tính toán phí gốc chứng thực chữ ký người dịch ($15.000đ/chữ\ ký \times Số\ chữ\ ký$) và thù lao dịch thuật thỏa thuận dựa trên đơn giá ngôn ngữ đã cấu hình.
-   - Thư ký báo phí trọn gói với khách hàng, tích checkbox `Khách hàng đồng ý báo phí` và nhấn "Lưu hồ sơ". Trạng thái hồ sơ chuyển sang "Đang dịch".
-3. **Phân công & Dịch thuật ngầm (Collaborative Translation):**
-   - Hệ thống gửi thông báo phân công công việc đến tài khoản của CTV dịch thuật.
-   - CTV đăng nhập hệ thống, ký cam kết bảo mật thông tin (NDA) trực tuyến dành riêng cho hồ sơ này, tải file tài liệu cần dịch xuống.
-   - Sau khi hoàn thành bản dịch, CTV upload file dịch nháp (.docx) lên hệ thống.
-4. **Kiểm tra chất lượng & Sinh Lời chứng dịch:**
-   - Thư ký tải file dịch nháp về kiểm tra chất lượng. Nếu chưa đạt, gửi yêu cầu sửa kèm ghi chú cho CTV trên phần mềm.
-   - Khi bản dịch đạt yêu cầu, Thư ký nhấn nút "Duyệt bản dịch". Hệ thống tự động tải Checklist dịch thuật (đối chiếu tên riêng, số liệu, định dạng...).
-   - Thư ký tích chọn hoàn thành checklist, nhấn nút "Sinh Lời chứng dịch". Hệ thống tự động điền thông tin hồ sơ và thông tin CTV dịch thuật vào biểu mẫu lời chứng chứng thực chữ ký người dịch (Ví dụ: `TEMP-DICH-01`).
-   - Thư ký in lời chứng kẹp bản dịch. Trạng thái hồ sơ chuyển sang "Chờ ký (CCV)".
-5. **Ký chứng thực & Đóng dấu (Offline):**
-   - CTV đến văn phòng ký trực tiếp vào lời chứng dịch thuật trước mặt CCV (hoặc xác thực chữ ký số nếu được cấu hình).
-   - CCV ký tên xác nhận chữ ký người dịch và đóng dấu đỏ vật lý lên tài liệu dịch thuật công chứng.
-6. **Scan số hóa & Thu phí:**
-   - Thư ký scan bản cứng đã ký đóng dấu của CCV và CTV, tải file scan lên hệ thống. Nhấn "Hoàn tất xử lý". Trạng thái chuyển sang "Chờ thu phí".
-   - Thư ký thu phí tại quầy (Tiền mặt/Chuyển khoản/POS) và nhấn "Xác nhận nhận đủ tiền". Trạng thái chuyển sang "Chờ đối soát".
-7. **Đối soát & Xuất hóa đơn:**
-   - Kế toán kiểm tra dòng tiền thực nhận, nhấn "Xác nhận đối soát".
-   - Hệ thống bóc tách doanh thu dịch vụ, gọi API VNPT/Vĩnh Hy xuất hóa đơn điện tử VAT gửi cho khách hàng. Trạng thái đổi thành "Đã hoàn tất".
-8. **Chăm sóc Khách hàng:**
-   - Hệ thống tự động gửi tin nhắn Zalo OA/SMS cảm ơn kèm liên kết tải hóa đơn điện tử cho khách hàng.
+1. **Tiếp nhận, Phân loại & CRM (Quầy hoặc Đa kênh từ xa):**
+    - **Luồng tại quầy:** Thư ký nghiệp vụ tiếp nhận bản chính tài liệu, nhập Số điện thoại/CCCD (Cá nhân) hoặc Mã số thuế (Doanh nghiệp) vào CRM để tự động điền (Auto-fill) thông tin.
+    - **Luồng từ xa qua Zalo OA:** Nếu khách hàng gửi ảnh tài liệu qua Zalo OA, Thư ký trực kênh chat sẽ kiểm tra độ nét và bấm nút **"Khởi tạo hồ sơ từ Chat"**. Hệ thống tự động tạo mã hồ sơ mới (trạng thái: *"Chờ bản gốc"*), gom toàn bộ ảnh chụp trong hội thoại thành tệp đính kèm của hồ sơ.
+    - Thư ký phân loại tài liệu, chọn ngôn ngữ nguồn và ngôn ngữ đích (ví dụ: Tiếng Anh $\rightarrow$ Tiếng Việt, Tiếng Việt $\rightarrow$ Tiếng Nga...).
+
+2. **Áp dụng Mô hình Giá lai linh hoạt (Hybrid Pricing Model):**
+    - Thư ký nhập số trang tài liệu gốc và số bản kết quả yêu cầu.
+    - **Hệ thống gợi ý giá sàn:** Hệ thống tự động tính toán Phí gốc nhà nước ($15.000đ/\text{chữ ký người dịch} \times \text{Số bản}$) và hiển thị mức giá sàn thù lao dịch thuật tối giản theo nhóm ngôn ngữ đã được Admin cấu hình.
+    - **Cơ chế ghi đè giá (Price Override):** Để tránh mất thời gian cấu hình ma trận cặp ngôn ngữ A $\rightarrow$ B thuận nghịch phức tạp, Thư ký được quyền nhập trực tiếp số tiền thực tế thỏa thuận với khách hàng vào trường `Tổng thực thu` (bao gồm phí dịch thuật chuyên ngành, phí dịch vụ hỏa tốc, in ấn).
+    - **Cơ chế an toàn (Financial Guardrails):** Nếu tổng số tiền Thư ký nhập thấp hơn mức Giá sàn tối thiểu của văn phòng, hệ thống tự động bật cờ kiểm soát `Chờ phê duyệt giá` và gửi thông báo đến tài khoản Quản lý/CCV để duyệt quyền đặc biệt trước khi cho phép in lời chứng.
+    - **Quản lý đa ngôn ngữ (Master - Sub Dossier):** Nếu tài liệu gốc cần dịch ra nhiều ngôn ngữ cùng lúc (ví dụ: Anh, Pháp, Đức), Thư ký bấm **"Thêm nhánh dịch thuật"**. Hệ thống tự động sinh ra các hồ sơ con độc lập (`DT-SUB-ANH`, `DT-SUB-PHAP`...) liên kết với một `Hồ sơ cha (MASTER)` duy nhất để gộp biểu phí và xuất một hóa đơn VAT tổng.
+
+3. **Kiểm soát rủi ro pháp lý & Chặn nghiệp vụ (Checklist động):**
+    - Tùy thuộc vào nhãn tài liệu đầu vào (Văn bản trong nước hay Văn bản do cơ quan nước ngoài cấp), hệ thống tự động tải bộ Checklist kiểm soát lỗi tương ứng.
+    - **Cơ chế chặn:** Đối với văn bản nước ngoài, hệ thống bắt buộc Thư ký phải tích chọn đầu mục `[ ] Kiểm tra tem và con dấu Hợp pháp hóa lãnh sự`. Nếu Thư ký chọn `Không đạt (Fail)`, hệ thống sẽ kích hoạt cơ chế khóa bảo vệ, ẩn toàn bộ nút **"Giao việc cho CTV"** và nút **"In Lời chứng"**, đồng thời hỗ trợ in *"Phiếu từ chối chứng thực"* tự động nêu rõ căn cứ luật định.
+
+4. **Yêu cầu Tạm ứng & Kích hoạt luồng dịch:**
+    - Đối với các hồ sơ có giá trị lớn (doanh nghiệp B2B) hoặc ngôn ngữ hiếm, hệ thống tự động bật cờ `Yêu cầu tạm ứng` và khóa tính năng phân công cho đến khi Thư ký xác nhận đã thu trước tối thiểu 50% tiền cọc (Khách hàng quẹt thẻ POS hoặc quét mã QR động chuyển khoản).
+    - Khi hệ thống mở khóa, Thư ký lựa chọn Cộng tác viên (CTV) phù hợp từ danh sách phân quyền của hệ thống và thiết lập deadline.
+
+5. **Phân công & Quản lý cộng tác viên từ xa (Collaborative Translation):**
+    - Hệ thống gửi thông báo đẩy (Push Notification/Email) đến tài khoản của CTV được chỉ định.
+    - **Ràng buộc bảo mật:** CTV đăng nhập vào hệ thống, bắt buộc phải click vào nút **"Đồng ý cam kết bảo mật NDA trực tuyến"** thì nút **"Tải tài liệu gốc"** mới hiển thị.
+    - Trong quá trình làm việc, CTV có thể cập nhật thanh tiến độ theo phần trăm (%) công việc và thực hiện upload file dịch hoàn chỉnh (định dạng `.docx`) lên hệ thống khi hoàn thành.
+
+6. **Phê duyệt bản nháp trực tuyến & Duyệt chất lượng:**
+    - **Gửi bản nháp qua Zalo OA:** Thư ký nhận thông báo file dịch hoàn thành, bấm nút **"Gửi bản nháp duyệt"**. Hệ thống tự động xuất file PDF bản dịch nháp có chèn chữ chìm (Watermark) *"BẢN NHÁP KIỂM TRA - CHƯA CÓ GIÁ TRỊ PHÁP LÝ"* gửi qua Zalo OA cho khách hàng kiểm tra thông tin (họ tên, ngày sinh, số hiệu) từ xa trước khi in ấn.
+    - Khách hàng phản hồi xác nhận chuẩn trực tuyến, Thư ký thực hiện tích chọn checklist chất lượng dịch thuật và nhấn nút **"Duyệt bản dịch"**.
+
+7. **Sinh Lời chứng dịch thuật & Ký chứng thực:**
+    - Hệ thống tự động gọi cấu hình mẫu lời chứng dịch thuật (Mẫu `TEMP-DICH-01`), trích xuất thông tin định danh khách hàng, thông tin ngôn ngữ và thông tin đăng ký tư pháp của CTV để sinh Lời chứng tự động. Thư ký thực hiện in ấn toàn bộ tài liệu.
+    - **Xác thực chữ ký mẫu từ xa:** Trường hợp CTV dịch thuật từ xa không có mặt tại quầy, hệ thống hiển thị ảnh chụp độ phân giải cao của *Chữ ký mẫu đã đăng ký trước đó* của CTV trên màn hình xử lý hồ sơ. Thư ký và Công chứng viên (CCV) đối chiếu chữ ký mẫu vật lý trên bản dịch do CTV đã ký sẵn và gửi kèm trước đó.
+    - CCV xem xét hồ sơ, thực hiện ký tên vào lời chứng và đóng dấu đỏ vật lý offline lên tài liệu kết quả.
+
+8. **Scan số hóa, Thu phí & Xuất hóa đơn đối soát:**
+    - Thư ký đặt tập tài liệu đã đóng dấu đỏ hoàn chỉnh vào máy scan tại quầy, quét và tải file scan lên hồ sơ để đóng luồng nghiệp vụ.
+    - Hệ thống chuyển hồ sơ sang trạng thái *"Chờ thu phí"* (hoặc *"Chờ thu nốt 50% tiền còn lại"* nếu có tạm ứng).
+    - Khách hàng thanh toán tại quầy, Thư ký nhấn **"Xác nhận nhận đủ tiền"** để đẩy hồ sơ sang tab của Kế toán.
+    - Kế toán kiểm tra dòng tiền thực nhận (tiền mặt thực tế hoặc biến động số dư tài khoản văn phòng) và bấm **"Xác nhận đối soát"**.
+    - **Hệ thống tự động phát hành:** Ghi sổ cái kế toán bất biến, gọi API đối tác (VNPT/Vĩnh Hy) xuất hóa đơn điện tử VAT (hỗ trợ bóc tách phần phí gốc và thù lao dịch vụ theo luật định), tự động gửi link hóa đơn kèm lời cảm ơn qua Zalo OA cho khách hàng. Hồ sơ chuyển trạng thái **"Đã hoàn tất"** và tự động đồng bộ vào kho lưu trữ điện tử.
 
 <a id="2.5.3-quy-trinh-nghiep-vu-chung-thuc-chu-ky"></a>
 #### 2.5.3 Quy trình Nghiệp vụ Chứng thực chữ ký (Signature Certification Workflow)
@@ -640,6 +659,23 @@ Quy trình sử dụng phần mềm đối với nghiệp vụ Chứng thực ch
 7. **Chăm sóc Khách hàng:**
    - Hệ thống tự động gửi tin nhắn Zalo OA/SMS cảm ơn kèm liên kết tải hóa đơn điện tử cho khách hàng.
 
+<a id="2.x-cau-hinh-bieu-phi-dich-thuat-linh-hoat"></a>
+#### 2.5.4 Quy tắc Nghiệp vụ: Cấu hình Biểu phí Dịch thuật Linh hoạt (Hybrid Pricing Model)
+
+Để tối ưu hóa thời gian triển khai hệ thống và đáp ứng tính biến động liên tục của thị trường dịch thuật (biên độ giá thay đổi theo cặp ngôn ngữ thuận/nghịch, độ khó tài liệu, thời gian hoàn thành), hệ thống áp dụng cơ chế thiết lập giá linh hoạt theo từng hồ sơ (Price Override):
+
+1. **Cấu hình bảng giá nền (Base Price Template):**
+    - Hệ thống cho phép Quản trị viên cấu hình một danh mục giá trần/giá sàn tối giản theo các Nhóm ngôn ngữ (Không bắt buộc phải cấu hình chi tiết từng cặp ngôn ngữ A $\rightarrow$ B và B $\rightarrow$ A).
+    - Giá chứng thực chữ ký người dịch (Phí Nhà nước) được cấu hình cố định theo quy định pháp luật hiện hành ($15.000đ/\text{chữ ký}$).
+
+2. **Cơ chế nhập giá linh hoạt tại quầy (Dynamic Pricing Entry):**
+    - Khi Thư ký nghiệp vụ tạo hồ sơ dịch thuật, hệ thống sẽ tự động hiển thị giá gợi ý dựa trên bảng giá nền (nếu có).
+    - **Tính năng cho phép ghi đè (Override):** Thư ký được quyền nhập trực tiếp các giá trị tài chính thực tế thương lượng với khách hàng vào các trường thông tin: `Thù lao dịch thuật thực tế/trang`, `Phí dịch vụ dịch thuật trọn gói`, và `Phí dịch vụ ngoài quầy`. Hệ thống sẽ tính toán tổng tiền dựa trên số liệu nhập tay này để xuất biên lai.
+
+3. **Ràng buộc an toàn hệ thống (Financial Guardrails):**
+    - **Cảnh báo lệch giá:** Nếu tổng số tiền Thư ký tự nhập thấp hơn mức Giá sàn tối thiểu được quy định trong cấu hình hệ thống, ô nhập liệu sẽ chuyển sang màu cam và hệ thống tự động bật cờ kiểm soát `Chờ phê duyệt giá`.
+    - **Luồng phê duyệt:** Hồ sơ có cờ kiểm soát giá sẽ bị khóa tính năng "In lời chứng" và "Xuất hóa đơn" cho đến khi tài khoản có thẩm quyền (Quản lý văn phòng/Công chứng viên) nhấn nút **Phê duyệt giá đặc biệt** trên màn hình quản trị hoặc phê duyệt thông qua mã xác thực (Approval Code).
+    - **Lưu vết lịch sử (Audit Trail):** Mọi thao tác sửa giá bằng tay của Thư ký, giá gốc của hệ thống, lý do sửa giá (ví dụ: *khách hàng thân thiết, tài liệu form mẫu dễ*) và định danh người phê duyệt đều phải được ghi lại trong lịch sử hệ thống (Log) và hiển thị trong Báo cáo đối soát tài chính cuối ngày.
 <a id="2.6-dac-ta-cac-usecase"></a>
 ### 2.6 Đặc tả các usecase (Use Case Specifications)
 
@@ -973,3 +1009,71 @@ Dưới đây là các kịch bản nghiệp vụ thực tế của phân hệ *
   - Thư ký chọn lý do tương ứng (ví dụ: "Bản chính đóng dấu mật").
   - Hệ thống ghi nhận trạng thái hồ sơ là **Đã hủy (Từ chối nghiệp vụ)**, tự động lưu nhật ký hệ thống (Audit Log) chứa thông tin Thư ký từ chối, lý do từ chối và timestamp.
   - Hệ thống hỗ trợ in **Phiếu từ chối chứng thực** tự động chứa căn cứ pháp lý của Điều 22 Nghị định 23/2015/NĐ-CP để gửi cho khách hàng.
+
+<a id="3.2-nghiep-vu-dich-thuat-cong-chung"></a>
+### 3.2 Nghiệp vụ Dịch thuật công chứng (Certified Translation Cases)
+
+Dưới đây là các kịch bản nghiệp vụ thực tế của phân hệ **Dịch thuật công chứng** (Chứng thực chữ ký người dịch) nhằm cụ thể hóa quy trình phối hợp giữa Thư ký nghiệp vụ, Cộng tác viên (CTV) dịch thuật và Công chứng viên (CCV) trên hệ thống:
+
+<a id="3.2.1-case-1-dich-ho-tich-sieu-toc"></a>
+#### 3.2.1 Case 1: Dịch thuật công chứng Giấy tờ hộ tịch cá nhân (Anh - Việt) - Luồng siêu tốc lấy ngay
+- **Bối cảnh:** Anh A mang Giấy khai sinh bản gốc đến văn phòng yêu cầu dịch thuật sang tiếng Anh và công chứng 3 bản lấy gấp trong ngày để kịp nộp hồ sơ xin visa du học.
+- **Hành vi thực tế:** Tài liệu ngắn (1 trang), có biểu mẫu cấu hình sẵn (Template). Khách hàng có tâm lý nôn nóng, cần tối ưu hóa thời gian dịch và ký duyệt.
+- **Luồng xử lý trên hệ thống:**
+    - Thư ký nhập SĐT anh A vào CRM để auto-fill thông tin định danh cá nhân, chọn nghiệp vụ **Dịch thuật công chứng**, chọn ngôn ngữ nguồn: **Tiếng Việt**, ngôn ngữ đích: **Tiếng Anh**.
+    - Thư ký nhập số trang gốc: 1, số bản kết quả yêu cầu: 3. Chọn mức độ ưu tiên: **Hỏa tốc (Urgent)**.
+    - Hệ thống tự động truy vấn biểu phí dịch thuật, tính toán: $Phí\ gốc\ nhà\ nước = 3\ \text{bản} \times 15.000đ/chữ\ ký = 45.000đ$. Thù lao dịch thuật cấu hình sẵn cho mẫu hộ tịch Việt - Anh là $100.000đ$. Tổng phí gốc tính toán: $145.000đ$.
+    - Thư ký báo phí trọn gói dịch vụ (bao gồm cả phí in ấn, bìa) là $200.000đ$. Nhập vào ô "Tổng thực thu". Hệ thống hạch toán phần chênh lệch $55.000đ$ vào mục "Thù lao dịch vụ khác". Thư ký tích chọn `Khách hàng đồng ý báo phí` và lưu hồ sơ (`DT-YYYYMMDD-XXXXX`).
+    - Hệ thống tự động gửi thông báo đẩy (Push Notification) đến app/tài khoản của một CTV tiếng Anh đang túc trực tại quầy. CTV nhận việc, tải file chụp tài liệu gốc, áp biểu mẫu template Giấy khai sinh tiếng Anh có sẵn, điền thông tin dịch thuật trong 15 phút và bấm "Upload bản dịch hoàn thành" (.docx).
+    - Thư ký nhận thông báo, kiểm tra bản dịch nháp trên màn hình, tích chọn checklist dịch thuật (khớp ngày sinh, họ tên, số sổ), bấm "Duyệt bản dịch". Hệ thống tự động sinh Lời chứng dịch thuật (Mẫu `TEMP-DICH-01`). Thư ký in toàn bộ tài liệu kẹp bản dịch.
+    - CTV thực hiện ký vật lý vào bản kết quả (đối khớp chữ ký mẫu đã đăng ký). CCV đối chiếu bản gốc, ký lời chứng offline. Thư ký scan bản cứng dấu đỏ tải lên hệ thống để đóng hồ sơ, thu tiền mặt $200.000đ$ tại quầy. Kế toán đối soát, hệ thống xuất hóa đơn điện tử gửi qua Zalo OA cho anh A.
+
+<a id="3.2.2-case-2-dich-tai-lieu-hiem-va-quan-ly-tu-xa"></a>
+#### 3.2.2 Case 2: Dịch tài liệu thương mại đa trang (Tiếng Nga) - Luồng quản lý tiến độ CTV từ xa và Yêu cầu tạm ứng
+- **Bối cảnh:** Công ty X mang một tập tài liệu thuyết minh kỹ thuật và báo cáo tài chính dài 45 trang bằng tiếng Nga đến yêu cầu dịch sang tiếng Việt và công chứng để phục vụ nghiệm thu dự án.
+- **Hành vi thực tế:** Tài liệu dài, thuật ngữ chuyên ngành phức tạp, ngôn ngữ hiếm không có CTV túc trực tại văn phòng. Rủi ro CTV bùng deadline hoặc làm lộ thông tin thương mại của doanh nghiệp.
+- **Luồng xử lý trên hệ thống:**
+    - Thư ký tạo hồ sơ doanh nghiệp bằng cách nhập MST (hệ thống tự động gọi API Thuế điền tên công ty), chọn ngôn ngữ: **Tiếng Nga -> Tiếng Việt**. Nhập số trang: 45, số bản kết quả: 1.
+    - Hệ thống tự động áp đơn giá ngôn ngữ hiếm/chuyên ngành ($250.000đ/\text{trang}$). Tổng tiền hệ thống tính toán: $11.250.000đ$.
+    - Do giá trị hồ sơ lớn, hệ thống tự động bật cờ cảnh báo `Yêu cầu tạm ứng`. Hệ thống khóa tính năng giao việc cho đến khi Thư ký thu trước tối thiểu 50% tiền cọc ($5.625.000đ$). Công ty X quẹt thẻ POS tạm ứng. Thư ký nhấn "Xác nhận đã nhận cọc", hệ thống mở khóa luồng xử lý tiếp theo.
+    - Thư ký chọn chức năng "Phân công CTV", hệ thống lọc ra các CTV tiếng Nga đang hoạt động từ xa, Thư ký chọn CTV thiết lập deadline là 3 ngày.
+    - CTV nhận được email và thông báo trên hệ thống. **Hệ thống bắt buộc CTV phải click vào nút "Đồng ý cam kết bảo mật NDA trực tuyến"** thì nút "Tải tài liệu gốc" mới hiển thị.
+    - Hàng ngày, CTV truy cập hệ thống để cập nhật thanh tiến độ (ví dụ: "Đã hoàn thành 40%"). Đến ngày thứ 3, CTV upload file dịch hoàn chỉnh (.docx). Thư ký tải về, duyệt chất lượng đạt yêu cầu, sinh Lời chứng dịch thuật và in ấn.
+    - Do CTV ở xa không thể đến ký trực tiếp, hệ thống sử dụng tính năng **Xác thực chữ ký mẫu**: Hệ thống hiển thị chữ ký mẫu đã đăng ký của CTV trên màn hình để Thư ký và CCV đối chiếu vật lý với chữ ký trên bản dịch do CTV ký sẵn và gửi kèm. CCV ký đóng dấu lời chứng offline. Thư ký scan tải file lên hệ thống.
+    - Kế toán thu nốt 50% số tiền còn lại, bấm xác nhận đối soát. Hệ thống gọi API xuất hóa đơn điện tử B2B truyền thẳng về email phòng kế toán của Công ty X.
+
+<a id="3.2.3-case-3-khoi-tao-tu-xa-qua-zalo-oa"></a>
+#### 3.2.3 Case 3: Khởi tạo hồ sơ dịch thuật từ xa qua Zalo OA - Luồng phê duyệt bản nháp trực tuyến
+- **Bối cảnh:** Chị B muốn dịch công chứng Bằng tốt nghiệp Đại học và Học bạ sang tiếng Hàn để làm hồ sơ xuất khẩu lao động nhưng đang đi làm giờ hành chính, không thể đến văn phòng ngồi chờ dịch. Chị chụp ảnh tài liệu gửi qua Zalo OA của văn phòng công chứng.
+- **Hành vi thực tế:** Khách hàng muốn xử lý từ xa, muốn kiểm tra trước thông tin bản dịch nháp (Họ tên, ngày sinh, tên trường bằng tiếng Hàn) xem chính xác chưa để khi đến văn phòng chỉ cần nộp bản gốc, đối chiếu và lấy ngay tài liệu dấu đỏ.
+- **Luồng xử lý trên hệ thống:**
+    - Hình ảnh và tin nhắn của chị B đổ về module **Tương tác đa kênh (CRM)** của phần mềm. Thư ký trực kênh chat kiểm tra độ nét của ảnh chụp (đảm bảo không mất chữ, mất dấu) và nhấn nút **Khởi tạo hồ sơ từ Chat**.
+    - Hệ thống tự động tạo mã hồ sơ dịch thuật mới (trạng thái: "Chờ bản gốc"), tự động gom toàn bộ ảnh chụp trong hội thoại thành tệp tài liệu đính kèm của hồ sơ. Thư ký gửi tin nhắn báo giá tự động kèm link thanh toán mã QR động qua Zalo OA. Chị B quét mã thanh toán chuyển khoản thành công. Hệ thống tự động ghi nhận thanh toán trực tuyến.
+    - Thư ký chỉ định CTV tiếng Hàn dịch thuật dựa trên file ảnh đính kèm. Sau khi CTV hoàn thành và upload file dịch, Thư ký bấm nút **Gửi bản nháp duyệt**.
+    - Hệ thống tự động xuất một file PDF bản dịch nháp có chèn chữ chìm (Watermark) *“BẢN NHÁP KIỂM TRA - CHƯA CÓ GIÁ TRỊ PHÁP LÝ”* và gửi tự động qua Zalo OA cho chị B.
+    - Chị B xem file trên điện thoại, phát hiện tên trường bị sai 1 ký tự, chị phản hồi qua Zalo OA. Thư ký ghi nhận ghi chú, chuyển lại cho CTV sửa. CTV upload bản cập nhật, hệ thống gửi lại cho chị B. Chị B click vào nút `Xác nhận bản dịch chuẩn` trên link Zalo.
+    - Hệ thống chuyển trạng thái hồ sơ thành "Chờ đối chiếu bản gốc" và gửi tin nhắn: *“Bản dịch của bà đã hoàn thành. Mời bà mang theo bản gốc đến quầy số 2 để đối chiếu và nhận kết quả đóng dấu”*. Khi chị B đến văn phòng, Thư ký chỉ cần đối khớp bản gốc với ảnh chụp, in bản dịch đã duyệt, trình CCV ký đóng dấu offline trong vòng 5 phút, giải phóng luồng xử lý siêu tốc tại quầy.
+
+<a id="3.2.4-case-4-dich-da-ngon-ngu"></a>
+#### 3.2.4 Case 4: Dịch thuật đa ngôn ngữ cho cùng một tài liệu - Luồng tách hồ sơ con song song (Master - Sub Dossier)
+- **Bối cảnh:** Tập đoàn Y mang một bộ hồ sơ năng lực doanh nghiệp và Giấy đăng ký kinh doanh đến yêu cầu dịch sang 3 ngôn ngữ: Tiếng Anh, Tiếng Pháp, Tiếng Đức để nộp hồ sơ đấu thầu quốc tế, yêu cầu xuất một hóa đơn VAT tổng.
+- **Hành vi thực tế:** Một bộ tài liệu gốc đầu vào nhưng phát sinh 3 luồng dịch thuật hoàn toàn độc lập với 3 biên dịch viên thuộc các ngôn ngữ khác nhau, nhưng tài chính hạch toán và thông tin giao dịch phải quy về một mối để dễ quản lý.
+- **Luồng xử lý trên hệ thống:**
+    - Thư ký tiếp nhận bộ hồ sơ gốc của Tập đoàn Y, tạo một **Hồ sơ cha (Master Dossier)** mang mã số `DT-MASTER-YYYYMMDD-XXXXX`.
+    - Trên giao diện phần mềm, Thư ký bấm nút **Thêm nhánh dịch thuật (Multi-Language Session)** và tích chọn cùng lúc 3 checkbox ngôn ngữ đích: Anh, Pháp, Đức.
+    - Hệ thống tự động nhân bản thông tin khách hàng và sinh ra 3 hồ sơ con (Sub-dossiers) độc lập chạy song song, liên kết chặt chẽ với hồ sơ cha: `DT-SUB-ANH`, `DT-SUB-PHAP`, `DT-SUB-DUC`.
+    - Thư ký thực hiện phân phối công việc độc lập: Giao hồ sơ Anh cho CTV A, hồ sơ Pháp cho CTV B, hồ sơ Đức cho CTV C. Các CTV nhận việc độc lập và không nhìn thấy tài liệu của nhau nhằm bảo mật.
+    - Module quản lý phí tự động tổng hợp biểu phí của cả 3 ngôn ngữ và số tiền thù lao chứng thực chữ ký của cả 3 bộ kết quả hiển thị dồn về màn hình thanh toán của Hồ sơ cha. Thư ký báo tổng chi phí trọn gói cho khách hàng. Người đại diện Tập đoàn Y thực hiện chuyển khoản một lần duy nhất vào số tài khoản văn phòng.
+    - Khi cả 3 CTV hoàn thành việc tải lên file dịch, hệ thống gửi thông báo gom kết quả cho Thư ký. Thư ký bấm nút "In Lời chứng đồng loạt", hệ thống in ra 3 bộ Lời chứng dịch thuật tương ứng. CCV thực hiện ký duyệt và đóng dấu đỏ vật lý một lượt cho cả 3 bộ tài liệu. Thư ký scan toàn bộ kết quả tải lên hệ thống. Kế toán bấm đối soát hồ sơ cha, hệ thống gọi API VNPT xuất duy nhất một hóa đơn điện tử tổng ghi nhận toàn bộ các hạng mục dịch thuật đa ngôn ngữ theo yêu cầu của doanh nghiệp.
+
+<a id="3.2.5-case-5-tu-choi-dich-thuat"></a>
+#### 3.2.5 Case 5: Từ chối dịch thuật công chứng tài liệu không hợp pháp (Chưa Hợp pháp hóa lãnh sự)
+- **Bối cảnh:** Ông C mang một Giấy chứng nhận độc thân do cơ quan Thẩm quyền bang Texas (Mỹ) cấp bằng tiếng Anh đến yêu cầu dịch sang tiếng Việt và công chứng để làm thủ tục đăng ký kết hôn với người Việt Nam.
+- **Hành vi thực tế:** Theo quy định tại Điều 22 và Điều 32 Nghị định 23/2015/NĐ-CP, giấy tờ, văn bản do cơ quan có thẩm quyền của nước ngoài cấp phải được Hợp pháp hóa lãnh sự tại Bộ Ngoại giao Việt Nam (trừ trường hợp được miễn trừ theo điều ước quốc tế) thì mới được phép dịch thuật công chứng chữ ký người dịch. Thư ký nếu sơ suất dịch và công chứng các giấy tờ này sẽ vi phạm nghiêm trọng luật tư pháp.
+- **Luồng xử lý trên hệ thống:**
+    - Thư ký tiếp nhận tài liệu của ông C, khởi tạo hồ sơ dịch thuật trên hệ thống, tích chọn nhãn loại giấy tờ: **Văn bản nước ngoài cấp**.
+    - Hệ thống tự động tải bộ **Checklist chặn nghiệp vụ nước ngoài**, trong đó hiển thị đầu mục bắt buộc có dấu sao đỏ: `[ ] Kiểm tra tem và con dấu Hợp pháp hóa lãnh sự của Cục Lãnh sự/Sở Ngoại vụ - Bộ Ngoại giao Việt Nam`.
+    - Thư ký kiểm tra thực tế mặt sau bản gốc tài liệu của ông C, phát hiện hoàn toàn không có tem hợp pháp hóa lãnh sự (chỉ có con dấu của Công chứng viên tại Mỹ - Notary Public). Thư ký tích chọn giá trị `Không đạt (Fail)` tại đầu mục checklist này trên phần mềm.
+    - Hệ thống lập tức kích hoạt cơ chế khóa bảo vệ: **Khóa toàn bộ nút "In Lời chứng" và nút "Giao việc cho CTV"**, không cho phép hồ sơ tiếp tục luồng vận hành bình thường.
+    - Thư ký bấm nút **Từ chối tiếp nhận hồ sơ**. Hệ thống hiển thị popup yêu cầu xác nhận lý do từ chối luật định, Thư ký tích chọn lý do: *“Văn bản do cơ quan thẩm quyền nước ngoài cấp chưa được hợp pháp hóa lãnh sự theo quy định tại Khoản 1 Điều 22 Nghị định 23/2015/NĐ-CP”*.
+    - Hệ thống chuyển trạng thái hồ sơ thành **Đã hủy (Từ chối nghiệp vụ)**, tự động ghi nhận ID Thư ký, lý do từ chối và timestamp vào Sổ nhật ký hệ thống (Audit Log) bất biến. Đồng thời, hệ thống hỗ trợ Thư ký bấm nút "In Phiếu từ chối chứng thực" tự động để gửi cho ông C, trên phiếu ghi rõ căn cứ pháp lý lý do từ chối và hướng dẫn ông C đến cơ quan ngoại giao hợp pháp hóa tài liệu trước khi quay lại văn phòng.
