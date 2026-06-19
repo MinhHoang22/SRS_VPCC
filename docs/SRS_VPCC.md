@@ -527,18 +527,20 @@ flowchart TD
     DT_Check --> CTV_Sign_DT[7b. CTV ký chữ ký mẫu & CCV ký đóng dấu offline]
     CTV_Sign_DT --> DT_Scan[8b. Quét bản dịch dấu đỏ & Tải lên]
 
-    %% Branch 3: Chứng thực chữ ký
-    ChooseBranch -- Chứng thực chữ ký --> CT_CRM[3c. Nhập danh sách người ký]
-    CT_CRM --> CT_Template[4c. Chọn template Lời chứng & Tính phí]
-    CT_Template --> CT_Checklist[5c. Duyệt Checklist & Đối chiếu định danh CCCD]
-    CT_Checklist --> CT_Sign[6c. Khách hàng ký/điểm chỉ trực tiếp tại quầy]
-    CT_Sign --> CCV_Sign_CT[7c. CCV ký Lời chứng & Đóng dấu offline]
-    CCV_Sign_CT --> CT_Scan[8c. Quét bản cứng dấu đỏ & Tải lên]
+    %% Branch 3: Chứng thực chữ ký (7 bước mới)
+    ChooseBranch -- Chứng thực chữ ký --> CT_Create[1c. Tạo hồ sơ Chứng thực chữ ký]
+    CT_Create --> CT_DocType[2c. Chọn loại văn bản từ danh mục]
+    CT_DocType --> CT_CRM[3c. Nhập form KH - Auto-fill CRM từ CCCD/SĐT]
+    CT_CRM --> CT_Fee[4c. Hệ thống báo phí tự động theo Module Phí]
+    CT_Fee --> CT_Checklist[5c. Checklist nghiệp vụ động theo loại văn bản]
+    CT_Checklist --> CT_Print[6c. In Lời chứng & KH ký/điểm chỉ trước CCV]
+    CT_Print --> CCV_Sign_CT[6c. CCV ký Lời chứng & Đóng dấu offline]
+    CCV_Sign_CT --> CT_Complete[7c. Hoàn tất form & Scan & Thu phí tại quầy]
 
     %% Common End Phase
     SY_Scan --> CollectFee[Thu phí tại quầy & Xác nhận trên PM]
     DT_Scan --> CollectFee
-    CT_Scan --> CollectFee
+    CT_Complete --> AccReconcile
 
     CollectFee --> AccReconcile[Đối soát dòng tiền thực nhận]
     AccReconcile --> SysInvoice[Tự động bóc tách VAT & Gọi API Xuất Hóa đơn]
