@@ -529,12 +529,13 @@ flowchart TD
     DT_Input --> DT_Config[4b. Chọn ngôn ngữ nguồn, đích & chọn loại tài liệu]
     DT_Config --> DT_CHECKLIST[5b. Kiểm tra tài liệu]
     DT_CHECKLIST --> DT_CALCULATE[6b. Tính toán chi phí & Báo giá]
-    DT_CALCULATE --> DT_SEARCH[7b. Tìm và gán CTV]
-    DT_SEARCH -->  DT_Assign[8b. CTV nhận việc & Ký NDA online]
-    DT_Assign --> DT_Translate[9b. CTV dịch thuật & Upload bản dịch nháp]
-    DT_Translate --> DT_Check[10b. KH, thư ký duyệt chất lượng & Thư ký sinh Lời chứng dịch]
-    DT_Check --> CTV_Sign_DT[11b. CTV ký chữ ký mẫu & CCV ký đóng dấu offline]
-    CTV_Sign_DT --> DT_Scan[12b. Scan bản dịch dấu đỏ & Tải lên]
+    DT_CALCULATE --> DT_DEPOSIT[7b. Yêu cầu khách chuyển tiền cọc trước]
+    DT_CALCULATE --> DT_SEARCH[8b. Tìm và gán CTV]
+    DT_SEARCH -->  DT_Assign[9b. CTV nhận việc & Ký NDA online]
+    DT_Assign --> DT_Translate[10b. CTV dịch thuật & Upload bản dịch nháp]
+    DT_Translate --> DT_Check[11b. KH, thư ký duyệt chất lượng & Thư ký sinh Lời chứng dịch]
+    DT_Check --> CTV_Sign_DT[12b. CTV ký chữ ký mẫu & CCV ký đóng dấu offline]
+    CTV_Sign_DT --> DT_Scan[13b. Scan bản dịch dấu đỏ & Tải lên]
 
     %% Branch 3: Chứng thực chữ ký (7 bước mới)
     ChooseBranch -- Chứng thực chữ ký --> CT_Create[1c. Tạo hồ sơ Chứng thực chữ ký]
@@ -547,7 +548,7 @@ flowchart TD
     CCV_Sign_CT --> CT_Complete[7c. Hoàn tất form & Scan & Thu phí tại quầy]
 
     %% Common End Phase
-    SY_Scan --> CollectFee[Thu phí & Xác nhận trên PM]
+    SY_Scan --> CollectFee[Thu phí tại quầy & Xác nhận trên PM]
     DT_Scan --> CollectFee
     CT_Complete --> AccReconcile
 
