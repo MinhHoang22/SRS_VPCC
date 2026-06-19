@@ -68,9 +68,8 @@
     - [3.2.5 Case 5: Từ chối dịch thuật công chứng tài liệu không hợp pháp (Chưa Hợp pháp hóa lãnh sự)](#325-case-5-từ-chối-dịch-thuật)
   - [3.3 Nghiệp vụ Chứng thực chữ ký (Signature Certification Cases)](#3.3-nghiep-vu-chung-thuc-chu-ky)
     - [3.3.1 Case 1: Chứng thực chữ ký trên Bản tự khai lý lịch - Luồng siêu tốc](#3.3.1-case-1-chung-thuc-ban-tu-khai-ly-lich)
-    - [3.3.2 Case 2: Chứng thực chữ ký trên Văn bản khai nhận di sản thừa kế - Bắt buộc check UCHI](#3.3.2-case-2-chung-thuc-khai-nhan-di-san)
-    - [3.3.3 Case 3: Chứng thực chữ ký trên Giấy ủy quyền nhận lương / bảo hiểm](#3.3.3-case-3-chung-thuc-uy-quyen-nhan-luong)
-    - [3.3.4 Case 4: Chứng thực chữ ký trên Giấy ủy quyền xe máy](#3.3.4-case-4-chung-thuc-uy-quyen-xe-may)
+    - [3.3.2 Case 2: Chứng thực chữ ký trên Giấy ủy quyền nhận lương / bảo hiểm](#3.3.2-case-2-chung-thuc-uy-quyen-nhan-luong)
+    - [3.3.3 Case 3: Chứng thực chữ ký trên Giấy ủy quyền xe máy](#3.3.3-case-3-chung-thuc-uy-quyen-xe-may)
 
 ---
 
@@ -1218,37 +1217,11 @@ Dưới đây là các kịch bản nghiệp vụ thực tế của phân hệ *
     - **Bước 2 - Chọn loại văn bản:** Thư ký chọn loại **"Bản tự khai lý lịch"** từ danh mục cấu hình sẵn.
     - **Bước 3 - Nhập form KH:** Anh A đưa CCCD. Thư ký nhập số CCCD vào ô tìm kiếm nhanh CRM. Hệ thống tìm thấy thông tin anh A (đã giao dịch sao y trước đó) → **auto-fill** Họ tên, ngày sinh, nơi cư trú. Thư ký kiểm tra nhanh thông tin đã điền và xác nhận.
     - **Bước 4 - Báo phí:** Hệ thống tự động tính phí: $1\ \text{chữ ký} \times 3\ \text{bản} \times 15.000đ = 45.000đ$. Thư ký báo phí trọn gói $50.000đ$ (bao gồm phí dịch vụ in ấn). Nhập "Tổng thực thu" = $50.000đ$. Hệ thống hạch toán $5.000đ$ thù lao dịch vụ khác.
-    - **Bước 5 - Checklist:** Hệ thống hiển thị bộ checklist dành cho loại "Bản tự khai lý lịch" (đơn giản, không có mục UCHI):
-      - `[✓]` Xác nhận người ký có năng lực hành vi dân sự đầy đủ.
-      - `[✓]` Giấy tờ tùy thân (CCCD) còn hạn sử dụng.
-      - `[✓]` Đối khớp khuôn mặt khách hàng với ảnh trên CCCD.
-      - `[✓]` Nội dung văn bản không vi phạm điều cấm pháp luật.
-    - **Bước 6 - In ấn & Ký duyệt:** Thư ký in Lời chứng chứng thực chữ ký cá nhân (mẫu `TEMP-CTCK-CANHAN-01`), dán kẹp vào văn bản. Anh A ký tên trực tiếp trước mặt Thư ký và CCV. CCV ký Lời chứng và đóng dấu đỏ vật lý.
-    - **Bước 7 - Hoàn tất & Thu phí:** Thư ký scan bản cứng đã ký đóng dấu tải lên hệ thống, bấm "Hoàn tất xử lý". Thu tiền mặt $50.000đ$, nhấn "Xác nhận nhận đủ tiền". Kế toán đối soát cuối ngày, hệ thống xuất hóa đơn điện tử và gửi Zalo OA cảm ơn.
+    - **Bước 5 - In ấn & Ký duyệt:** Thư ký in Lời chứng chứng thực chữ ký cá nhân (mẫu `TEMP-CTCK-CANHAN-01`), dán kẹp vào văn bản. Anh A ký tên trực tiếp trước mặt Thư ký và CCV. CCV ký Lời chứng và đóng dấu đỏ vật lý.
+    - **Bước 6 - Hoàn tất & Thu phí:** Thư ký scan bản cứng đã ký đóng dấu tải lên hệ thống, bấm "Hoàn tất xử lý". Thu tiền mặt $50.000đ$, nhấn "Xác nhận nhận đủ tiền". Kế toán đối soát cuối ngày, hệ thống xuất hóa đơn điện tử và gửi Zalo OA cảm ơn.
 
-<a id="3.3.2-case-2-chung-thuc-khai-nhan-di-san"></a>
-#### 3.3.2 Case 2: Chứng thực chữ ký trên Văn bản khai nhận di sản thừa kế - Bắt buộc check UCHI
-- **Bối cảnh:** Gia đình ông B (3 người: ông B, vợ ông B, và con trai ông B) đến văn phòng yêu cầu chứng thực chữ ký trên Văn bản khai nhận di sản thừa kế của bố ông B vừa mất, di sản là một thửa đất tại Quận 9 (TP.HCM).
-- **Hành vi thực tế:** Văn bản khai nhận di sản thừa kế liên quan trực tiếp đến quyền sở hữu tài sản (thửa đất). Đây là loại văn bản nhạy cảm, bắt buộc phải tra cứu ngăn chặn UCHI trước khi chứng thực để đảm bảo thửa đất không đang bị phong tỏa, kê biên hoặc tranh chấp.
-- **Luồng xử lý trên hệ thống:**
-    - **Bước 1 - Tạo hồ sơ:** Thư ký tạo hồ sơ mới, chọn dịch vụ **"Chứng thực chữ ký"**.
-    - **Bước 2 - Chọn loại văn bản:** Thư ký chọn loại **"Văn bản khai nhận di sản thừa kế"** từ danh mục. *Hệ thống nhận diện loại văn bản này thuộc nhóm liên quan đến tài sản → tự động kích hoạt mục tra cứu UCHI bắt buộc trong checklist.*
-    - **Bước 3 - Nhập form KH:** Thư ký bấm **"Thêm người ký"** 3 lần để nhập thông tin cho cả 3 người: ông B (nhập SĐT → auto-fill CRM), vợ ông B (khách mới → nhập thủ công CCCD, họ tên, ngày sinh), con trai ông B (khách mới → nhập thủ công). *(Thư ký có thể bỏ qua một số trường chưa cần thiết ở bước này để đẩy nhanh tiến độ)*.
-    - **Bước 4 - Báo phí:** Hệ thống tự động tính phí: $3\ \text{chữ ký} \times 2\ \text{bản} \times 15.000đ = 90.000đ$. Thư ký báo phí trọn gói $200.000đ$ (bao gồm phí dịch vụ tra cứu UCHI, tư vấn, in ấn). Nhập "Tổng thực thu" = $200.000đ$.
-    - **Bước 5 - Checklist (có UCHI):** Hệ thống hiển thị bộ checklist đặc biệt dành cho loại "Khai nhận di sản thừa kế":
-      - `[✓]` Xác nhận tất cả người ký có năng lực hành vi dân sự đầy đủ.
-      - `[✓]` Giấy tờ tùy thân (CCCD) của cả 3 người còn hạn sử dụng.
-      - `[✓]` Đối khớp khuôn mặt từng người ký với ảnh trên CCCD tương ứng.
-      - `[✓]` Giấy chứng tử của người để lại di sản (bố ông B) hợp lệ.
-      - `[✓]` Xác nhận nội dung văn bản không vi phạm điều cấm của pháp luật.
-      - **`[!] Tra cứu ngăn chặn UCHI (BẮT BUỘC):`** Thư ký click vào nút **"UCHI Search"** trên giao diện. Hệ thống gọi API tra cứu thời gian thực đến CSDL ngăn chặn của Sở Tư pháp với thông tin thửa đất.
-        - ***Nhánh rẽ 1 (Bình thường):*** CSDL trả về trạng thái "Không có ngăn chặn". Thư ký tích chọn hoàn thành checklist UCHI. Hệ thống mở khóa bước tiếp theo.
-        - ***Nhánh rẽ 2 (Bị ngăn chặn):*** CSDL trả về "Đang bị kê biên thi hành án". Hệ thống lập tức **khóa nút in Lời chứng**, hiển thị cảnh báo đỏ, chuyển trạng thái hồ sơ thành "Bị ngăn chặn". Thư ký thông báo cho gia đình ông B và từ chối chứng thực.
-    - **Bước 6 - In ấn & Ký duyệt** *(Chỉ thực hiện khi UCHI trả về bình thường)*: Thư ký in Lời chứng chứng thực chữ ký (mẫu `TEMP-CTCK-DISAN-01`). Cả 3 người (ông B, vợ, con trai) lần lượt ký tên trực tiếp lên Văn bản khai nhận di sản trước sự chứng kiến của Thư ký và CCV. CCV ký Lời chứng và đóng dấu đỏ vật lý.
-    - **Bước 7 - Hoàn tất & Thu phí:** Thư ký xin thông tin bổ sung của vợ và con trai ông B để nhập hoàn thiện form (trước đó đã bỏ qua). Scan toàn bộ tài liệu tải lên hệ thống. Thu tiền $200.000đ$ tại quầy, nhấn xác nhận. Kế toán đối soát, hệ thống xuất hóa đơn điện tử.
-
-<a id="3.3.3-case-3-chung-thuc-uy-quyen-nhan-luong"></a>
-#### 3.3.3 Case 3: Chứng thực chữ ký trên Giấy ủy quyền nhận lương / bảo hiểm
+<a id="3.3.2-case-2-chung-thuc-uy-quyen-nhan-luong"></a>
+#### 3.3.2 Case 2: Chứng thực chữ ký trên Giấy ủy quyền nhận lương / bảo hiểm
 - **Bối cảnh:** Chị C đang nằm viện, nhờ em gái là chị D đến văn phòng chứng thực chữ ký trên Giấy ủy quyền nhận lương thay (chị C đã ký sẵn trên Giấy ủy quyền tại bệnh viện). Chị D đem theo CCCD của cả hai và Giấy ủy quyền đã ký.
 - **Hành vi thực tế:** Trường hợp đặc biệt: người ủy quyền (chị C) không có mặt trực tiếp tại quầy. Tuy nhiên, nghiệp vụ chứng thực chữ ký tại VPCC yêu cầu **người ký phải ký trực tiếp trước mặt người thực hiện chứng thực** (Điều 24 Nghị định 23/2015/NĐ-CP). Thư ký phải từ chối trường hợp này nếu chị C không có mặt.
 - **Luồng xử lý trên hệ thống:**
@@ -1257,27 +1230,22 @@ Dưới đây là các kịch bản nghiệp vụ thực tế của phân hệ *
     - **Bước 3 - Nhập form KH:** Thư ký nhập CCCD chị C (người ủy quyền) → auto-fill CRM thông tin chị C. Bấm "Thêm người ký" để nhập thông tin chị D (người được ủy quyền).
     - **Bước 4 - Báo phí:** Hệ thống tính phí: $1\ \text{chữ ký} \times 1\ \text{bản} \times 15.000đ = 15.000đ$. Thư ký báo phí trọn gói $30.000đ$.
     - **Bước 5 - Checklist:** Hệ thống hiển thị checklist cho "Giấy ủy quyền nhận lương / bảo hiểm":
-      - `[✓]` Giấy tờ tùy thân (CCCD) của người ủy quyền còn hạn.
-      - `[✓]` Giấy tờ tùy thân (CCCD) của người được ủy quyền còn hạn.
       - **`[!] Người ủy quyền có mặt trực tiếp tại quầy và ký trước mặt người chứng thực (BẮT BUỘC)`**: Thư ký xác nhận chị C **không có mặt** → tích chọn `Không đạt (Fail)`.
       - Hệ thống lập tức kích hoạt cơ chế khóa bảo vệ: **Khóa toàn bộ nút "In Lời chứng"**, không cho phép hồ sơ tiếp tục.
     - **Xử lý từ chối:** Thư ký bấm **"Từ chối hồ sơ"**, chọn lý do: *"Người yêu cầu chứng thực không ký trước mặt người thực hiện chứng thực theo quy định tại Khoản 2 Điều 24 Nghị định 23/2015/NĐ-CP"*. Hệ thống ghi Audit Log, in Phiếu từ chối tự động. Thư ký hướng dẫn chị D hai phương án:
       - *Phương án 1:* Đưa chị C đến văn phòng ký trực tiếp.
       - *Phương án 2:* Liên hệ đặt lịch chứng thực ngoài trụ sở (tại bệnh viện) với phụ phí dịch vụ ngoài giờ/ngoài văn phòng.
 
-<a id="3.3.4-case-4-chung-thuc-uy-quyen-xe-may"></a>
-#### 3.3.4 Case 4: Chứng thực chữ ký trên Giấy ủy quyền xe máy
+<a id="3.3.3-case-3-chung-thuc-uy-quyen-xe-may"></a>
+#### 3.3.3 Case 3: Chứng thực chữ ký trên Giấy ủy quyền xe máy
 - **Bối cảnh:** Anh E đến văn phòng yêu cầu chứng thực chữ ký trên Giấy ủy quyền cho bạn (anh F) sử dụng xe máy của mình để đi tỉnh. Anh E mang theo CCCD, Giấy đăng ký xe máy bản gốc và Giấy ủy quyền đã soạn sẵn.
 - **Hành vi thực tế:** Giấy ủy quyền sử dụng xe máy là văn bản phổ biến, không bắt buộc tra cứu UCHI (không phải giao dịch chuyển nhượng quyền sở hữu tài sản bất động sản). Tuy nhiên, Thư ký cần đối khớp thông tin chủ xe trên Giấy đăng ký xe với thông tin người ủy quyền.
 - **Luồng xử lý trên hệ thống:**
     - **Bước 1 - Tạo hồ sơ:** Thư ký tạo hồ sơ mới, chọn dịch vụ **"Chứng thực chữ ký"**.
     - **Bước 2 - Chọn loại văn bản:** Thư ký chọn loại **"Giấy ủy quyền xe máy / phương tiện"** từ danh mục.
-    - **Bước 3 - Nhập form KH:** Anh E đọc SĐT → Thư ký nhập vào CRM → auto-fill Họ tên, CCCD, địa chỉ. Bấm "Thêm người ký" nhập thông tin anh F (người được ủy quyền, nhập CCCD thủ công). *(Thư ký bỏ qua trường địa chỉ chi tiết của anh F để đẩy nhanh tiến độ, sẽ bổ sung ở bước 7)*.
+    - **Bước 3 - Nhập form KH:** Anh E đọc SĐT → Thư ký nhập vào CRM → auto-fill thông tin với khách hàng cũ: Họ tên, CCCD, địa chỉ. Bấm "Thêm người ký" nhập thông tin anh F (người được ủy quyền, nhập CCCD thủ công). *(Thư ký bỏ qua trường địa chỉ chi tiết của anh F để đẩy nhanh tiến độ, sẽ bổ sung ở bước 7)*.
     - **Bước 4 - Báo phí:** Hệ thống tính phí: $1\ \text{chữ ký} \times 2\ \text{bản} \times 15.000đ = 30.000đ$. Thư ký báo phí trọn gói $50.000đ$ (gồm phí dịch vụ photo giấy tờ xe, in ấn). Nhập "Tổng thực thu" = $50.000đ$.
     - **Bước 5 - Checklist:** Hệ thống hiển thị checklist cho "Giấy ủy quyền xe máy / phương tiện":
-      - `[✓]` Xác nhận anh E có năng lực hành vi dân sự đầy đủ.
-      - `[✓]` CCCD anh E còn hạn sử dụng.
-      - `[✓]` Đối khớp khuôn mặt anh E với ảnh trên CCCD.
       - `[✓]` Đối khớp tên chủ xe trên Giấy đăng ký xe với tên trên CCCD anh E.
       - `[✓]` Giấy đăng ký xe bản chính còn hiệu lực, không tẩy xóa.
       - `[✓]` Nội dung Giấy ủy quyền ghi rõ loại xe, biển số, thời hạn ủy quyền.
