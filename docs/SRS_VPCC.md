@@ -1,5 +1,5 @@
 # Tài liệu Đặc tả Yêu cầu Phần mềm (Software Requirements Specification - SRS)
-## Hệ thống ERP/CRM Văn phòng Công chứng )
+## Hệ thống ERP/CRM Văn phòng Công chứng
 
 **Phiên bản:** 1.0  
 **Đơn vị phát triển:** Danish Software  
@@ -952,7 +952,7 @@ Quy trình sử dụng phần mềm đối với nghiệp vụ Chứng thực ch
 
 <a id="2.7-quy-tac-nghiep-vu-ke-toan"></a>
 ### 2.7 Tài liệu Khảo sát Nghiệp vụ Kế toán & Quy tắc Phần mềm VPCC
-*(Tài liệu khảo sát thực tế bộ phận Kế toán - Nghiệp vụ và thiết lập quy tắc hệ thống từ [ketoan.md](file:///Users/vuminhhoang/Desktop/danish/VPCC/ketoan.md))*
+*(Tài liệu khảo sát thực tế bộ phận Kế toán - Nghiệp vụ và thiết lập quy tắc hệ thống từ [duc_note.md](file:///Users/vuminhhoang/Desktop/danish/VPCC/duc_note.md))*
 
 <a id="2.7.1-quan-ly-he-thong-so-sach-cong-chung"></a>
 #### 2.7.1 Quản lý hệ thống Sổ sách Công chứng (Đồng bộ số liệu)
@@ -1109,18 +1109,24 @@ Dưới đây là các kịch bản nghiệp vụ thực tế của phân hệ *
 - **Bối cảnh:** Bà D mang một quyết định hành chính có đóng dấu "MẬT" hoặc một học bạ bị tẩy xóa điểm số, rách nát mất chữ đến yêu cầu sao y.
 - **Hành vi thực tế:** Tuân thủ Điều 22 Nghị định 23/2015/NĐ-CP, cấm chứng thực bản sao từ bản chính đối với giấy tờ bị tẩy xóa, sửa chữa, rách nát hư hỏng không xác định được nội dung, hoặc có đóng dấu mật/cấm sao chụp.
 - **Luồng xử lý trên hệ thống:**
-  - Thư ký tiếp nhận và kiểm tra bản gốc tài liệu của bà D, phát hiện tài liệu bị tẩy xóa hoặc đóng dấu "MẬT".
-  - Thư ký truy cập hồ sơ trên hệ thống, bấm nút **Từ chối hồ sơ**.
-  - Hệ thống hiển thị form yêu cầu chọn lý do từ chối luật định:
-    1. Bản chính bị tẩy xóa, sửa chữa, thêm, bớt nội dung không hợp lệ.
-    2. Bản chính bị hư hỏng, rách nát, không xác định được nội dung.
-    3. Bản chính đóng dấu mật hoặc ghi rõ không được sao chụp.
-    4. Bản chính có nội dung trái pháp luật, đạo đức xã hội.
-    5. Lý do khác (cho phép nhập tay).
-  - Thư ký chọn lý do tương ứng (ví dụ: "Bản chính đóng dấu mật").
-  - Hệ thống ghi nhận trạng thái hồ sơ là **Đã hủy (Từ chối nghiệp vụ)**, tự động lưu nhật ký hệ thống (Audit Log) chứa thông tin Thư ký từ chối, lý do từ chối và timestamp.
-  - Hệ thống hỗ trợ in **Phiếu từ chối chứng thực** tự động chứa căn cứ pháp lý của Điều 22 Nghị định 23/2015/NĐ-CP để gửi cho khách hàng.
-
+  Hệ thống thiết kế luồng xử lý từ chối linh hoạt chia làm 2 nhánh để tối ưu hóa thời gian giao dịch tại quầy:
+  - ***Nhánh 1 (Từ chối nhanh/Trực quan ngay từ đầu - chưa nhập thông tin khách):***
+    - Thư ký kiểm tra thấy ngay lỗi thô trên tài liệu (dấu MẬT, tẩy xóa rõ rệt).
+    - Khách hàng không cần cung cấp SĐT/CCCD và có thể ra về ngay.
+    - Thư ký bấm nút **"Ghi nhận từ chối nhanh" (Quick Reject Log)** trên màn hình chính, chỉ cần tích chọn lý do (ví dụ: *"Bản chính đóng dấu mật"*).
+    - Hệ thống tạo một bản ghi nặc danh ghi nhận lượt từ chối để phục vụ báo cáo thống kê và đo lường tỷ lệ phục vụ.
+    ( có thể xin sdt của khách hàng để chăm sóc sau này)
+  - ***Nhánh 2 (Từ chối trong quá trình xử lý - đã nhập thông tin khách):***
+    - Giấy tờ thoạt nhìn bình thường, Thư ký đã quét CCCD/SĐT tạo hồ sơ và chuyển xử lý.
+    - Trong quá trình đối chiếu kỹ hoặc khi làm checklist, Thư ký mới phát hiện lỗi.
+    - Thư ký bấm nút **Từ chối hồ sơ** trên màn hình hiện hành. Hệ thống hiển thị form yêu cầu chọn lý do từ chối luật định:
+      1. Bản chính bị tẩy xóa, sửa chữa, thêm, bớt nội dung không hợp lệ.
+      2. Bản chính bị hư hỏng, rách nát, không xác định được nội dung.
+      3. Bản chính đóng dấu mật hoặc ghi rõ không được sao chụp.
+      4. Bản chính có nội dung trái pháp luật, đạo đức xã hội.
+      5. Lý do khác (cho phép nhập tay).
+    - Thư ký chọn lý do tương ứng (ví dụ: "Bản chính đóng dấu mật").
+    - Hệ thống chuyển trạng thái hồ sơ thành **Đã hủy (Từ chối nghiệp vụ)**, tự động ghi nhận ID Thư ký, lý do và timestamp vào Sổ nhật ký hệ thống (Audit Log) bất biến để đồng bộ cảnh báo giữa các quầy trong văn phòng.
 <a id="3.2-nghiep-vu-dich-thuat-cong-chung"></a>
 ### 3.2 Nghiệp vụ Dịch thuật công chứng (Certified Translation Cases)
 
@@ -1182,12 +1188,16 @@ Dưới đây là các kịch bản nghiệp vụ thực tế của phân hệ *
 - **Bối cảnh:** Ông C mang một Giấy chứng nhận độc thân do cơ quan Thẩm quyền bang Texas (Mỹ) cấp bằng tiếng Anh đến yêu cầu dịch sang tiếng Việt và công chứng để làm thủ tục đăng ký kết hôn với người Việt Nam.
 - **Hành vi thực tế:** Theo quy định tại Điều 22 và Điều 32 Nghị định 23/2015/NĐ-CP, giấy tờ, văn bản do cơ quan có thẩm quyền của nước ngoài cấp phải được Hợp pháp hóa lãnh sự tại Bộ Ngoại giao Việt Nam (trừ trường hợp được miễn trừ theo điều ước quốc tế) thì mới được phép dịch thuật công chứng chữ ký người dịch. Thư ký nếu sơ suất dịch và công chứng các giấy tờ này sẽ vi phạm nghiêm trọng luật tư pháp.
 - **Luồng xử lý trên hệ thống:**
-    - Thư ký tiếp nhận tài liệu của ông C, khởi tạo hồ sơ dịch thuật trên hệ thống, tích chọn nhãn loại giấy tờ: **Văn bản nước ngoài cấp**.
-    - Hệ thống tự động tải bộ **Checklist chặn nghiệp vụ nước ngoài**, trong đó hiển thị đầu mục bắt buộc có dấu sao đỏ: `[ ] Kiểm tra tem và con dấu Hợp pháp hóa lãnh sự của Cục Lãnh sự/Sở Ngoại vụ - Bộ Ngoại giao Việt Nam`.
-    - Thư ký kiểm tra thực tế mặt sau bản gốc tài liệu của ông C, phát hiện hoàn toàn không có tem hợp pháp hóa lãnh sự (chỉ có con dấu của Công chứng viên tại Mỹ - Notary Public). Thư ký tích chọn giá trị `Không đạt (Fail)` tại đầu mục checklist này trên phần mềm.
-    - Hệ thống lập tức kích hoạt cơ chế khóa bảo vệ: **Khóa toàn bộ nút "In Lời chứng" và nút "Giao việc cho CTV"**, không cho phép hồ sơ tiếp tục luồng vận hành bình thường.
-    - Thư ký bấm nút **Từ chối tiếp nhận hồ sơ**. Hệ thống hiển thị popup yêu cầu xác nhận lý do từ chối luật định, Thư ký tích chọn lý do: *“Văn bản do cơ quan thẩm quyền nước ngoài cấp chưa được hợp pháp hóa lãnh sự theo quy định tại Khoản 1 Điều 22 Nghị định 23/2015/NĐ-CP”*.
-    - Hệ thống chuyển trạng thái hồ sơ thành **Đã hủy (Từ chối nghiệp vụ)**, tự động ghi nhận ID Thư ký, lý do từ chối và timestamp vào Sổ nhật ký hệ thống (Audit Log) bất biến. Đồng thời, hệ thống hỗ trợ Thư ký bấm nút "In Phiếu từ chối chứng thực" tự động để gửi cho ông C, trên phiếu ghi rõ căn cứ pháp lý lý do từ chối và hướng dẫn ông C đến cơ quan ngoại giao hợp pháp hóa tài liệu trước khi quay lại văn phòng.
+    Hệ thống hỗ trợ 2 nhánh xử lý để tối ưu hóa thời gian vận hành tại quầy:
+    - ***Nhánh 1 (Từ chối nhanh ngay từ đầu - chưa tạo hồ sơ):***
+      - Thư ký kiểm tra thấy văn bản nước ngoài hoàn toàn không có tem hợp pháp hóa lãnh sự và không thuộc diện miễn trừ.
+      - Thư ký giải thích trực tiếp cho khách và bấm nút **"Ghi nhận từ chối nhanh" (Quick Reject Log)** nặc danh trên hệ thống, chọn lý do *"Chưa hợp pháp hóa lãnh sự"*. Khách có thể mang tài liệu về ngay mà không cần cung cấp SĐT/CCCD.
+    - ***Nhánh 2 (Từ chối trong quá trình xử lý - đã tạo hồ sơ):***
+      - Thư ký đã khởi tạo hồ sơ dịch thuật (`DT-YYYYMMDD-XXXXX`) trên hệ thống sau khi xin thông tin khách hàng.
+      - Khi thực hiện **Checklist chặn nghiệp vụ nước ngoài**, Thư ký tích chọn giá trị `Không đạt (Fail)` tại đầu mục `Kiểm tra tem và con dấu Hợp pháp hóa lãnh sự`.
+      - Hệ thống lập tức kích hoạt cơ chế khóa bảo vệ: **Khóa toàn bộ nút "In Lời chứng" và nút "Giao việc cho CTV"**, không cho phép hồ sơ tiếp tục.
+      - Thư ký bấm nút **Từ chối tiếp nhận hồ sơ**. Hệ thống hiển thị popup yêu cầu xác nhận lý do từ chối luật định, Thư ký tích chọn lý do: *“Văn bản do cơ quan thẩm quyền nước ngoài cấp chưa được hợp pháp hóa lãnh sự theo quy định tại Khoản 1 Điều 22 Nghị định 23/2015/NĐ-CP”*.
+      - Hệ thống chuyển trạng thái hồ sơ thành **Đã hủy (Từ chối nghiệp vụ)**, tự động ghi nhận ID Thư ký, lý do từ chối và timestamp vào Sổ nhật ký hệ thống (Audit Log) bất biến để lưu vết cảnh báo và phục vụ báo cáo hiệu suất. Đồng thời hỗ trợ in **Phiếu từ chối chứng thực** tự động chứa căn cứ pháp lý để gửi cho khách.
 
 <a id="3.3-nghiep-vu-chung-thuc-chu-ky"></a>
 ### 3.3 Nghiệp vụ Chứng thực chữ ký (Signature Certification Cases)
