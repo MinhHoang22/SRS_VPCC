@@ -529,7 +529,7 @@ flowchart TD
     DT_Config --> DT_CHECKLIST[5b. Kiểm tra tài liệu]
     DT_CHECKLIST --> DT_CALCULATE[6b. Tính toán chi phí & Báo giá]
     DT_CALCULATE --> DT_DEPOSIT[7b. Yêu cầu khách chuyển tiền cọc trước]
-    DT_CALCULATE --> DT_SEARCH[8b. Tìm và gán CTV]
+    DT_DEPOSIT --> DT_SEARCH[8b. Tìm và gán CTV]
     DT_SEARCH -->  DT_Assign[9b. CTV nhận việc & Ký NDA online]
     DT_Assign --> DT_Translate[10b. CTV dịch thuật & Upload bản dịch nháp]
     DT_Translate --> DT_Check[11b. KH, thư ký duyệt chất lượng & Thư ký sinh Lời chứng dịch]
@@ -625,12 +625,12 @@ Quy trình sử dụng phần mềm đối với phân hệ nghiệp vụ Dịch
     - Khi hệ thống mở khóa, Thư ký lựa chọn Cộng tác viên (CTV) phù hợp từ danh sách phân quyền của hệ thống và thiết lập deadline.
 
 5. **Phân công & Quản lý cộng tác viên từ xa (Collaborative Translation):**
-    - Hệ thống gửi thông báo đẩy (Push Notification/Email) đến tài khoản của CTV được chỉ định.
+    - Hệ thống gửi thông báo đến CTV được chỉ định.
     - **Ràng buộc bảo mật:** CTV đăng nhập vào hệ thống, bắt buộc phải click vào nút **"Đồng ý cam kết bảo mật NDA trực tuyến"** thì nút **"Tải tài liệu gốc"** mới hiển thị.
     - Trong quá trình làm việc, CTV có thể cập nhật thanh tiến độ theo phần trăm (%) công việc và thực hiện upload file dịch hoàn chỉnh (định dạng `.docx`) lên hệ thống khi hoàn thành.
 
 6. **Phê duyệt bản nháp trực tuyến & Duyệt chất lượng:**
-    - **Gửi bản nháp qua Zalo OA:** Thư ký nhận thông báo file dịch hoàn thành, bấm nút **"Gửi bản nháp duyệt"**. Hệ thống tự động xuất file PDF bản dịch nháp có chèn chữ chìm (Watermark) *"BẢN NHÁP KIỂM TRA - CHƯA CÓ GIÁ TRỊ PHÁP LÝ"* gửi qua Zalo OA cho khách hàng kiểm tra thông tin (họ tên, ngày sinh, số hiệu) từ xa trước khi in ấn.
+    - **Gửi bản nháp qua Zalo OA:** Thư ký nhận thông báo file dịch hoàn thành, bấm nút **"Gửi bản nháp duyệt"**. Hệ thống tự động xuất file PDF bản dịch nháp có chèn chữ chìm (Watermark) *"BẢN NHÁP KIỂM TRA - CHƯA CÓ GIÁ TRỊ PHÁP LÝ"* gửi qua kênh liên lạc được cấu hình cho khách hàng kiểm tra thông tin (họ tên, ngày sinh, số hiệu) từ xa trước khi in ấn.
     - Khách hàng phản hồi xác nhận chuẩn trực tuyến, Thư ký thực hiện tích chọn checklist chất lượng dịch thuật và nhấn nút **"Duyệt bản dịch"**.
 
 7. **Sinh Lời chứng dịch thuật & Ký chứng thực:**
