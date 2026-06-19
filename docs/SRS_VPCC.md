@@ -27,29 +27,33 @@
     - [2.4.3 Phân rã module Quản lý khách hàng (CRM)](#243-phân-rã-module-quản-lý-khách-hàng-crm)
     - [2.4.4 Phân rã module Lưu trữ hồ sơ điện tử (Document Archive)](#244-phân-rã-module-lưu-trữ-hồ-sơ-điện-tử-document-archive)
     - [2.4.5 Phân rã module Quản lý phí & Tài chính (Fee & Billing)](#245-phân-rã-module-quản-lý-phí--tài-chính-fee--billing)
-  - [2.5 Đặc tả các usecase (Use Case Specifications)](#25-đặc-tả-các-usecase-use-case-specifications)
-    - [2.5.1 Nhóm Use Case Xác thực & Hệ thống (Auth & Admin)](#251-nhóm-use-case-xác-thực--hệ-thống-auth--admin)
+  - [2.5 Quy trình sử dụng phần mềm (Software User Workflow)](#2.5-quy-trinh-su-dung-phan-mem)
+    - [2.5.1 Quy trình Nghiệp vụ Sao y bản chính](#2.5.1-quy-trinh-nghiep-vu-sao-y-ban-chinh)
+    - [2.5.2 Quy trình Nghiệp vụ Dịch thuật công chứng](#2.5.2-quy-trinh-nghiep-vu-dich-thuat-cong-chung)
+    - [2.5.3 Quy trình Nghiệp vụ Chứng thực chữ ký](#2.5.3-quy-trinh-nghiep-vu-chung-thuc-chu-ky)
+  - [2.6 Đặc tả các usecase (Use Case Specifications)](#2.6-dac-ta-cac-usecase)
+    - [2.6.1 Nhóm Use Case Xác thực & Hệ thống (Auth & Admin)](#2.6.1-nhom-use-case-xac-thuc-he-thong)
       - [UC001: Đăng nhập hệ thống](#uc001-đăng-nhập-hệ-thống)
       - [UC002: Thay đổi mật khẩu](#uc002-thay-đổi-mật-khẩu)
       - [UC003: Quản lý & Cấp tài khoản nhân sự](#uc003-quản-lý--cấp-tài-khoản-nhân-sự)
       - [UC004: Phân quyền & Thiết lập vai trò (RBAC)](#uc004-phân-quyền--thiết-lập-vai-trò-rbac)
-    - [2.5.2 Nhóm Use Case Nghiệp vụ (Dossier & Checklist)](#252-nhóm-use-case-nghiệp-vụ-dossier--checklist)
+    - [2.6.2 Nhóm Use Case Nghiệp vụ (Dossier & Checklist)](#2.6.2-nhom-use-case-nghiep-vu)
       - [UC005: Tiếp nhận khách hàng & Khởi tạo hồ sơ](#uc005-tiếp-nhận-khách-hàng--khởi-tạo-hồ-sơ)
       - [UC006: Thẩm định hồ sơ & Duyệt Checklist chặn](#uc006-thẩm-định-hồ-sơ--duyệt-checklist-chặn)
       - [UC007: Soạn thảo Lời chứng tự động](#uc007-soạn-thảo-lời-chứng-tự-động)
       - [UC008: Quét & Lưu trữ hồ sơ điện tử đã đóng dấu](#uc008-quét--lưu-trữ-hồ-sơ-điện-tử-đã-đóng-dấu)
-    - [2.5.3 Nhóm Use Case Tài chính & Chăm sóc (Billing & CRM)](#253-nhóm-use-case-tài-chính--chăm-sóc-billing--crm)
+    - [2.6.3 Nhóm Use Case Tài chính & Chăm sóc (Billing & CRM)](#2.6.3-nhom-use-case-tai-chinh-cham-soc)
       - [UC009: Thu phí & Đối soát dòng tiền](#uc009-thu-phí--đối-soát-dòng-tiền)
       - [UC010: Xuất hóa đơn điện tử tự động (VNPT/Vĩnh Hy)](#uc010-xuất-hoa-đơn-điện-tử-tự-động-vnptvĩnh-hy)
       - [UC011: Chăm sóc khách hàng tự động qua Zalo OA](#uc011-chăm-sóc-khách-hàng-tự-động-qua-zalo-oa)
-- **[Chương 3. Các kịch bản nghiệp vụ thực tế (Real-world Cases)](#chương-3-các-kịch-bản-nghiệp-vụ-thực-tế-real-world-cases)**
-  - [3.1 Nghiệp vụ Sao y bản chính](#31-nghiệp-vụ-sao-y-bản-chính)
-    - [3.1.1 Case 1: Sao y CCCD / Giấy tờ tùy thân của cá nhân tại quầy (Siêu tốc)](#311-case-1-sao-y-cccd-giấy-tờ-tùy-thân-của-cá-nhân-tại-quầy-siêu-tốc)
-    - [3.1.2 Case 2: Sao y Sổ đỏ / Giấy tờ sở hữu tài sản có kiểm tra ngăn chặn (UCHI)](#312-case-2-sao-y-sổ-đỏ-giấy-tờ-sở-hữu-tài-sản-có-kiểm-tra-ngăn-chặn-uchi)
-    - [3.1.3 Case 3: Sao y số lượng lớn (Vượt trần quy định) & Tự động tách hóa đơn](#313-case-3-sao-y-số-lượng-lớn-vượt-trần-quy-định-tự-động-tách-hóa-đơn)
-    - [3.1.4 Case 4: Doanh nghiệp sao y giấy phép & Yêu cầu hóa đơn VAT (B2B)](#314-case-4-doanh-nghiệp-sao-y-giấy-phép-yêu-cầu-hóa-đơn-vat-b2b)
-    - [3.1.5 Case 5: Sao y giấy tờ có yếu tố nước ngoài (Yêu cầu Hợp pháp hóa lãnh sự)](#315-case-5-sao-y-giấy-tờ-có-yếu-tố-nước-ngoài-yêu-cầu-hợp-pháp-hóa-lãnh-sự)
-    - [3.1.6 Case 6: Từ chối sao y các giấy tờ bị cấm chứng thực (Tẩy xóa, đóng dấu MẬT, rách nát)](#316-case-6-từ-chối-sao-y-các-giấy-tờ-bị-cấm-chứng-thực-tẩy-xóa-đóng-dấu-mật-rách-nát)
+- **[Chương 3. Các kịch bản nghiệp vụ thực tế (Real-world Cases)](#3-cac-kich-ban-nghiep-vu-thuc-te)**
+  - [3.1 Nghiệp vụ Sao y bản chính](#3.1-nghiep-vu-sao-y-ban-chinh)
+    - [3.1.1 Case 1: Sao y CCCD / Giấy tờ tùy thân của cá nhân tại quầy (Siêu tốc)](#3.1.1-case-1-sao-y-cccd)
+    - [3.1.2 Case 2: Sao y Sổ đỏ / Giấy tờ sở hữu tài sản có kiểm tra ngăn chặn (UCHI)](#3.1.2-case-2-sao-y-so-do)
+    - [3.1.3 Case 3: Sao y số lượng lớn (Vượt trần quy định) & Tự động tách hóa đơn](#3.1.3-case-3-sao-y-so-luong-lon)
+    - [3.1.4 Case 4: Doanh nghiệp sao y giấy phép & Yêu cầu hóa đơn VAT (B2B)](#3.1.4-case-4-doanh-nghiep-sao-y-giay-phep)
+    - [3.1.5 Case 5: Sao y giấy tờ có yếu tố nước ngoài (Yêu cầu Hợp pháp hóa lãnh sự)](#3.1.5-case-5-sao-y-giay-to-nuoc-ngoai)
+    - [3.1.6 Case 6: Từ chối sao y các giấy tờ bị cấm chứng thực (Tẩy xóa, đóng dấu MẬT, rách nát)](#3.1.6-case-6-tu-choi-sao-y)
 
 ---
 
@@ -171,7 +175,7 @@ Module trung tâm lưu trữ dữ liệu khách hàng, hỗ trợ trực tiếp 
 - **Tiếp nhận & Tạo hồ sơ:** Khởi tạo hồ sơ nghiệp vụ, tự động cấp mã hồ sơ duy nhất, chọn dịch vụ (Sao y, Dịch thuật, Chứng thực chữ ký). Tích hợp tra cứu CRM để auto-fill thông tin khách hàng.
 - **Checklist động & Kiểm soát lỗi:** Áp đặt các danh sách kiểm tra bắt buộc tùy thuộc vào loại giấy tờ để ngăn ngừa lỗi kỹ thuật của Thư ký.
 - **Tra cứu ngăn chặn (UCHI):** Kết nối API hệ thống UCHI của Sở Tư pháp để tra cứu trạng thái phong tỏa của thửa đất/tài sản rủi ro cao.
-- **Soạn thảo & Quản lý phiên bản:** Tự động trộn dữ liệu hồ sơ vào mẫu Lời chứng, quản lý các phiên bản tài liệu (Nháp, Đang xử lý, Chờ ký, Đã ký).
+- **Soạn thảo & Quản lý phiên bản:** Tự động điền dữ liệu hồ sơ vào biểu mẫu Lời chứng có sẵn, quản lý các phiên bản tài liệu (Nháp, Đang xử lý, Chờ ký, Đã ký).
 - **Ký duyệt & Đóng dấu:** Công chứng viên ký duyệt và đóng dấu lời chứng vật lý (quyền hạn độc quyền).
 - **Scan & Lưu trữ tài liệu:** Hỗ trợ quét và lưu trữ bản chụp dấu đỏ đã hoàn thành lên hệ thống đám mây.
 
@@ -477,9 +481,170 @@ flowchart LR
     UC010 -.->|include| UC_Split
 ```
 
-### 2.5 Đặc tả các usecase (Use Case Specifications)
+<a id="2.5-quy-trinh-su-dung-phan-mem"></a>
+### 2.5 Quy trình sử dụng phần mềm (Software User Workflow)
 
-#### 2.5.1 Nhóm Use Case Xác thực & Hệ thống (Auth & Admin)
+Phần này mô tả quy trình tương tác chi tiết từng bước trên phần mềm NotaryOS giữa các vai trò đối với 3 nghiệp vụ cốt lõi: **Sao y bản chính**, **Dịch thuật công chứng** và **Chứng thực chữ ký**. Vai trò nhập liệu và xử lý tại quầy được giao hoàn toàn cho **Thư ký nghiệp vụ**, không sử dụng vai trò Lễ tân.
+
+#### A. Sơ đồ hoạt động phối hợp (Swimlanes Activity Diagram)
+
+Dưới đây là sơ đồ thể hiện luồng hoạt động phối hợp giữa các vai trò trên hệ thống:
+
+```mermaid
+flowchart TD
+    subgraph Roles ["CÁC VAI TRÒ TRONG HỆ THỐNG"]
+        direction LR
+        R_Sec["📝 Thư ký nghiệp vụ"]
+        R_CTV["🧑‍💻 CTV Dịch thuật"]
+        R_CCV["⚖️ Công chứng viên"]
+        R_Acc["💰 Kế toán"]
+        R_Sys["🤖 Hệ thống tự động"]
+    end
+
+    %% General Workflow Sequence
+    Start([Bắt đầu tiếp nhận]) --> Input[1. Tiếp nhận & Tra cứu CRM]
+    Input --> ChooseBranch{2. Chọn loại nghiệp vụ}
+
+    %% Branch 1: Sao y
+    ChooseBranch -- Sao y bản chính --> SY_Calc[3a. Cấu hình trang/bản & Tính phí]
+    SY_Calc --> SY_Checklist[4a. Duyệt Checklist động & Tra cứu UCHI Sổ đỏ]
+    SY_Checklist --> SY_Template[5a. Tự động điền biểu mẫu Lời chứng Sao y]
+    SY_Template --> CCV_Sign_SY[6a. CCV ký đóng dấu bản cứng offline]
+    CCV_Sign_SY --> SY_Scan[7a. Quét bản cứng dấu đỏ & Tải lên]
+
+    %% Branch 2: Dịch thuật
+    ChooseBranch -- Dịch thuật công chứng --> DT_Config[3b. Chọn ngôn ngữ & Chọn CTV]
+    DT_Config --> DT_Assign[4b. CTV nhận việc & Ký NDA online]
+    DT_Assign --> DT_Translate[5b. CTV dịch thuật & Upload bản dịch nháp]
+    DT_Translate --> DT_Check[6b. Thư ký duyệt chất lượng & Sinh Lời chứng dịch]
+    DT_Check --> CTV_Sign_DT[7b. CTV ký chữ ký mẫu & CCV ký đóng dấu offline]
+    CTV_Sign_DT --> DT_Scan[8b. Quét bản dịch dấu đỏ & Tải lên]
+
+    %% Branch 3: Chứng thực chữ ký
+    ChooseBranch -- Chứng thực chữ ký --> CT_CRM[3c. Nhập danh sách người ký]
+    CT_CRM --> CT_Template[4c. Chọn template Lời chứng & Tính phí]
+    CT_Template --> CT_Checklist[5c. Duyệt Checklist & Đối chiếu định danh CCCD]
+    CT_Checklist --> CT_Sign[6c. Khách hàng ký/điểm chỉ trực tiếp tại quầy]
+    CT_Sign --> CCV_Sign_CT[7c. CCV ký Lời chứng & Đóng dấu offline]
+    CCV_Sign_CT --> CT_Scan[8c. Quét bản cứng dấu đỏ & Tải lên]
+
+    %% Common End Phase
+    SY_Scan --> CollectFee[Thu phí tại quầy & Xác nhận trên PM]
+    DT_Scan --> CollectFee
+    CT_Scan --> CollectFee
+
+    CollectFee --> AccReconcile[Đối soát dòng tiền thực nhận]
+    AccReconcile --> SysInvoice[Tự động bóc tách VAT & Gọi API Xuất Hóa đơn]
+    SysInvoice --> ZaloSend[Gửi link Hóa đơn VAT & Cảm ơn qua Zalo OA]
+    ZaloSend --> EndNode([Hoàn tất hồ sơ])
+```
+
+<a id="2.5.1-quy-trinh-nghiep-vu-sao-y-ban-chinh"></a>
+#### 2.5.1 Quy trình Nghiệp vụ Sao y bản chính (Certified Copying Workflow)
+
+Quy trình sử dụng phần mềm đối với nghiệp vụ Sao y bản chính được thực hiện tuần tự như sau:
+
+1. **Tiếp nhận & Định danh Khách hàng (CRM):**
+   - Thư ký nghiệp vụ yêu cầu khách hàng cung cấp số điện thoại hoặc Căn cước công dân (CCCD).
+   - Thư ký nhập thông tin vào ô tìm kiếm nhanh CRM trên phần mềm.
+   - **Hệ thống tự động tra cứu:** Nếu khách hàng đã từng giao dịch, hệ thống tự động điền (Auto-fill) các thông tin: Họ tên, số định danh cá nhân, địa chỉ liên hệ. Nếu khách hàng mới, Thư ký nhập nhanh các trường thông tin và lưu vào cơ sở dữ liệu CRM.
+2. **Khởi tạo Hồ sơ & Áp phí tự động:**
+   - Thư ký chọn loại dịch vụ là "Sao y bản chính", chọn loại giấy tờ tương ứng từ danh sách cấu hình sẵn (CCCD, Sổ đỏ, Bằng đại học, Học bạ...).
+   - Thư ký nhập số trang của tài liệu gốc và số bản sao y khách hàng yêu cầu.
+   - **Hệ thống tự động tính toán:** Tính phí gốc theo quy định nhà nước ($Phí\ gốc = Số\ trang \times Số\ bản \times 2.000đ$).
+   - Thư ký báo phí trọn gói với khách hàng (bao gồm cả phí dịch vụ photo, in ấn, bìa hồ sơ, tra cứu...). Nhập số tiền thỏa thuận thực thu vào trường "Tổng thực thu". Hệ thống tự động ghi nhận phần chênh lệch thù lao dịch vụ khác.
+   - Thư ký tích chọn checkbox `Khách hàng đồng ý báo phí` và bấm "Lưu hồ sơ". Hệ thống tạo mã hồ sơ duy nhất (dạng `SY-YYYYMMDD-XXXXX`) ở trạng thái "Đang xử lý".
+3. **Thực hiện Checklist & Tra cứu Ngăn chặn (UCHI):**
+   - Hệ thống tải động danh sách Checklist kiểm soát lỗi nghiệp vụ tương ứng với loại giấy tờ đã chọn.
+   - Thư ký thực hiện đối chiếu thực tế bản chính và tích chọn hoàn thành 100% các đầu mục bắt buộc trên giao diện phần mềm (kiểm tra rách nát, tẩy xóa, dấu giáp lai, thời hạn sử dụng...).
+   - *Đối với các giấy tờ sở hữu tài sản (như Sổ đỏ/Sổ hồng):* Thư ký bắt buộc phải click vào nút "UCHI Search". Hệ thống gọi API thời gian thực đến CSDL ngăn chặn của Sở Tư pháp.
+     - **Nếu có ngăn chặn:** Hệ thống khóa nút in Lời chứng, đổi trạng thái hồ sơ thành "Bị ngăn chặn" và gửi cảnh báo đỏ. Thư ký thực hiện trả hồ sơ cho khách.
+     - **Nếu bình thường:** Hệ thống mở khóa bước tiếp theo.
+4. **Tự động điền & Tạo Lời chứng:**
+   - Thư ký nhấn nút "Sinh Lời chứng". Hệ thống tự động lấy thông tin từ hồ sơ điền vào biểu mẫu lời chứng tương ứng (Ví dụ: `TEMP-SAOY-01`).
+   - Thư ký xem trước bản nháp Lời chứng trên màn hình, chỉnh sửa thủ công nếu cần, sau đó nhấn "In Lời chứng" để chuyển lệnh in đến máy in vật lý tại văn phòng. Hồ sơ chuyển trạng thái sang "Chờ ký (CCV)".
+5. **Ký tên & Đóng dấu (Offline):**
+   - Thư ký kẹp bản sao y và Lời chứng vừa in trình Công chứng viên (CCV).
+   - CCV thực hiện đối chiếu vật lý bản chính và bản sao, ký tên và đóng dấu đỏ vật lý lên tài liệu.
+6. **Scan số hóa & Mở luồng thanh toán:**
+   - Thư ký đặt tài liệu đã có chữ ký, con dấu đỏ của CCV vào máy scan tại quầy và tải file scan (định dạng PDF/JPG, tối đa 25MB) lên hồ sơ phần mềm.
+   - Thư ký nhấn nút "Hoàn tất xử lý hồ sơ". Hệ thống chuyển trạng thái hồ sơ sang "Chờ thu phí".
+7. **Thu phí tại quầy:**
+   - Thư ký nhận tiền mặt, quẹt thẻ POS hoặc cho khách quét mã QR động chuyển khoản hiển thị trên màn hình.
+   - Chọn phương thức thanh toán tương ứng trên phần mềm và nhấn "Xác nhận nhận đủ tiền". Trạng thái hồ sơ chuyển sang "Chờ đối soát".
+8. **Đối soát & Phát hành Hóa đơn:**
+   - Kế toán đối chiếu tiền mặt thực thu hoặc kiểm tra biến động số dư tài khoản ngân hàng, nhấn "Xác nhận đối soát".
+   - **Hệ thống tự động xử lý tài chính:** Ghi nhận sổ cái bất biến, tự động tách hóa đơn nếu phí gốc vượt trần $200.000đ$ theo quy định pháp luật lệ phí, gọi API VNPT/Vĩnh Hy phát hành hóa đơn điện tử VAT gửi trực tuyến cho khách hàng. Trạng thái hồ sơ chuyển sang "Đã hoàn tất".
+9. **Chăm sóc Khách hàng:**
+   - Hệ thống tự động gửi tin nhắn Zalo OA chứa lời cảm ơn và link tra cứu/tải hóa đơn VAT cho khách hàng. Nếu khách hàng không đăng ký Zalo, hệ thống gửi SMS fallback.
+
+<a id="2.5.2-quy-trinh-nghiep-vu-dich-thuat-cong-chung"></a>
+#### 2.5.2 Quy trình Nghiệp vụ Dịch thuật công chứng (Certified Translation Workflow)
+
+Quy trình sử dụng phần mềm đối với nghiệp vụ Dịch thuật công chứng (chứng thực chữ ký người dịch) gồm các bước sau:
+
+1. **Tiếp nhận & CRM:**
+   - Thư ký nghiệp vụ tiếp nhận bản chính tài liệu cần dịch từ khách hàng, thu thập thông tin khách hàng nhập vào CRM để auto-fill hoặc tạo mới thông tin.
+2. **Cấu hình dịch thuật & Tính phí:**
+   - Thư ký chọn ngôn ngữ nguồn (ví dụ: Tiếng Việt) và ngôn ngữ đích (ví dụ: Tiếng Anh). Nhập số trang tài liệu cần dịch.
+   - Thư ký chọn Cộng tác viên dịch thuật (CTV) phù hợp từ danh sách CTV đã đăng ký chữ ký mẫu tại VPCC.
+   - **Hệ thống tự động tính toán phí:** Tính toán phí gốc chứng thực chữ ký người dịch ($15.000đ/chữ\ ký \times Số\ chữ\ ký$) và thù lao dịch thuật thỏa thuận dựa trên đơn giá ngôn ngữ đã cấu hình.
+   - Thư ký báo phí trọn gói với khách hàng, tích checkbox `Khách hàng đồng ý báo phí` và nhấn "Lưu hồ sơ". Trạng thái hồ sơ chuyển sang "Đang dịch".
+3. **Phân công & Dịch thuật ngầm (Collaborative Translation):**
+   - Hệ thống gửi thông báo phân công công việc đến tài khoản của CTV dịch thuật.
+   - CTV đăng nhập hệ thống, ký cam kết bảo mật thông tin (NDA) trực tuyến dành riêng cho hồ sơ này, tải file tài liệu cần dịch xuống.
+   - Sau khi hoàn thành bản dịch, CTV upload file dịch nháp (.docx) lên hệ thống.
+4. **Kiểm tra chất lượng & Sinh Lời chứng dịch:**
+   - Thư ký tải file dịch nháp về kiểm tra chất lượng. Nếu chưa đạt, gửi yêu cầu sửa kèm ghi chú cho CTV trên phần mềm.
+   - Khi bản dịch đạt yêu cầu, Thư ký nhấn nút "Duyệt bản dịch". Hệ thống tự động tải Checklist dịch thuật (đối chiếu tên riêng, số liệu, định dạng...).
+   - Thư ký tích chọn hoàn thành checklist, nhấn nút "Sinh Lời chứng dịch". Hệ thống tự động điền thông tin hồ sơ và thông tin CTV dịch thuật vào biểu mẫu lời chứng chứng thực chữ ký người dịch (Ví dụ: `TEMP-DICH-01`).
+   - Thư ký in lời chứng kẹp bản dịch. Trạng thái hồ sơ chuyển sang "Chờ ký (CCV)".
+5. **Ký chứng thực & Đóng dấu (Offline):**
+   - CTV đến văn phòng ký trực tiếp vào lời chứng dịch thuật trước mặt CCV (hoặc xác thực chữ ký số nếu được cấu hình).
+   - CCV ký tên xác nhận chữ ký người dịch và đóng dấu đỏ vật lý lên tài liệu dịch thuật công chứng.
+6. **Scan số hóa & Thu phí:**
+   - Thư ký scan bản cứng đã ký đóng dấu của CCV và CTV, tải file scan lên hệ thống. Nhấn "Hoàn tất xử lý". Trạng thái chuyển sang "Chờ thu phí".
+   - Thư ký thu phí tại quầy (Tiền mặt/Chuyển khoản/POS) và nhấn "Xác nhận nhận đủ tiền". Trạng thái chuyển sang "Chờ đối soát".
+7. **Đối soát & Xuất hóa đơn:**
+   - Kế toán kiểm tra dòng tiền thực nhận, nhấn "Xác nhận đối soát".
+   - Hệ thống bóc tách doanh thu dịch vụ, gọi API VNPT/Vĩnh Hy xuất hóa đơn điện tử VAT gửi cho khách hàng. Trạng thái đổi thành "Đã hoàn tất".
+8. **Chăm sóc Khách hàng:**
+   - Hệ thống tự động gửi tin nhắn Zalo OA/SMS cảm ơn kèm liên kết tải hóa đơn điện tử cho khách hàng.
+
+<a id="2.5.3-quy-trinh-nghiep-vu-chung-thuc-chu-ky"></a>
+#### 2.5.3 Quy trình Nghiệp vụ Chứng thực chữ ký (Signature Certification Workflow)
+
+Quy trình sử dụng phần mềm đối với nghiệp vụ Chứng thực chữ ký (tờ khai, giấy ủy quyền, sơ yếu lý lịch...) gồm các bước sau:
+
+1. **Tiếp nhận & CRM:**
+   - Thư ký tiếp nhận yêu cầu chứng thực chữ ký từ khách hàng.
+   - Thư ký nhập thông tin định danh của người yêu cầu vào CRM. Nếu văn bản yêu cầu nhiều người ký (ví dụ: vợ chồng cùng ủy quyền), Thư ký bấm "Thêm người ký" trên hệ thống để nhập định danh của tất cả các chủ thể cùng tham gia ký.
+2. **Cấu hình & Báo phí:**
+   - Thư ký chọn loại văn bản cần chứng thực và chọn mẫu Lời chứng phù hợp (Ví dụ: Lời chứng chữ ký cá nhân, Lời chứng điểm chỉ, Lời chứng người đại diện tổ chức...).
+   - Nhập số bản cần chứng thực chữ ký.
+   - **Hệ thống tự động tính phí:** Tính toán phí gốc chứng thực chữ ký ($15.000đ/chữ\ ký \times Số\ chữ\ ký \times Số\ bản$).
+   - Thư ký báo phí trọn gói với khách hàng, tích checkbox `Khách hàng đồng ý báo phí` và bấm "Lưu hồ sơ". Trạng thái hồ sơ chuyển sang "Đang lý".
+3. **Thực hiện Checklist & Đối chiếu định danh:**
+   - Hệ thống tải động Checklist nghiệp vụ chứng thực chữ ký (kiểm tra năng lực hành vi dân sự, giấy tờ tùy thân còn hạn, văn bản không vi phạm điều cấm của pháp luật, không có nội dung hợp đồng chuyển dịch quyền sở hữu tài sản bắt buộc phải công chứng...).
+   - Thư ký đối khớp khuôn mặt khách hàng với ảnh trên CCCD vật lý và tích chọn hoàn thành checklist trên phần mềm.
+4. **Ký tên/Điểm chỉ trực tiếp & CCV ký đóng dấu:**
+   - Khách hàng ký tên hoặc điểm chỉ trực tiếp lên văn bản giấy trước sự chứng kiến của Thư ký và CCV.
+   - Thư ký in Lời chứng tương ứng đã được hệ thống tự động điền dữ liệu, dán kẹp vào văn bản.
+   - CCV ký tên xác nhận và đóng dấu đỏ vật lý lên văn bản kẹp Lời chứng.
+5. **Scan số hóa & Thu phí tại quầy:**
+   - Thư ký scan bản văn bản đã ký đóng dấu đầy đủ, tải file scan lên hệ thống và bấm "Hoàn tất xử lý". Hồ sơ chuyển sang "Chờ thu phí".
+   - Thư ký thu tiền mặt/chuyển khoản/POS tại quầy từ khách hàng, nhấn "Xác nhận nhận đủ tiền". Trạng thái hồ sơ chuyển sang "Chờ đối soát".
+6. **Đối soát & Xuất hóa đơn:**
+   - Kế toán đối soát dòng tiền thực tế, nhấn "Xác nhận đối soát".
+   - Hệ thống ghi sổ cái bất biến, tự động bóc tách thuế VAT thù lao dịch vụ, gọi API VNPT/Vĩnh Hy xuất hóa đơn điện tử gửi cho khách hàng. Trạng thái đổi thành "Đã hoàn tất".
+7. **Chăm sóc Khách hàng:**
+   - Hệ thống tự động gửi tin nhắn Zalo OA/SMS cảm ơn kèm liên kết tải hóa đơn điện tử cho khách hàng.
+
+<a id="2.6-dac-ta-cac-usecase"></a>
+### 2.6 Đặc tả các usecase (Use Case Specifications)
+
+<a id="2.6.1-nhom-use-case-xac-thuc-he-thong"></a>
+#### 2.6.1 Nhóm Use Case Xác thực & Hệ thống (Auth & Admin)
 
 ##### UC001: Đăng nhập hệ thống
 | Đặc tả Use Case | Chi tiết |
@@ -568,7 +733,8 @@ flowchart LR
 
 ---
 
-#### 2.5.2 Nhóm Use Case Nghiệp vụ (Dossier & Checklist)
+<a id="2.6.2-nhom-use-case-nghiep-vu"></a>
+#### 2.6.2 Nhóm Use Case Nghiệp vụ (Dossier & Checklist)
 
 ##### UC005: Tiếp nhận khách hàng & Khởi tạo hồ sơ
 | Đặc tả Use Case | Chi tiết |
@@ -625,7 +791,7 @@ flowchart LR
 | **Mã Use Case** | UC007 |
 | **Tên Use Case** | Soạn thảo Lời chứng tự động |
 | **Tác nhân** | Thư ký nghiệp vụ |
-| **Mô tả** | Hệ thống tự động lấy thông tin khách hàng, số trang, số bản trộn vào mẫu Lời chứng (hoặc mẫu hợp đồng) tương ứng để Thư ký in ra giấy kẹp hồ sơ trình CCV. |
+| **Mô tả** | Hệ thống tự động lấy thông tin khách hàng, số trang, số bản điền vào biểu mẫu Lời chứng (hoặc mẫu hợp đồng) tương ứng để Thư ký in ra giấy kẹp hồ sơ trình CCV. |
 | **Sự kiện kích hoạt** | Thư ký click vào nút "Tạo Lời chứng" trong giao diện xử lý hồ sơ. |
 | **Tiền điều kiện** | Hồ sơ đã vượt qua bước thẩm định checklist bắt buộc (UC006). |
 | **Luồng sự kiện chính (Thành công)** | **STT \| Thực hiện bởi \| Hành động** <br>1. Thư ký \| Click chọn "Tạo Lời chứng" (hoặc chọn template hợp đồng tương ứng). <br>2. Hệ thống \| Tự động truy vấn thông tin khách hàng, thông tin nghiệp vụ và thông tin CCV phụ trách. <br>3. Hệ thống \| Điền tự động (Auto-fill) các dữ liệu trên vào biểu mẫu Lời chứng. <br>4. Hệ thống \| Hiển thị bản nháp Lời chứng trên màn hình cho Thư ký kiểm tra. <br>5. Thư ký \| Nhấn nút "In Lời chứng". <br>6. Hệ thống \| Chuyển lệnh in tới máy in tại văn phòng và đổi trạng thái hồ sơ sang "Chờ ký (CCV)". |
@@ -635,7 +801,7 @@ flowchart LR
 ##### Bảng dữ liệu đầu vào của Use Case UC007:
 | STT | Trường dữ liệu | Mô tả | Bắt buộc? | Điều kiện hợp lệ | Ví dụ |
 | :--- | :--- | :--- | :--- | :--- | :--- |
-| 1 | Template ID | Mã biểu mẫu cần trộn dữ liệu | Có | Phải thuộc kho mẫu lời chứng hệ thống | TEMP-SAOY-01 |
+| 1 | Template ID | Mã biểu mẫu cần điền dữ liệu | Có | Phải thuộc kho mẫu lời chứng hệ thống | TEMP-SAOY-01 |
 
 ---
 
@@ -659,7 +825,8 @@ flowchart LR
 
 ---
 
-#### 2.5.3 Nhóm Use Case Tài chính & Chăm sóc (Billing & CRM)
+<a id="2.6.3-nhom-use-case-tai-chinh-cham-soc"></a>
+#### 2.6.3 Nhóm Use Case Tài chính & Chăm sóc (Billing & CRM)
 
 ##### UC009: Thu phí dịch vụ
 | Đặc tả Use Case | Chi tiết |
@@ -722,67 +889,75 @@ flowchart LR
 
 ---
 
+<a id="3-cac-kich-ban-nghiep-vu-thuc-te"></a>
 ## Chương 3. Các kịch bản nghiệp vụ thực tế (Real-world Cases)
 
+<a id="3.1-nghiep-vu-sao-y-ban-chinh"></a>
 ### 3.1 Nghiệp vụ Sao y bản chính
 
 Dưới đây là các kịch bản nghiệp vụ thực tế của phân hệ **Sao y bản chính** thường gặp trong vận hành hàng ngày của Văn phòng công chứng, nhằm cụ thể hóa các Use Case chung đã nêu trên:
 
+<a id="3.1.1-case-1-sao-y-cccd"></a>
 #### 3.1.1 Case 1: Sao y CCCD / Giấy tờ tùy thân của cá nhân tại quầy (Siêu tốc)
 - **Bối cảnh:** Anh A đến văn phòng yêu cầu sao y 3 bản CCCD lấy ngay.
-- **Hành vi thực tế:** Anh A đưa bản gốc CCCD. Lễ tân quét nhanh SĐT của anh A.
+- **Hành vi thực tế:** Anh A đưa bản gốc CCCD. Thư ký quét nhanh SĐT của anh A.
 - **Luồng xử lý trên hệ thống:**
-  - Lễ tân nhập SĐT -> Hệ thống tìm thấy thông tin anh A và tự động điền (Auto-fill) Họ tên, CCCD, Địa chỉ.
-  - Lễ tân chọn loại giấy tờ: **CCCD (Chip-based)**, hệ thống ghi nhận số trang gốc mặc định là 2 (tương ứng với 2 mặt trước và sau của thẻ). Số bản sao y mặc định ban đầu là 1, lễ tân điều chỉnh lại thành 3 bản theo yêu cầu của khách.
-  - Lễ tân điền số bản cần sao y: 3 bản.
+  - Thư ký nhập SĐT -> Hệ thống tìm thấy thông tin anh A và tự động điền (Auto-fill) Họ tên, CCCD, Địa chỉ.
+  - Thư ký chọn loại giấy tờ: **CCCD (Chip-based)**, hệ thống ghi nhận số trang gốc mặc định là 2 (tương ứng với 2 mặt trước và sau của thẻ). Số bản sao y mặc định ban đầu là 1, thư ký điều chỉnh lại thành 3 bản theo yêu cầu của khách.
+  - Thư ký điền số bản cần sao y: 3 bản.
   - Hệ thống tính Phí Gốc nhà nước: $2 \text{ trang} \times 3 \text{ bản} \times 2.000đ = 12.000đ$.
-  - Lễ tân báo phí trọn gói dịch vụ cho khách là $20.000đ$ và nhập số tiền này vào ô "Tổng thực thu".
+  - Thư ký báo phí trọn gói dịch vụ cho khách là $20.000đ$ và nhập số tiền này vào ô "Tổng thực thu".
   - Hệ thống tự động hạch toán phần chênh lệch $8.000đ$ vào mục "Thù lao dịch vụ khác" (phí photo, bìa hồ sơ).
-  - Lễ tân tích chọn `Khách hàng đồng ý báo phí` và nhấn "Lưu & Chuyển xử lý".
+  - Thư ký tích chọn `Khách hàng đồng ý báo phí` và nhấn "Lưu & Chuyển xử lý".
   - Thư ký nhận tài liệu, photo bản sao, thực hiện đối khớp ảnh chân dung, kiểm tra hạn dùng CCCD và khớp mặt trước/sau. Thư ký in lời chứng tự động, trình CCV ký đóng dấu bản cứng offline.
-  - Thư ký scan bản cứng đã ký đóng dấu tải lên hệ thống. Hệ thống tự động chuyển hồ sơ sang trạng thái Chờ thanh toán.
-  - Kế toán thu tiền mặt $20.000đ$, bấm xuất hóa đơn. Hệ thống gọi API VNPT xuất hóa đơn điện tử tự động gửi Zalo OA cho anh A.
+  - Thư ký scan bản cứng đã ký đóng dấu tải lên hệ thống. Hệ thống tự động chuyển hồ sơ sang trạng thái Chờ thu phí.
+  - Thư ký nhận tiền mặt $20.000đ$ tại quầy và bấm xác nhận thu phí trên hệ thống. Kế toán thực hiện đối soát tài chính, hệ thống tự động gọi API VNPT xuất hóa đơn điện tử gửi Zalo OA cho anh A.
 
+<a id="3.1.2-case-2-sao-y-so-do"></a>
 #### 3.1.2 Case 2: Sao y Sổ đỏ / Giấy tờ sở hữu tài sản có kiểm tra ngăn chặn (UCHI)
 - **Bối cảnh:** Chị B mang bản gốc Sổ đỏ đến sao y 2 bản để làm hồ sơ vay vốn thế chấp ngân hàng.
 - **Hành vi thực tế:** Tài sản liên quan đến đất đai có rủi ro giả mạo và ngăn chặn giao dịch cao.
 - **Luồng xử lý trên hệ thống:**
-  - Lễ tân tiếp nhận, nhập SĐT chị B, chọn loại giấy tờ: **Sổ đỏ / Giấy chứng nhận quyền sử dụng đất** (4 trang, 2 bản).
+  - Thư ký tiếp nhận, nhập SĐT chị B, chọn loại giấy tờ: **Sổ đỏ / Giấy chứng nhận quyền sử dụng đất** (4 trang, 2 bản).
   - Phí Gốc: $4 \text{ trang} \times 2 \text{ bản} \times 2.000đ = 16.000đ$. Thực thu thỏa thuận: $50.000đ$ (chênh lệch $34.000đ$ phí thù lao dịch vụ và phí tra cứu ngăn chặn).
   - Chuyển hồ sơ sang bước Thẩm định. **Thư ký bắt buộc phải click vào liên kết "UCHI Search" trên màn hình** để gọi API tra cứu trạng thái ngăn chặn của thửa đất trên CSDL UCHI của Sở Tư pháp.
   - *Nhánh rẽ 1 (Hợp lệ):* CSDL trả về trạng thái "Bình thường". Thư ký tích chọn checklist (UCHI kiểm tra sạch, đối khớp chủ sở hữu, không tẩy xóa), in Lời chứng trình CCV ký đóng dấu vật lý. Thư ký scan bản cứng có dấu đỏ tải lên hệ thống để mở chặn thanh toán.
   - *Nhánh rẽ 2 (Ngăn chặn):* CSDL trả về trạng thái "Đang bị ngăn chặn giao dịch" (do tranh chấp hoặc kê biên). Hệ thống lập tức khóa nút in lời chứng, hiển thị cảnh báo đỏ nổi bật, tự động ghi nhận lỗi ngăn chặn vào log và Thư ký thực hiện trả lại hồ sơ cho khách.
 
+<a id="3.1.3-case-3-sao-y-so-luong-lon"></a>
 #### 3.1.3 Case 3: Sao y số lượng lớn (Vượt trần quy định) & Tự động tách hóa đơn
 - **Bối cảnh:** Công ty X mang 5 bộ hồ sơ thầu (mỗi bộ 250 trang) đến sao y bản chính. Tổng số trang sao y: 1250 trang.
 - **Hành vi thực tế:** Theo luật Phí và Lệ phí, phí sao y/chứng thực bản sao tối đa không quá $200.000đ/\text{lần yêu cầu}$ (hoặc theo mức trần quy định của địa phương). Nếu xuất một hóa đơn phí gốc 1250 trang x 2.000đ = 2.500.000đ sẽ vi phạm quy định pháp lý về phí lệ phí.
 - **Luồng xử lý trên hệ thống:**
-  - Lễ tân nhập số trang 250, số bản 5. Phí tính toán ban đầu là $2.500.000đ$.
+  - Thư ký nhập số trang 250, số bản 5. Phí tính toán ban đầu là $2.500.000đ$.
   - Hệ thống phát hiện số tiền vượt mức trần $200.000đ$ cho một giao dịch độc lập.
-  - Khi Lễ tân nhấn "Lưu", hệ thống tự động tách hồ sơ thầu thành 13 bản ghi giao dịch (transaction records) con độc lập trên hệ thống (mỗi bản ghi tối đa 100 trang sao y trị giá $200.000đ$ hoặc tương đương) để khi kế toán xuất hóa đơn điện tử, hóa đơn sẽ tự động được phân tách thành 13 hóa đơn hợp lệ có giá trị mỗi hóa đơn $\le 200.000đ$, đảm bảo tuân thủ 100% quy định pháp luật thuế và phí lệ phí.
+  - Khi Thư ký nhấn "Lưu", hệ thống tự động tách hồ sơ thầu thành 13 bản ghi giao dịch (transaction records) con độc lập trên hệ thống (mỗi bản ghi tối đa 100 trang sao y trị giá $200.000đ$ hoặc tương đương) để khi kế toán xuất hóa đơn điện tử, hóa đơn sẽ tự động được phân tách thành 13 hóa đơn hợp lệ có giá trị mỗi hóa đơn $\le 200.000đ$, đảm bảo tuân thủ 100% quy định pháp luật thuế và phí lệ phí.
 
+<a id="3.1.4-case-4-doanh-nghiep-sao-y-giay-phep"></a>
 #### 3.1.4 Case 4: Doanh nghiệp sao y giấy phép & Yêu cầu hóa đơn VAT (B2B)
 - **Bối cảnh:** Đại diện Công ty X đến sao y Giấy đăng ký kinh doanh và Giấy phép môi trường, yêu cầu xuất hóa đơn điện tử B2B gửi về email doanh nghiệp để làm báo cáo thuế.
 - **Hành vi thực tế:** Cần thông tin chính xác của doanh nghiệp (Mã số thuế, Tên doanh nghiệp, Địa chỉ trụ sở chính) và đối chiếu tính hiệu lực hoạt động của pháp nhân.
 - **Luồng xử lý trên hệ thống:**
-  - Lễ tân tạo hồ sơ, tích chọn toggle `Xuất hóa đơn doanh nghiệp (B2B)`.
-  - Lễ tân nhập Mã số thuế: `0314456789`. Hệ thống gọi API Tổng cục Thuế, tự động điền Tên công ty: "Công ty Cổ phần Đầu tư X" và địa chỉ trụ sở chính vào hóa đơn.
+  - Thư ký tạo hồ sơ, tích chọn toggle `Xuất hóa đơn doanh nghiệp (B2B)`.
+  - Thư ký nhập Mã số thuế: `0314456789`. Hệ thống gọi API Tổng cục Thuế, tự động điền Tên công ty: "Công ty Cổ phần Đầu tư X" và địa chỉ trụ sở chính vào hóa đơn.
   - Thư ký nhận việc, thực hiện checklist nghiệp vụ doanh nghiệp: Truy vấn nhanh trên Cổng thông tin Quốc gia về Đăng ký Doanh nghiệp xem Công ty X có đang hoạt động bình thường hay đã giải thể/ngừng hoạt động.
   - Thư ký đối khớp con dấu doanh nghiệp trên bản chính, in Lời chứng trình CCV ký offline. Scan tải lên hệ thống.
   - Kế toán chọn thanh toán bằng "Chuyển khoản ngân hàng", đối soát tiền về tài khoản VPCC, bấm "Xác nhận & Phát hành".
   - Hệ thống gọi API VNPT xuất hóa đơn điện tử, đồng thời tự động gửi email chứa hóa đơn XML/PDF và tin nhắn Zalo OA cảm ơn đến số điện thoại của người đại diện công ty.
 
+<a id="3.1.5-case-5-sao-y-giay-to-nuoc-ngoai"></a>
 #### 3.1.5 Case 5: Sao y giấy tờ có yếu tố nước ngoài (Yêu cầu Hợp pháp hóa lãnh sự)
 - **Bối cảnh:** Ông C mang bằng đại học do trường nước ngoài cấp bằng tiếng Anh đến sao y.
 - **Hành vi thực tế:** Giấy tờ do cơ quan/tổ chức nước ngoài cấp phải được hợp pháp hóa lãnh sự trước khi chứng thực sao y bản chính tại Việt Nam (trừ trường hợp được miễn trừ theo điều ước quốc tế).
 - **Luồng xử lý trên hệ thống:**
-  - Lễ tân tạo hồ sơ, chọn loại giấy tờ: **Giấy tờ nước ngoài / Song ngữ**.
+  - Thư ký tạo hồ sơ, chọn loại giấy tờ: **Giấy tờ nước ngoài / Song ngữ**.
   - Hệ thống tự động kích hoạt checklist động dành riêng cho tài liệu nước ngoài, bao gồm mục kiểm tra bắt buộc: `Đã kiểm tra tem và con dấu Hợp pháp hóa lãnh sự của Bộ Ngoại giao Việt Nam`.
   - Thư ký tiếp nhận tài liệu, đối chiếu bản chính. Nếu bản chính chưa có tem hợp pháp hóa lãnh sự và không thuộc diện miễn trừ:
     - Thư ký tích chọn "Không đủ điều kiện" -> Hệ thống tự động khóa tính năng in Lời chứng.
     - Thư ký bấm "Từ chối tiếp nhận" -> Hệ thống hiển thị popup cho phép chọn in "Phiếu hướng dẫn hoàn thiện hồ sơ" (trong đó ghi rõ yêu cầu hợp pháp hóa lãnh sự trước khi sao y) để gửi cho khách hàng.
   - Nếu bản chính đã được hợp pháp hóa lãnh sự hợp lệ: Thư ký tích chọn hoàn thành checklist, in Lời chứng trình CCV ký, chụp/scan tài liệu tải lên hệ thống để chuyển thanh toán bình thường.
 
+<a id="3.1.6-case-6-tu-choi-sao-y"></a>
 #### 3.1.6 Case 6: Từ chối sao y các giấy tờ bị cấm chứng thực (Tẩy xóa, đóng dấu MẬT, rách nát)
 - **Bối cảnh:** Bà D mang một quyết định hành chính có đóng dấu "MẬT" hoặc một học bạ bị tẩy xóa điểm số, rách nát mất chữ đến yêu cầu sao y.
 - **Hành vi thực tế:** Tuân thủ Điều 22 Nghị định 23/2015/NĐ-CP, cấm chứng thực bản sao từ bản chính đối với giấy tờ bị tẩy xóa, sửa chữa, rách nát hư hỏng không xác định được nội dung, hoặc có đóng dấu mật/cấm sao chụp.
