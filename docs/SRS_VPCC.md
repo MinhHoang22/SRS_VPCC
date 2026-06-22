@@ -41,6 +41,7 @@
       - [UC005: Tiếp nhận khách hàng & Khởi tạo hồ sơ](#uc005-tiếp-nhận-khách-hàng--khởi-tạo-hồ-sơ)
       - [UC006: Thẩm định hồ sơ & Duyệt Checklist chặn](#uc006-thẩm-định-hồ-sơ--duyệt-checklist-chặn)
       - [UC007: Soạn thảo Lời chứng tự động](#uc007-soạn-thảo-lời-chứng-tự-động)
+      - [UC012: Ký duyệt & Cấp số công chứng](#uc012-ký-duyệt--cấp-số-công-chứng)
       - [UC008: Quét & Lưu trữ hồ sơ điện tử đã đóng dấu](#uc008-quét--lưu-trữ-hồ-sơ-điện-tử-đã-đóng-dấu)
     - [2.6.3 Nhóm Use Case Tài chính & Chăm sóc (Billing & CRM)](#2.6.3-nhom-use-case-tai-chinh-cham-soc)
       - [UC009: Thu phí & Đối soát dòng tiền](#uc009-thu-phí--đối-soát-dòng-tiền)
@@ -908,6 +909,26 @@ Quy trình sử dụng phần mềm đối với nghiệp vụ Chứng thực ch
 ###### Giao diện mẫu (Prototype) - Soạn thảo Lời chứng tự động (UC007):
 ![Soạn thảo Lời chứng tự động](images/draft_notary_clause_mockup.png)
 
+##### UC012: Ký duyệt & Cấp số công chứng
+| Đặc tả Use Case | Chi tiết |
+| :--- | :--- |
+| **Mã Use Case** | UC012 |
+| **Tên Use Case** | Ký duyệt & Cấp số công chứng |
+| **Tác nhân** | Công chứng viên (CCV) |
+| **Mô tả** | Công chứng viên phê duyệt hồ sơ nghiệp vụ trên phần mềm, lựa chọn Sổ công chứng/chứng thực tương ứng và hệ thống sẽ tự động cấp Số công chứng/chứng thực tiếp theo chạy liên tục từ đầu năm, sau đó chuyển hồ sơ sang trạng thái "Chờ thu phí". |
+| **Sự kiện kích hoạt** | CCV click chọn hồ sơ trong danh sách "Chờ phê duyệt" và bấm nút "Phê duyệt & Cấp số". |
+| **Tiền điều kiện** | Hồ sơ ở trạng thái "Chờ ký (CCV)" (sau khi Thư ký đã soạn thảo & in ấn Lời chứng). |
+| **Luồng sự kiện chính (Thành công)** | **STT \| Thực hiện bởi \| Hành động** <br>1. CCV \| Kiểm tra hồ sơ vật lý và đối soát thông tin trên phần mềm. <br>2. CCV \| Chọn loại Sổ tương ứng (Sổ Sao y, Sổ Hợp đồng, Sổ Chứng thực chữ ký, Sổ Bản dịch) trên giao diện. <br>3. Hệ thống \| Tự động hiển thị và gợi ý số thứ tự tiếp theo có sẵn trong Sổ đã chọn (STT = Số cuối cùng đã cấp trong năm + 1). <br>4. CCV \| (Tùy chọn) Chọn "Cấp số tự động" hoặc tự nhập số thủ công (Giữ số) nếu có độ trễ đồng bộ. <br>5. CCV \| Nhấn nút "Xác nhận Phê duyệt & Cấp số". <br>6. Hệ thống \| Phân tách hồ sơ thành các dòng dịch vụ con độc lập (nếu hồ sơ gộp nhiều dịch vụ), cấp số công chứng riêng biệt cho từng dịch vụ và ghi nhận vào các Sổ điện tử tương ứng. <br>7. Hệ thống \| Ghi nhật ký phê duyệt (CCV ký tên, timestamp) và chuyển trạng thái hồ sơ sang "Chờ thu phí" (hoặc gửi thông báo qua Zalo OA báo cọc/thanh toán). |
+| **Luồng sự kiện thay thế / Ngoại lệ** | **STT \| Thực hiện bởi \| Hành động** <br>**[ERR-NUM-01] Trùng số công chứng:** <br>5a. Số công chứng nhập thủ công bị trùng với số đã cấp -> Hệ thống báo lỗi "Số công chứng này đã tồn tại trong Sổ" và khóa phê duyệt. <br>**[ERR-NUM-02] Số không liên tục (Khoảng trống số):** <br>5a. Số công chứng nhập thủ công tạo khoảng trống lớn so với số hiện tại -> Hệ thống yêu cầu CCV nhập lý do nhảy số và ghi nhận vào Nhật ký hệ thống trước khi cho phép lưu. |
+| **Hậu điều kiện** | Hồ sơ được cấp số công chứng chính thức và ghi vào sổ điện tử thành công; trạng thái đổi thành "Chờ thu phí". |
+
+##### Bảng dữ liệu đầu vào của Use Case UC012:
+| STT | Trường dữ liệu | Mô tả | Bắt buộc? | Điều kiện hợp lệ | Ví dụ |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| 1 | Sổ công chứng/chứng thực | Danh mục sổ cần đăng ký | Có | Phải chọn trong danh sách sổ hoạt động | Sổ Sao y bản chính |
+| 2 | Loại cấp số | Phương thức cấp số | Có | Tự động (Auto) hoặc Thủ công (Manual) | Auto |
+| 3 | Số công chứng cụ thể | Số thứ tự nhập tay khi chọn Thủ công | Không | Số nguyên dương, không được trùng lặp | 1025 |
+
 ###### Giao diện mẫu (Prototype) - CCV Ký duyệt & Đóng dấu điện tử (UC012):
 ![CCV Ký duyệt & Đóng dấu](images/ccv_approval_mockup.png)
 
@@ -944,19 +965,21 @@ Quy trình sử dụng phần mềm đối với nghiệp vụ Chứng thực ch
 | :--- | :--- |
 | **Mã Use Case** | UC009 |
 | **Tên Use Case** | Thu phí dịch vụ |
-| **Tác nhân** | Thư ký nghiệp vụ, Công chứng viên |
-| **Mô tả** | Thư ký nghiệp vụ hoặc Công chứng viên tiếp nhận thanh toán từ khách hàng tại quầy (sau khi CCV ký đóng dấu offline), hiển thị số tiền cần thu thực tế (đã trừ đi tiền cọc đã nhận trước đó nếu có), thực hiện xác nhận nhận tiền thực thu và ghi nhận giao dịch thu phí lên hệ thống. |
-| **Sự kiện kích hoạt** | Thư ký hoặc CCV chọn một hồ sơ trong danh sách "Chờ thu phí" trên giao diện nghiệp vụ tại quầy. |
-| **Tiền điều kiện** | Hồ sơ ở trạng thái "Chờ thu phí" (sau khi CCV ký đóng dấu vật lý offline). |
-| **Luồng sự kiện chính (Thành công)** | **STT \| Thực hiện bởi \| Hành động** <br>1. Thư ký / CCV \| Kiểm tra thông tin phí cần thu (Hệ thống tự động hiển thị số tiền còn lại cần thu = Tổng thực thu - Tiền cọc đã nhận). <br>2. Thư ký / CCV \| Chọn phương thức thanh toán thực tế của khách hàng (Tiền mặt, Chuyển khoản ngân hàng, Quẹt thẻ POS). <br>3. Thư ký / CCV \| Nhấn nút "Xác nhận nhận đủ tiền". <br>4. Hệ thống \| Ghi nhận giao dịch thu phí của hồ sơ và chuyển trạng thái hồ sơ sang "Chờ tải file scan", mở khóa tính năng scan & upload. |
-| **Luồng sự kiện thay thế / Ngoại lệ** | Không có. |
-| **Hậu điều kiện** | Giao dịch thu phí được ghi nhận trên hệ thống; hồ sơ chuyển sang trạng thái "Chờ tải file scan". |
+| **Tác nhân** | Thư ký nghiệp vụ, Công chứng viên, Thu ngân |
+| **Mô tả** | Người dùng tiếp nhận thanh toán từ khách hàng tại quầy (sau khi CCV đã ký duyệt & cấp số ở UC012), hiển thị bảng báo phí chi tiết bao gồm phí gốc quy định và thù lao thỏa thuận, hỗ trợ cơ chế điều chỉnh số bản/trang để tự động recalculate khớp tuyệt đối doanh thu thực tế, và xác nhận nhận tiền để chuyển hồ sơ sang bước scan lưu trữ. |
+| **Sự kiện kích hoạt** | Người dùng chọn một hồ sơ trong danh sách "Chờ thu phí" trên màn hình thu ngân/quầy dịch vụ. |
+| **Tiền điều kiện** | Hồ sơ ở trạng thái "Chờ thu phí" và đã được cấp số công chứng chính thức (UC012). |
+| **Luồng sự kiện chính (Thành công)** | **STT \| Thực hiện bởi \| Hành động** <br>1. Người dùng \| Xem bảng chi tiết báo phí của hồ sơ: <br>   - **Phí cố định Nhà nước** (Phí gốc miễn thuế). <br>   - **Thù lao dịch vụ/soạn thảo** (Chịu thuế VAT). <br>   - **Tạm ứng/Đặt cọc** (Đã trừ đi nếu có cọc trước). <br>   - **Tổng thực thu** = Phí cố định + Thù lao dịch vụ. <br>   - **Còn lại phải thu** = Tổng thực thu - Tạm ứng/Đặt cọc. <br>2. Người dùng \| (Tùy chọn) Điều chỉnh số trang/số bản sao y hoặc nhập đè tổng tiền thực tế thỏa thuận. Hệ thống tự động phân bổ lại dòng tiền và tính toán lại phần chênh lệch. <br>3. Người dùng \| Chọn hình thức thanh toán (Tiền mặt, Chuyển khoản qua mã QR động, POS). <br>4. Người dùng \| Nhấn nút "Xác nhận đã nhận đủ tiền". <br>5. Hệ thống \| Ghi nhận giao dịch thanh toán thành công, cập nhật số tiền thực thu, chuyển trạng thái hồ sơ sang "Chờ tải file scan" và mở khóa tính năng scan & upload. |
+| **Luồng sự kiện thay thế / Ngoại lệ** | **STT \| Thực hiện bởi \| Hành động** <br>**[Luồng phụ 1] Điều chỉnh khớp hóa đơn:** <br>2a. Khách hàng thỏa thuận tổng tiền chẵn (ví dụ 100.000đ thay vì 96.000đ lẻ) -> Người dùng nhập trực tiếp 100.000đ hoặc điều chỉnh số bản sao y tăng lên trên màn hình. <br>2b. Hệ thống tự động gọi hàm Recalculate phân tách lại: Phí gốc và Thù lao dịch vụ để khớp 100% doanh thu trước khi ghi nhận hóa đơn. |
+| **Hậu điều kiện** | Giao dịch thu phí được ghi nhận chính xác; hồ sơ được mở chặn để chuyển sang bước quét lưu trữ tài liệu. |
 
 ##### Bảng dữ liệu đầu vào của Use Case UC009:
 | STT | Trường dữ liệu | Mô tả | Bắt buộc? | Điều kiện hợp lệ | Ví dụ |
 | :--- | :--- | :--- | :--- | :--- | :--- |
-| 1 | Phương thức thanh toán | Hình thức thanh toán của khách | Có | Thuộc danh mục (Cash, Bank Transfer, POS) | Bank Transfer |
-| 2 | Xác nhận nhận tiền | Trạng thái thu phí tại quầy | Có | Click chọn nút xác nhận thu phí | True |
+| 1 | Thù lao dịch vụ/soạn thảo | Số tiền thù lao thỏa thuận | Có | Số tiền >= 0 (mặc định từ biểu phí cấu hình) | 500,000 VND |
+| 2 | Điều chỉnh số bản/trang | Trường số để tăng/giảm lượng bản sao y khớp doanh thu | Không | Số nguyên dương >= 1 | 2 |
+| 3 | Phương thức thanh toán | Hình thức thanh toán của khách | Có | Thuộc danh mục (Cash, Bank Transfer, POS) | Bank Transfer |
+| 4 | Xác nhận nhận tiền | Nút kích hoạt hoàn tất thu phí | Có | Click chọn xác nhận nhận đủ tiền | True |
 
 ###### Giao diện mẫu (Prototype) - Thu phí tại quầy:
 ![Giao diện Thu phí tại quầy](images/payment_counter_mockup.png)
@@ -973,7 +996,7 @@ Quy trình sử dụng phần mềm đối với nghiệp vụ Chứng thực ch
 | **Sự kiện kích hoạt** | Kế toán chọn một hồ sơ trong danh sách "Chờ đối soát" trên Dashboard kế toán. |
 | **Tiền điều kiện** | Giao dịch thu phí của hồ sơ đã được Thư ký hoặc CCV xác nhận nhận tiền thành công (UC009). |
 | **Luồng sự kiện chính (Thành công)** | **STT \| Thực hiện bởi \| Hành động** <br>1. Kế toán \| Kiểm tra phương thức thanh toán và số tiền thực thu, đối chiếu với nguồn dòng tiền thực tế (tài khoản ngân hàng/két tiền mặt). <br>2. Kế toán \| Nhấn nút "Xác nhận đối soát & Xuất hóa đơn". <br>3. Hệ thống \| Ghi bản ghi giao dịch tài chính bất biến vào Sổ cái tài chính (không cho phép sửa/xóa). <br>4. Hệ thống \| Tự động bóc tách dòng tiền: Phí gốc nhà nước (miễn thuế) và Thù lao dịch vụ khác (đã tính thuế VAT). <br>5. Hệ thống \| Gọi API nhà cung cấp hóa đơn điện tử (VNPT/Vĩnh Hy), truyền các thông tin hóa đơn và định danh khách hàng. <br>6. Hệ thống \| Nhận phản hồi thành công từ API chứa Số hóa đơn chính thức và link tải file hóa đơn (PDF/XML). <br>7. Hệ thống \| Ghi nhận Số hóa đơn và URL file hóa đơn vào sổ cái tài chính. <br>8. Hệ thống \| Đổi trạng thái hồ sơ sang "Đã hoàn tất". <br>9. Hệ thống \| Tự động kích hoạt gọi API Zalo OA để gửi thông báo cho khách hàng (UC011). |
-| **Luồng sự kiện thay thế / Ngoại lệ** | **STT \| Thực hiện bởi \| Hành động** <br>**[ERR-INV-01] API hóa đơn mất kết nối / Timeout:** <br>5a. API hóa đơn gặp lỗi -> Hệ thống tự động chuyển giao dịch hóa đơn vào hàng đợi xử lý ngầm (Offline Queue). <br>5b. Hệ thống tạo và cho phép Kế toán/Thư ký in **Biên lai tạm thời** chứa mã QR tra cứu tạm cho khách. <br>5c. Tiến trình cron job chạy ngầm tự động thực hiện lệnh gọi lại (retry) phát hành hóa đơn điện tử khi API hóa đơn trực tuyến hoạt động lại bình thường. <br>**[Luồng phụ 1] Tự động điều chỉnh số trang khi cần khớp doanh thu:** <br>4a. Kế toán phát hiện số tiền thực thu cao hơn phí gốc theo trang gốc -> Điều chỉnh tăng số trang trên giao diện thu phí để tổng tiền khớp tuyệt đối trước khi xuất hóa đơn. |
+| **Luồng sự kiện thay thế / Ngoại lệ** | **STT \| Thực hiện bởi \| Hành động** <br>**[ERR-INV-01] API hóa đơn mất kết nối / Timeout:** <br>5a. API hóa đơn gặp lỗi -> Hệ thống tự động chuyển giao dịch hóa đơn vào hàng đợi xử lý ngầm (Offline Queue). <br>5b. Hệ thống tạo và cho phép Kế toán/Thư ký in **Biên lai tạm thời** chứa mã QR tra cứu tạm cho khách. <br>5c. Tiến trình cron job chạy ngầm tự động thực hiện lệnh gọi lại (retry) phát hành hóa đơn điện tử khi API hóa đơn trực tuyến hoạt động lại bình thường. <br>**[Luồng phụ 1] Tự động điều chỉnh số bản/trang để khớp doanh thu:** <br>4a. Kế toán phát hiện số tiền thực thu lệch so với hóa đơn dự kiến -> Thực hiện điều chỉnh tăng/giảm số lượng bản sao y trực tiếp tại màn hình thu phí (được quy định ở UC009) để tổng tiền khớp 100% trước khi bấm đối soát xuất hóa đơn. |
 | **Hậu điều kiện** | Hóa đơn điện tử phát hành thành công hoặc được đưa vào hàng đợi xử lý offline; hồ sơ đổi thành trạng thái "Đã hoàn tất". |
 
 ##### Bảng dữ liệu đầu vào của Use Case UC010:
@@ -1014,12 +1037,18 @@ Quy trình sử dụng phần mềm đối với nghiệp vụ Chứng thực ch
 *(Tài liệu khảo sát thực tế bộ phận Kế toán - Nghiệp vụ và thiết lập quy tắc hệ thống từ [duc_note.md](file:///Users/vuminhhoang/Desktop/danish/VPCC/duc_note.md))*
 
 <a id="2.7.1-quan-ly-he-thong-so-sach-cong-chung"></a>
-#### 2.7.1 Quản lý hệ thống Sổ sách Công chứng (Đồng bộ số liệu)
+#### 2.7.1 Quản lý hệ thống Sổ sách Công chứng (Đồng bộ số liệu & Cấp số)
 Hàng ngày, dữ liệu đóng dấu thực tế từ Google Drive chung sẽ được đồng bộ lên hệ thống để Kế toán quản lý và ghi sổ điện tử (thay thế nhập liệu thủ công):
 - **Sổ Công chứng Sao y:** Ghi nhận ngày tháng, số công chứng liên tiếp từ đầu năm, nội dung, CCV ký, số bản và số tiền thu.
 - **Sổ Công chứng Hợp đồng:** Theo dõi chi tiết từng hợp đồng, ngày tháng, thông tin các bên, loại giao dịch, CCV ký tên.
   - *Quy tắc phân tách tài chính:* Hệ thống tự động bóc tách tổng tiền thực thu thành 2 mục độc lập: **Phí công chứng** (theo Thông tư 257/2016/TT-BTC) và **Thù lao soạn thảo/dịch vụ khác** sao cho tổng số khớp chính xác với số tiền thực tế đã thu.
 - **Sổ Chứng thực chữ ký & Sổ bản dịch:** Ghi nhận số thứ tự chạy liên tục từ đầu năm, ngày tháng, tên khách hàng, nội dung chứng thực/dịch thuật, người ký và số tiền thực thu.
+
+##### Quy tắc nghiệp vụ cấp Số công chứng/chứng thực:
+1. **Tính liên tục & Bất biến:** Số công chứng phải là số thứ tự tăng dần liên tục, bắt đầu từ số 1 vào ngày 01/01 đầu năm và reset vào ngày 31/12 hàng năm cho từng loại Sổ riêng biệt. Không được phép trùng số hoặc có khoảng trống số (nhảy số) trong cùng một Sổ, trừ khi được CCV xác nhận và ghi log giải trình rõ ràng.
+2. **Cấp số theo dịch vụ con:** Khi một hồ sơ (Dossier) chứa nhiều dịch vụ con (ví dụ: vừa sao y bằng cấp, vừa chứng thực chữ ký trên tờ khai), hệ thống sẽ tự động tách thành nhiều dòng giao dịch độc lập. Mỗi dịch vụ con sẽ được cấp một số công chứng/chứng thực riêng biệt gắn với Sổ điện tử tương ứng chứ không dùng chung một số cho cả hồ sơ.
+3. **Cơ chế giữ số (Reserve Number):** Trong trường hợp thực tế CCV ký đóng dấu giấy trước rồi mới đồng bộ dữ liệu sau, hệ thống cho phép CCV hoặc Thư ký nhập thủ công số công chứng đã cấp ngoài thực tế (Giữ số) để tránh việc hệ thống tự động nhảy số lệch so với bản cứng dấu đỏ.
+4. **Đồng bộ kiểm tra chéo:** Hệ thống tự động đối chiếu số công chứng trên phần mềm với dữ liệu quét mã QR trên bản scan dấu đỏ tải lên và dữ liệu thư mục Google Drive để phát hiện và cảnh báo ngay lập tức nếu xảy ra sai lệch số.
 
 > [!IMPORTANT]
 > **Quy tắc cấp Số công chứng theo dịch vụ:** Mỗi dịch vụ con trong hồ sơ (Đơn hàng) sẽ được cấp một Số công chứng (Số chứng thực) riêng biệt để đối chiếu và ghi nhận độc lập vào các Sổ điện tử tương ứng. Trường hợp một hồ sơ chứa nhiều dịch vụ, hệ thống sẽ tự động tách và sinh ra các số công chứng riêng lẻ gắn kèm cho từng dịch vụ con tương ứng.
