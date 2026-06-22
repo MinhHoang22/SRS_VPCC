@@ -26,6 +26,9 @@ Nhìn tổng thể, hệ thống không chỉ là nơi lưu thông tin hồ sơ.
 - **Lớp nghiệp vụ:** Hồ sơ đang ở bước nào, đang sử dụng dịch vụ gì, cần nhập thông tin gì, phí được tính như thế nào.
 - **Lớp quản trị:** Nhân sự đang xử lý bao nhiêu việc, doanh thu và phí ra sao, hồ sơ nào cần theo dõi tiếp.
 
+###### Giao diện mẫu (Prototype) - Dashboard Tổng quan hệ thống:
+![Dashboard Tổng quan hệ thống](images/dashboard_mockup.png)
+
 > [!NOTE]
 > Chi tiết đặc tả kỹ thuật và các Use Case chi tiết cho từng phân hệ nghiệp vụ cốt lõi:
 > - Phân hệ Nghiệp vụ **Sao Y Bản Chính**: Xem [SRS_SaoY_IEEE.md](SRS_SaoY_IEEE.md)
